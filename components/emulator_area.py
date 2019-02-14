@@ -139,17 +139,18 @@ Builder.load_string('''
                 width: '36dp'
                 text: icon('fa-search-minus')
                 on_release:
-                    if not root.screen_display.screen.scale < -100.0: root.screen_display.screen.scale -= 0.05
+                    if not root.screen_display.screen.scale < 0.10: root.screen_display.screen.scale -= 0.05
             IconButtonLabel:
                 color: .8,.8,.8,1
                 text: icon('fa-search-plus')
                 size_hint_x: None
                 width: '36dp'
                 icon_source: 'images/scale2.png'
-                on_release: root.screen_display.screen.scale += 0.05
+                on_release:
+                    if not root.screen_display.screen.scale > 1.0: root.screen_display.screen.scale += 0.05
             IconToggleLabel:
                 color: .8,.8,.8,1
-                text: icon('fa-mobile')
+                text: icon('fa-mobile', 24)
                 size_hint_x: None
                 width: '36dp'
                 angle:0 
@@ -165,7 +166,7 @@ Builder.load_string('''
                         origin: self.center_x , self.center_y
                     Rectangle:
                         size: self.texture_size
-                        pos: self.center_x - 8, self.center_y - 8
+                        pos: self.center_x - 12, self.center_y - 12
                         texture: self.texture
                     PopMatrix
                     
