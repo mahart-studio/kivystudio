@@ -11,6 +11,12 @@ Builder.load_string('''
             rgba: 0,0,0,.6
         Line:
             rectangle: [self.x, self.y, self.width, self.height]
+    canvas.before:
+        BorderImage:
+            source: 'shadow32.png'
+            border: (26, 26, 26, 26)
+            size:(root.width + 68, root.height + 68)
+            pos: (root.x-36, root.y-36)
 ''')
 
 class DropDownBase(HoverBehavior, DropDown):
