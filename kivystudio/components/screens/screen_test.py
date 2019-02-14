@@ -35,7 +35,7 @@ BoxLayout:
                     text: '+'
                     bold: True
                     on_release:
-                    if not(screen.scale > 4.0): screen.scale += 0.05
+                        if not(screen.scale > 4.0): screen.scale += 0.05
 
 # Carousel:
 #     AndroidPhoneScreen:

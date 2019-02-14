@@ -9,18 +9,7 @@
     ScreenContainer:
         id: container
         size: '320dp', '610dp'
-        size_hint: None, None
-        pos_hint: {'center_y': .5, 'center_x': .5}
-        canvas.before:
-            PushMatrix:
-            Rotate:
-                angle: root.angle
-                origin: (0,0,1)
-            BorderImage:
-                source: 'images/android_lolipop1.png'
-                size: root.border_size
-                pos: root.border_pos
-            PopMatrix:
+        source: 'images/android_lolipop1.png'
 
 # 380 743
 <IphoneScreen>:
@@ -29,14 +18,8 @@
     scale: 0.75
     ScreenContainer:
         id: container
-        # size: ('280dp', '520dp')
-        size_hint: None, None
-        pos_hint: {'center_y': .5, 'center_x': .5}
-        canvas.before:
-            BorderImage:
-                source: 'images/iphone.png'
-                size:(root.width + dp(42), root.height + dp(280))
-                pos: (-dp(21), -dp(138))
+        size: ('280dp', '500dp')
+        source: 'images/iphone.png'
 
 #1271 992
 <IpadScreen>:
@@ -46,13 +29,7 @@
     ScreenContainer:
         id: container
         size: ('800dp', '512dp')
-        size_hint: None, None
-        pos_hint: {'center_y': .5, 'center_x': .5}
-        canvas.before:
-            BorderImage:
-                source: 'images/ipad.png'
-                size:(root.width + dp(118), root.height + dp(102))
-                pos: (-dp(99), -dp(51))
+        source: 'images/ipad.png'
 
 # 953 612
 <AndriodTabScreen>:
@@ -61,13 +38,8 @@
     ScreenContainer:
         id: container
         size: ('500dp', '280dp')
-        size_hint: None, None
-        pos_hint: {'center_y': .5, 'center_x': .5}
-        canvas.before:
-            BorderImage:
-                source: 'images/android_tab.png'
-                size:(root.width + dp(70), root.height + dp(102))
-                pos: (-dp(35), -dp(51))
+        source: 'images/android_tab.png'
+        my_parent: self.parent
 
 <ScreenScatter>:
     do_rotation: False
@@ -76,3 +48,18 @@
     # scale_min: 1
     size_hint: None, None
     auto_bring_to_front: False
+
+<ScreenContainer>:
+    source: ''
+    size_hint: None, None
+    pos_hint: {'center_y': .5, 'center_x': .5}
+    canvas.before:
+        PushMatrix:
+        Rotate:
+            angle: root.parent.angle if self.parent else 0
+            origin: (0,0,1)
+        BorderImage:
+            source: root.source
+            size: root.parent.border_size if self.parent else (0,0)
+            pos: root.parent.border_pos if self.parent else (0,0)
+        PopMatrix:

@@ -27,14 +27,12 @@ class ScreenScatter(Scatter):
 
     border_pos =ListProperty([0,0])
 
+    source = StringProperty('')
+
     def __init__(self, **k):
         super(ScreenScatter, self).__init__(**k)
         self.bind(pos=self.set_border)
         self.bind(size=self.set_border)
-
-    def set_border(self, *a):
-        # overide to set borderimage valuese
-        pass
 
     def add_widget(self, widget):
         if len(self.children) > 0:
@@ -44,22 +42,6 @@ class ScreenScatter(Scatter):
 
     def clear_widgets(self):
         self.container.clear_widgets()
-
-
-class ScreenContainer(RelativeLayout):
-    pass
-
-
-class IphoneScreen(ScreenScatter):
-    pass
-
-class IpadScreen(ScreenScatter):
-    pass
-
-class AndriodTabScreen(ScreenScatter):
-    pass
-
-class AndroidPhoneScreen(ScreenScatter):
 
     def on_orientation(self, *a):
         if self.orientation == 'portrait':
@@ -71,13 +53,12 @@ class AndroidPhoneScreen(ScreenScatter):
 
         self.set_border(from_orientation=True)
 
-    # overiding
     def set_border(self, *a, **k):
         if self.orientation == 'portrait':
-            self.border_pos = (-dp(16.5), -dp(85.5))
-            self.border_size = (self.container.width + dp(32), self.container.height + dp(152))
+            self.border_pos = self.set_pos 
+            self.border_size = self.set_size
         elif self.orientation == 'landscape':
-            self.border_pos = (-self.container.height-16.5, -dp(85.5))
+            self.border_pos = self.set_pos
 
         try:
             from_orientation = k.pop('from_orientation')
@@ -86,7 +67,71 @@ class AndroidPhoneScreen(ScreenScatter):
 
         if from_orientation:
             self.center = self.parent.center
+
+    def on_parent(self,*a):
+        if self.parent:
+            self.set_border()
+            self.center = self.parent.center
+
+    @property
+    def set_pos(self):
+        pass
+
+    @property
+    def set_size(self):
+        pass
+
+    
+
+class ScreenContainer(RelativeLayout):
+    pass
+
+
+class IphoneScreen(ScreenScatter):
+
+    @property
+    def set_pos(self):
+        if self.orientation == 'landscape':
+            return (-self.container.height-21, -dp(138))
+        return (-dp(21), -dp(138))
+
+    @property
+    def set_size(self):
+        return (self.width + dp(42), self.height + dp(280))
+
+class IpadScreen(ScreenScatter):
+    @property
+    def set_pos(self):
+        if self.orientation == 'landscape':
+            return (-self.container.height-99, -dp(51))
+        return (-dp(99), -dp(51))
+
+    @property
+    def set_size(self):
+        return (self.width + dp(118), self.height + dp(102))
         
+class AndriodTabScreen(ScreenScatter):
+    @property
+    def set_pos(self):
+        if self.orientation == 'landscape':
+            return (-self.container.height-35, -dp(51))
+        return (-dp(35), -dp(51))
+
+    @property
+    def set_size(self):
+        return (self.width + dp(70), self.height + dp(102))
+
+class AndroidPhoneScreen(ScreenScatter):
+    @property
+    def set_pos(self):
+        if self.orientation == 'landscape':
+            return (-self.container.height-16.5, -dp(85.5))
+        return (-dp(16.5), -dp(85.5))
+
+    @property
+    def set_size(self):
+        return (self.container.width + dp(32), self.container.height + dp(152))
+
 
 Builder.load_file('screen.kv')
 
