@@ -1,0 +1,8 @@
+*.png
+*.jpg
+*.jpeg
+*.pyc
+*.zip
+*.gif
+__pycache__/
+.vscode/

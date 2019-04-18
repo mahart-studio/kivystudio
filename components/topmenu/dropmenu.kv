@@ -1,0 +1,65 @@
+<FileTopMenu>:
+    auto_width: False
+    width: '240dp'
+    MenuButton:
+        MenuLabel:
+            color: 0,0,0,1
+            text: 'Open File'
+        MenuLabel:
+            color: .5,.5,.5,1
+            text: 'Ctrl O'
+    MenuButton:
+        MenuLabel:
+            color: 0,0,0,1
+            text: 'Open Folder'
+        MenuLabel:
+            color: .5,.5,.5,1
+            text: 'Ctrl K+O'
+    MenuButton:
+        MenuLabel:
+            color: 0,0,0,1
+            text: 'Save'
+        MenuLabel:
+            color: .5,.5,.5,1
+            text: 'Ctrl S'
+    MenuButton:
+        MenuLabel:
+            color: 0,0,0,1
+            text: 'Save as'
+        MenuLabel:
+            color: .5,.5,.5,1
+            text: 'Ctrl Shift S'
+    MenuButton:
+        MenuLabel:
+            color: 0,0,0,1
+            text: 'Save All'
+    MenuButton:
+        MenuLabel:
+            color: 0,0,0,1
+            text: 'Exit'
+        MenuLabel:
+            color: .5,.5,.5,1
+            text: 'Ctrl Q'
+
+
+<MenuLabel@Label>:
+    text_size: self.size
+    halign: 'left'
+    valign: 'middle'
+    padding: '20dp', 0
+    color: 0,0,0,1
+
+<MenuButton>:
+    size_hint_y: None
+    height: '40dp'
+    canvas_color: 1,1,1,1
+    on_hover:
+        if self.hover: self.canvas_color = 1,.6,.6,1
+        else: self.canvas_color = 1,1,1,1
+        print(self.hover)
+    canvas.before:
+        Color:
+            rgba: self.canvas_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
