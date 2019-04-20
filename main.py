@@ -7,7 +7,7 @@ import os
 sys.path.append(os.pardir)
 filepath = os.path.dirname(__file__)
 
-m.add_type('text/kv', '.kv')
+# m.add_type('text/kv', '.kv')
 
 from kivy.lang import Builder
 Builder.load_file(os.path.join(filepath,'main.kv'))
