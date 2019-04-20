@@ -61,7 +61,7 @@ Builder.load_string('''
 
 <TopMenu>:
     size_hint_y: None
-    height: '40dp'
+    height: '36dp'
     rows: 1
     canvas.before:
         Color:

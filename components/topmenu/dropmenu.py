@@ -13,7 +13,6 @@ Builder.load_file(os.path.join(filepath,'dropmenu.kv'))
 class MenuButton(HoverBehavior, BoxLayout):
 
     def on_hover(self, *args):
-        print(self.hover)
         if self.hover:
             self.canvas_color = (1,.6,.6,1)
         else:

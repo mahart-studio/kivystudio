@@ -32,7 +32,7 @@ class HoverBehavior(object):
 
     def on_mouse_move(self, win, pos):
 
-        if self.collide_point(*pos):
+        if self.collide_point(*self.to_widget(*pos)):
             self.hover = True
         else:
             self.hover = False
