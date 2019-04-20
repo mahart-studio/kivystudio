@@ -15,11 +15,14 @@ __all__ = ('EmulatorArea')
 
 class EmulatorArea(BoxLayout):
 
+    screen_display = ObjectProperty(None)
+
     def __init__(self, **kwargs):
         super(EmulatorArea, self).__init__(**kwargs)
         self.screen_manager = EmulatorScreens()
         self.add_widget(self.screen_manager)
-        self.add_widget(ScreenDisplay())
+        self.screen_display = ScreenDisplay()
+        self.add_widget(self.screen_display)
     
     def add_widget(self, widget):
         if len(self.children) > 1:

@@ -2,89 +2,24 @@ from kivy.config import Config
 Config.set('graphics', 'width', '1000')
 Config.set('graphics', 'height', '740')
 
-import os
 import sys
+import os
 sys.path.append(os.pardir)
-import traceback
+filepath = os.path.dirname(__file__)
 
+m.add_type('text/kv', '.kv')
 
-
-from kivy.uix.floatlayout import FloatLayout
-from kivy.base import runTouchApp as app
-from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.clock import Clock
+Builder.load_file(os.path.join(filepath,'main.kv'))
 
 
-from kivystudio.screens import AndroidPhoneScreen
-from kivystudio.parser import load_defualt_kv, load_py_file
-from kivystudio.widgets.codeinput import FullCodeInput
-from kivystudio.widgets.filemanager import FileManager
+from kivy.app import App
+from kivystudio.assembler import Assembler
 
-from kivystudio.components.topmenu import TopMenu
-from kivystudio.components.emulator_area import EmulatorArea
-from kivystudio.components.codeplace import CodePlace
-from kivystudio.components.sibebar import SideBar
+class KivyStudio(App):
 
+    def build(self):
+        return Assembler
 
-def add_new_tab(obj, path):
-    code_place.add_widget(FullCodeInput(filename=path))
-
-file=FileManager()
-file.bind(on_finished=add_new_tab)
-
-
-def key_down(self, *args):
-    # print(args)
-    if args[0] == 115 and args[3] == ['ctrl']:
-        Clock.schedule_once(lambda dt: emulate())
-
-    elif args[0] == 111 and args[3] == ['ctrl']:
-        if not file.parent:
-            file.open()
-
-    elif args[0] == 110 and args[3] == ['ctrl']:
-        print('added')
-        add_new_tab(None, 'Untitled-1')
-
-def emulate():
-    build.ids.display_screen.clear_widgets()
-    
-    load_defualt_kv()
-
-    try:    # cahching error with python files
-        root = load_py_file()
-        build.ids.display_screen.add_widget(root)
-    except:
-        traceback.print_exc()
-        print("You python file has a problem")
-
-
-Window.bind(on_key_down=key_down)
-
-
-build = Builder.load_string('''
-
-BoxLayout:
-    orientation: 'vertical'
-    TopMenu:
-    BoxLayout:
-        id: box
-
-''')
-
-project_dir = 'test_project'
-main_file = os.path.join(project_dir, 'main.py')
-kv_file = os.path.join(project_dir, 'main.kv')
-
-sys.path.append(project_dir)
-
-code_place = CodePlace()
-code_place.add_widget(FullCodeInput(filename=main_file))
-code_place.add_widget(FullCodeInput(filename=kv_file))
-
-build.ids.box.add_widget(SideBar())
-build.ids.box.add_widget(code_place)
-build.ids.box.add_widget(EmulatorArea(size_hint_x=.45))
-
-app(build)
+if __name__ == "__main__":
+    KivyStudio().run()
