@@ -163,7 +163,8 @@ Builder.load_string('''
             Rectangle:
                 size: self.size
                 pos: self.pos
-        BoxLayout:
+        GridLayout:
+            rows: 1
             id: tab_manager
             size_hint_x: None
             width: self.minimum_width
@@ -173,9 +174,9 @@ Builder.load_string('''
     size_hint_x: None
     width: '100dp'
     canvas_color: (0.12, 0.12, 0.12, 1)
-    allow_no_selection: True
+    allow_no_selection: False
     group: '__tabed_btn__'
-    font_size: '13dp'
+    font_size: '13.5dp'
     on_state:
         if self.state == 'down': self.canvas_color= (.2,.2,.2,1)
         else: self.canvas_color= (0.12, 0.12, 0.12, 1)

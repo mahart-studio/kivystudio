@@ -1,0 +1,43 @@
+
+<SideBar>:
+    size_hint_x:  None
+    width: '46dp'
+    FloatLayout:
+        size_hint_x:  None
+        width: '46dp'
+        canvas.before:
+            Color:
+                rgba: .22,.22,.22,1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            SideButter:
+                down_source: 'images/search2.png'
+                normal_source: 'images/search1.png'
+                tab_type: 'generalsearch'
+                on_state: root.toggle_bar(self)
+            SideButter:
+                down_source: 'images/folder2.png'
+                normal_source: 'images/folder1.png'
+                tab_type: 'fileexplorer'
+                on_state: root.toggle_bar(self)
+            SideButter:
+                normal_source: 'images/settings2.png'
+                down_source: 'images/settings.png'
+                tab_type: 'gitmanager'
+                on_state: root.toggle_bar(self)
+
+
+<SideButter>:
+    size_hint: 1, None
+    height: '46dp'
+    down_source: ''
+    normal_source: ''
+    source: self.down_source if self.state=='down' else self.normal_source
+    group: 'side_butters'
