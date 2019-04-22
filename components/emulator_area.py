@@ -10,6 +10,7 @@ from kivy.clock import Clock
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.screens import AndroidPhoneScreen
+from kivystudio.widgets.buttons import IconButton
 
 __all__ = ('EmulatorArea')
 
@@ -34,7 +35,7 @@ class EmulatorArea(BoxLayout):
             super(EmulatorArea, self).add_widget(widget)
 
 
-class ScreenScaler(BoxLayout):
+class ScreenTopMenu(BoxLayout):
     
     screen = ObjectProperty(None)
 
@@ -73,11 +74,11 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
     
     screen = ObjectProperty(None)
 
-    scaler = ObjectProperty(None)
+    topmenu = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super(ScreenDisplay, self).__init__(**kwargs)
-        self.scaler = ScreenScaler()
+        self.scaler = ScreenTopMenu()
         self.screen = AndroidPhoneScreen()
 
     def on_hover(self, *args):
@@ -140,18 +141,33 @@ Builder.load_string('''
             pos: self.pos
 
 
-<ScreenScaler>:
-    pos_hint: {'y': .01, 'center_x': .5}
-    size_hint: None,None
-    size: '110dp', '46dp'
-    Button:
-        text: '-'
-        bold: True
+<ScreenTopMenu>:
+    pos_hint: {'top': 1, 'center_x': .5}
+    size_hint_y: None
+    height: '36dp'
+    canvas.before:
+        Color:
+            rgba: .34,.31,.3,.6
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Spinner:
+        size_hint_x: None
+        width: '106dp'
+        text: 'main.py'
+        options: ['main.py','main.kv']
+    IconButton:
+        size_hint_x: None
+        width: '36dp'
+        normal_color: 0,0,0,0
+        icon_source: 'images/scale1.png'
         on_release:
             if not root.screen.scale < -100.0: root.screen.scale -= 0.05
-    Button:
-        text: '+'
-        bold: True
+    IconButton:
+        normal_color: 0,0,0,0
+        size_hint_x: None
+        width: '36dp'
+        icon_source: 'images/scale2.png'
         on_release: root.screen.scale += 0.05
 
 ''')

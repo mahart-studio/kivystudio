@@ -10,4 +10,4 @@ class TestBtn(Button):
 
 class MainApp(App):
 	def build(self):
-		return TestBtn(text='Showing')
+		return TestBtn()
