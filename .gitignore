@@ -5,4 +5,5 @@
 *.zip
 *.gif
 __pycache__/
+test_project/
 .vscode/
