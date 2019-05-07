@@ -11,23 +11,10 @@ from kivy.utils import get_color_from_hex
 from pygments import styles
 
 from .codeinput import CodeInput
+from kivystudio.behaviors import HoverBehavior
 
 
 class InnerCodeInput(CodeInput):
-    '''A subclass of CodeInput to be used for KivyDesigner.
-       It has copy, cut and paste functions, which otherwise are accessible
-       only using Keyboard.
-       It emits on_show_edit event whenever clicked, this is catched
-       to show EditContView;
-    '''
-
-    __events__ = ('on_show_edit',)
-
-    error = BooleanProperty(False)
-    '''Indicates if the current file contains any type of error
-        :data:`error` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to False
-    '''
 
     path = StringProperty('')
     '''Path of the current file
@@ -35,17 +22,11 @@ class InnerCodeInput(CodeInput):
     and defaults to ''
     '''
 
-    clicked = BooleanProperty(False)
-    '''If clicked is True, then it confirms that this widget has been clicked.
-       The one checking this property, should set it to False.
-       :data:`clicked` is a :class:`~kivy.properties.BooleanProperty`
-    '''
-
-            
     def __init__(self, **kwargs):
         super(InnerCodeInput, self).__init__(**kwargs)
-        parser = Config.get_configparser('DesignerSettings')
-        self.style_name = 'native'
+        self.style_name = 'native_tweak'
+        self.background_normal= ''
+        self.background_active= ''
 
         # if parser:
             # parser.add_callback(self.on_codeinput_theme,
@@ -64,19 +45,6 @@ class InnerCodeInput(CodeInput):
         super(InnerCodeInput, self).on_style_name(*args)
         self.background_color = get_color_from_hex(self.style.background_color)
         self._trigger_refresh_text()
-        
-    def on_show_edit(self, *args):
-        pass
-
-    def on_touch_down(self, touch):
-        '''Override of CodeInput's on_touch_down event.
-           Used to emit on_show_edit
-        '''
-        if self.collide_point(*touch.pos):
-            self.clicked = True
-            self.dispatch('on_show_edit')
-
-        return super(InnerCodeInput, self).on_touch_down(touch)
 
     def do_focus(self, *args):
         '''Force the focus on this widget
@@ -187,6 +155,7 @@ class InnerCodeInput(CodeInput):
     def on_text(self, *args):
         '''Listen text changes
         '''
+        # print(self.find_prev(self.text))
         if self.focus:
             self.parent.saved = False
 
@@ -488,9 +457,13 @@ class InnerCodeInput(CodeInput):
         Delete text left of the cursor to the beginning of word'''
 
         if self._selection:
-            return
+            return None
 
         line = self._lines[self.cursor[1]]
+        if self.cursor[0]==0 and line=='':
+            return None
+
+
         former_cursor_x = self.cursor[0]
         old_index = self.cursor_index()
 
@@ -520,6 +493,12 @@ class InnerCodeInput(CodeInput):
         lines_flags = [0] + [0x01] * (len(lines) - 1)
         return lines, lines_flags
 
+    def on_hover(self, *a):
+        if self.hover:
+            Window.set_system_cursor('ibeam')
+        else:
+            Window.set_system_cursor('arrow')
+
 
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -530,6 +509,8 @@ from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.scrollview import ScrollView
 from kivy.clock import Clock
 from kivy.metrics import dp
+
+import os
 
 class NumberingGrid(ScrollView):
 
@@ -674,96 +655,7 @@ class Numbers_(ToggleButtonBehavior, Label):
 
 
 
-build = Builder.load_string('''
-#: import KivyLexer kivy.extras.highlight.KivyLexer
-#: import Python3Lexer pygments.lexers.python.PythonLexer
-<FullCodeInput>:
-    cols: 3
-    code_input: code_input
-    NumberingGrid:
-        id: number_scroll
-        size_hint_x: None
-        width: '50dp'
-        bar_color: 1,0,0,0
-        bar_inactive_color: self.bar_color
-        scroll_type: ['bars']
-        bar_width: 0
-        canvas.before:
-            Color:
-                rgba: (0.12549019607843137, 0.12549019607843137, 0.12549019607843137, 1)
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
-        GridLayout:
-            cols: 1
-            id: numbering
-            size_hint_y: None
-            height: self.minimum_height
-            padding: [0, '6dp', 0, '6dp']
-
-    InnerCodeInput:
-        id: code_input
-        auto_indent: True
-        size_hint_y: 1
-        height: scroll.height
-        cursor_color: 1,1,1,1
-        on_cursor_row: root.change_scroll_y(code_input, scroll)
-        _line_lenght: len(self._lines)
-        on__line_lenght: root.number_me(self, scroll)
-        selection_color: .8,.8,.8,.4
-        # lexer: KivyLexer()
-        # lexer: Python3Lexer()
-        font_size: '13dp'
-        line_highlight_color: 1,1,.8,.1
-        on_selection_text:
-            if self.selection_text: self.line_highlight_color = 0,0,0,0
-            else: self.line_highlight_color = 1,1,.8,.1 
-        on_focus:
-            if not self.focus: self.line_highlight_color = 0,0,0,0
-            else: self.line_highlight_color = 1,1,.8,.1 
-
-        # canvas to show highlighted line
-        canvas.after:
-            Color:
-                rgba: self.line_highlight_color
-            Rectangle:
-                size: self.width, self.line_height + dp(3)
-                pos: self.x, self.cursor_pos[1] -  self.line_height -dp(1.5)
-
-
-    ScrollingBar:
-        bar_width: '12dp'
-        scroll_type: ['bars', 'content']
-        bar_color: 1,1,1,.5
-        bar_inactive_color: self.bar_color
-        id: scroll
-        kv_lang_area: code_input
-        size_hint_x: None
-        width: '12dp'
-        on_scroll_start: root._do_cursor_scroll==False
-        on_scroll_move: root.do_bar_scroll(code_input, self)
-        on_scroll_stop: root._do_cursor_scroll==True
-
-        canvas.before:
-            Color:
-                rgba: code_input.background_color
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
-        Widget:
-            size_hint_y: None
-            height: code_input.minimum_height
-
-
-<Numbers_>:
-    font_size: '13dp'
-    size_hint_y: None
-    color: self.normal_color
-    group: '_line_numbers_'
-    allow_no_selection: False
-''')
+Builder.load_file(os.path.join(os.path.dirname(__file__),'codeinput.kv'))
 
 
 

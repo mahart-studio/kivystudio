@@ -206,13 +206,7 @@ class CodeInput(CodeNavigationBehavior, TextInput):
             # by pygment. can't use &bl; ... cause & is highlighted
             ntext = ntext.replace(u'[', u'\x01').replace(u']', u'\x02')
 
-            if self._check_doc_string():
-                ntext = '"""' + ntext
-                ntext = highlight(ntext, self.lexer, self.formatter)
-                ntext = ntext[:15] + ntext[18:]
-                # ntext = ntext.replace(u'{}'.format('#d0d0d0'), str(self.style.styles[String]))
-            else:
-                ntext = highlight(ntext, self.lexer, self.formatter)
+            ntext = highlight(ntext, self.lexer, self.formatter)
 
             ntext = ntext.replace(u'\x01', u'&bl;').replace(u'\x02', u'&br;')
             # replace special chars with &bl; and &br;

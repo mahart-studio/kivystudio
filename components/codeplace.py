@@ -1,8 +1,8 @@
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.image import Image
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.label import Label
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -46,7 +46,7 @@ class CodeScreenManager(ScreenManager):
                 code_input.code_input.text = f.read()
 
 
-class CodeScreen(HoverBehavior, Screen):
+class CodeScreen(Screen):
     
     code_field = ObjectProperty(None)
 
@@ -90,25 +90,29 @@ class CodeScreen(HoverBehavior, Screen):
 
             return False
 
-    def on_hover(self, *a):
-        if self.hover:
-            Window.set_system_cursor('ibeam')
-        else:
-            Window.set_system_cursor('arrow')
 
-
-class TabToggleButton(ToggleButtonBehavior, Label):
+class TabToggleButton(ToggleButtonBehavior, BoxLayout):
 
     filename = StringProperty('')
 
     saved = BooleanProperty(True)
 
+    text = StringProperty('')
+
     def on_saved(self, *args):
-        if not self.saved:
-            self.text += ' *'
-        else:
-            if self.text.endswith(' *'):
-                self.text = self.text[:len(self.text)-2]
+        if self.saved:
+            self.ids.indicator.source ='images/invisible.png'
+        elif not self.saved and self.state=='down':
+            self.ids.indicator.source = 'images/dot.png'
+
+    def on_state(self, *args):
+        if self.state=='down' and not self.saved:
+            self.ids.indicator.source ='images/dot.png'
+        elif self.state=='down' and self.saved:
+            self.ids.indicator.source ='images/cancel.png'
+        elif self.state=='normal':
+            self.ids.indicator.source ='images/invisible.png'
+
 
 #switching
 
@@ -130,6 +134,7 @@ class CodePlace(BoxLayout):
             tab = TabToggleButton(text=os.path.split(widget.filename)[1],
                                  filename=widget.filename)
             tab.bind(state=self.change_screen)
+            print(tab.text)
             self.tab_manager.add_widget(tab)
             Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
 
@@ -149,8 +154,22 @@ class CodePlace(BoxLayout):
 
             return True
 
+class TabPannelIndicator(HoverBehavior, Image):
+    
+    def on_hover(self, *a):
+        if self.hover:
+            self.source='images/cancel.png'
+        elif not self.hover and not self.parent.saved:
+            self.source='images/dot.png'
+        elif not self.hover and self.parent.saved and self.parent.state=='normal':
+            self.source='images/invisible.png'
+        elif not self.hover and self.parent.saved and self.parent.state=='down':
+            self.source='images/cancel.png'
+
+
 
 Builder.load_string('''
+
 <CodePlace>:
     tab_manager: tab_manager
     orientation: 'vertical'
@@ -163,6 +182,27 @@ Builder.load_string('''
             Rectangle:
                 size: self.size
                 pos: self.pos
+
+        # canvas to show shadow division
+        canvas.after:
+            Color:
+                rgba: (0, 0, 0, .4)
+            Line:
+                points: [self.x,self.y, self.right,self.y]
+            Color:
+                rgba: (0, 0, 0, .3)
+            Line:
+                points: [self.x,self.y-1, self.x-1,self.y-1]
+            Color:
+                rgba: (0, 0, 0, .2)
+            Line:
+                points: [self.x,self.y-2, self.x,self.y-2]
+            Color:
+                rgba: (0, 0, 0, .1)
+            Line:
+                points: [self.x,self.y-3, self.x,self.y-3]
+                width: 2
+
         GridLayout:
             rows: 1
             id: tab_manager
@@ -170,13 +210,14 @@ Builder.load_string('''
             width: self.minimum_width
 
 
+
 <TabToggleButton>:
     size_hint_x: None
     width: '100dp'
+    padding: '6dp'
     canvas_color: (0.12, 0.12, 0.12, 1)
     allow_no_selection: False
     group: '__tabed_btn__'
-    font_size: '13.5dp'
     on_state:
         if self.state == 'down': self.canvas_color= (.2,.2,.2,1)
         else: self.canvas_color= (0.12, 0.12, 0.12, 1)
@@ -186,5 +227,21 @@ Builder.load_string('''
         Rectangle:
             size: self.size
             pos: self.pos
+    Image:
+        size_hint_x: None
+        width: '10dp'
+        source: 'images/file.png'
+    Label:
+        font_size: '13.5dp'
+        text: root.text
+        text_size: self.width, None
+        shorten: True
+        shorten_from: 'right'
+    TabPannelIndicator:
+        id: indicator
 
+
+<TabPannelIndicator>:
+    size_hint_x: None
+    width: '12dp'
 ''')

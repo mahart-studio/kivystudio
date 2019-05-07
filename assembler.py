@@ -47,6 +47,7 @@ def emulate():
 
     try:    # cahching error with python files
         root = load_py_file()
+        print(root)
         emulator_area.screen_display.screen.add_widget(root)
     except:
         traceback.print_exc()

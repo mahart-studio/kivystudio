@@ -1,0 +1,123 @@
+<FullCodeInput>:
+    cols: 3
+    code_input: code_input
+    NumberingGrid:
+        id: number_scroll
+        size_hint_x: None
+        width: '50dp'
+        bar_color: 1,0,0,0
+        bar_inactive_color: self.bar_color
+        scroll_type: ['bars']
+        bar_width: 0
+        canvas.before:
+            Color:
+                rgba: (0.12549019607843137, 0.12549019607843137, 0.12549019607843137, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # canvas to show division
+        canvas.after:
+            Color:
+                rgba: (0, 0, 0, .4)
+            Line:
+                points: [self.right,self.y, self.right,self.height]
+            Color:
+                rgba: (0, 0, 0, .3)
+            Line:
+                points: [self.right+1,self.y, self.right+1,self.height]
+            Color:
+                rgba: (0, 0, 0, .2)
+            Line:
+                points: [self.right+2,self.y, self.right+2,self.height]
+            Color:
+                rgba: (0, 0, 0, .1)
+            Line:
+                points: [self.right+3,self.y, self.right+3,self.height]
+                width: 2
+
+        GridLayout:
+            cols: 1
+            id: numbering
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [0, '6dp', 0, '6dp']
+
+    InnerCodeInput:
+        id: code_input
+        auto_indent: True
+        size_hint_y: 1
+        height: scroll.height
+        cursor_color: 1,1,1,1
+        on_cursor_row: root.change_scroll_y(code_input, scroll)
+        _line_lenght: len(self._lines)
+        on__line_lenght: root.number_me(self, scroll)
+        selection_color: .8,.8,.8,.4
+        font_size: '13dp'
+        line_highlight_color: 1,1,.8,.1
+        on_selection_text:
+            if self.selection_text: self.line_highlight_color = 0,0,0,0
+            else: self.line_highlight_color = 1,1,.8,.1 
+        on_focus:
+            if not self.focus: self.line_highlight_color = 0,0,0,0
+            else: self.line_highlight_color = 1,1,.8,.1 
+
+        # canvas to show highlighted line
+        canvas.after:
+            Color:
+                rgba: self.line_highlight_color
+            Rectangle:
+                size: self.width, self.line_height + dp(3)
+                pos: self.x, self.cursor_pos[1] -  self.line_height -dp(1.5)
+
+
+    ScrollingBar:
+        bar_width: '12dp'
+        scroll_type: ['bars', 'content']
+        bar_color: 1,1,1,.5
+        bar_inactive_color: self.bar_color
+        id: scroll
+        kv_lang_area: code_input
+        size_hint_x: None
+        width: '12dp'
+        on_scroll_start: root._do_cursor_scroll==False
+        on_scroll_move: root.do_bar_scroll(code_input, self)
+        on_scroll_stop: root._do_cursor_scroll==True
+
+        canvas.before:
+            Color:
+                rgba: code_input.background_color
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # canvas to show division
+        canvas.after:
+            Color:
+                rgba: (0, 0, 0, .4)
+            Line:
+                points: [self.x,self.y, self.x,self.height]
+            Color:
+                rgba: (0, 0, 0, .3)
+            Line:
+                points: [self.x-1,self.y, self.x-1,self.height]
+            Color:
+                rgba: (0, 0, 0, .2)
+            Line:
+                points: [self.x-2,self.y, self.x-2,self.height]
+            Color:
+                rgba: (0, 0, 0, .1)
+            Line:
+                points: [self.x-3,self.y, self.x-3,self.height]
+                width: 2
+
+        Widget:
+            size_hint_y: None
+            height: code_input.minimum_height
+
+<Numbers_>:
+    font_size: '13dp'
+    size_hint_y: None
+    color: self.normal_color
+    group: '_line_numbers_'
+    allow_no_selection: False

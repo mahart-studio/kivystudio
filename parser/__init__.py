@@ -14,6 +14,9 @@ resource_add_path(project_dir)
 
 def load_defualt_kv():
     app_cls_name = get_app_cls_name()
+    if app_cls_name is None:
+        return
+
     kv_name = app_cls_name.lower()
     if app_cls_name.endswith('App'):
         kv_name = app_cls_name[:len(app_cls_name)-3].lower()
@@ -52,7 +55,7 @@ def get_app_cls_name():
 
 
 def get_root_from_runTouch():
-    with open(file) as fn:
+    with open(os.path.join(project_dir, main_file)) as fn:
         text =  fn.read()
 
     lines = text.splitlines()
@@ -88,7 +91,7 @@ def load_py_file():
 
         return root
     
-    run_root = get_root_from_runTouch
+    run_root = get_root_from_runTouch()
     if run_root:
         return run_root
 
