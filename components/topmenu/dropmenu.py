@@ -4,26 +4,18 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 
 from kivystudio.behaviors import HoverBehavior
+from kivystudio.widgets.dropdown import DropDownBase
 
 import os
 filepath = os.path.dirname(__file__)
 Builder.load_file(os.path.join(filepath,'dropmenu.kv'))
 
 
-class MenuButton(HoverBehavior, BoxLayout):
-
-    def on_hover(self, *args):
-        if self.hover:
-            self.canvas_color = (1,.6,.6,1)
-        else:
-            self.canvas_color = (1,1,1,1)
-
-
-
-class MenuDropDownBase(HoverBehavior, DropDown):
+class MenuButton(HoverBehavior, ButtonBehavior, BoxLayout):
     pass
 
-class FileTopMenu(MenuDropDownBase):
+
+class FileTopMenu(DropDownBase):
     
     def __init__(self, **k):
         super(FileTopMenu, self).__init__(**k)
@@ -50,14 +42,14 @@ class FileTopMenu(MenuDropDownBase):
         pass
 
 
-class EditTopMenu(DropDown):
+class EditTopMenu(DropDownBase):
     def __init__(self, **k):
         super(FileTopMenu, self).__init__(**k)
 
-class ViewTopMenu(DropDown):
+class ViewTopMenu(DropDownBase):
     def __init__(self, **k):
         super(FileTopMenu, self).__init__(**k)
 
-class HelpTopMenu(DropDown):
+class HelpTopMenu(DropDownBase):
     def __init__(self, **k):
         super(FileTopMenu, self).__init__(**k)

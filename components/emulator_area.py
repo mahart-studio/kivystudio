@@ -82,13 +82,14 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
         self.screen = AndroidPhoneScreen()
 
     def on_hover(self, *args):
-        if self.hover:
-            if self.scaler not in self.children:
-                self.add_widget(self.scaler)
-        else:
-            if self.scaler in self.children:
-                    Clock.schedule_once(
-                        lambda dt: self.remove_widget(self.scaler), 0.5)
+        pass
+        # if self.hover:
+        #     if self.scaler not in self.children:
+        #         self.add_widget(self.scaler)
+        # else:
+        #     if self.scaler in self.children:
+        #             Clock.schedule_once(
+        #                 lambda dt: self.remove_widget(self.scaler), 0.5)
 
     def on_screen(self, obj, screen):
         if self.screen not in self.children:
@@ -108,7 +109,7 @@ Builder.load_string('''
         height: '36dp'
         canvas.before:
             Color:
-                rgba: (0.2, 0.2, 0.2, 1)
+                rgba: (0.12, 0.12, 0.12, 1)
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -118,6 +119,24 @@ Builder.load_string('''
             id: tab_manager
             size_hint_x: None
             width: self.minimum_width
+
+            Label:
+                size_hint_x: None
+                width: '106dp'
+                text: 'main.py'
+            IconButton:
+                size_hint_x: None
+                width: '36dp'
+                normal_color: 0,0,0,0
+                icon_source: 'images/scale1.png'
+                on_release:
+                    if not root.screen_display.screen.scale < -100.0: root.screen_display.screen.scale -= 0.05
+            IconButton:
+                normal_color: 0,0,0,0
+                size_hint_x: None
+                width: '36dp'
+                icon_source: 'images/scale2.png'
+                on_release: root.screen_display.screen.scale += 0.05
 
 
 <EmulatorTab>:
@@ -155,7 +174,6 @@ Builder.load_string('''
         size_hint_x: None
         width: '106dp'
         text: 'main.py'
-        options: ['main.py','main.kv']
     IconButton:
         size_hint_x: None
         width: '36dp'

@@ -1,20 +1,36 @@
-from kivy.config import Config
-Config.set('graphics', 'width', '900')
-Config.set('graphics', 'height', '700')
 
-
-import re
-
-from kivy import Config
 from kivy.properties import BooleanProperty, StringProperty, ListProperty, ObjectProperty
 from kivy.utils import get_color_from_hex
+from kivy.uix.boxlayout import BoxLayout
+
 from pygments import styles
 
 from .codeinput import CodeInput
 from kivystudio.behaviors import HoverBehavior
+from kivystudio.tools import set_auto_mouse_position
+
+class CodeInputDropDown(BoxLayout):
+
+    def __init__(self, codeinput, **kwargs):
+        super(CodeInputDropDown, self).__init__(**kwargs)
+        self.codeinput = codeinput
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):  # touch should not unfocus input
+            FocusBehavior.ignored_touch.append(touch)
+        return super(CodeInputDropDown,self).on_touch_down(touch)
+
+    def copy(self):
+        self.codeinput.copy()
+
+    def paste(self):
+        self.codeinput.paste()
+
+    def cut(self):
+        self.codeinput.cut()
 
 
-class InnerCodeInput(CodeInput):
+class InnerCodeInput(HoverBehavior, CodeInput):
 
     path = StringProperty('')
     '''Path of the current file
@@ -22,23 +38,20 @@ class InnerCodeInput(CodeInput):
     and defaults to ''
     '''
 
+    rightclick_dropdown = ObjectProperty(None)
+    ''' drop down menu that appears when the right click buttun
+        is clicked
+        '''
+
     def __init__(self, **kwargs):
         super(InnerCodeInput, self).__init__(**kwargs)
+        self.rightclick_dropdown = CodeInputDropDown(self)
+
         self.style_name = 'native_tweak'
         self.background_normal= ''
         self.background_active= ''
 
-        # if parser:
-            # parser.add_callback(self.on_codeinput_theme,
-                                # 'global', 'code_input_theme')
-            # self.style_name = parser.getdefault('global', 'code_input_theme',
-                                                # 'emacs')
-
     def on_codeinput_theme(self, section, key, value, *args):
-        # if not value in styles.get_all_styles():
-        #     pass
-        #     # show_alert("Error", "This theme is not available")
-        # else:
         self.style_name = value
 
     def on_style_name(self, *args):
@@ -46,130 +59,12 @@ class InnerCodeInput(CodeInput):
         self.background_color = get_color_from_hex(self.style.background_color)
         self._trigger_refresh_text()
 
-    def do_focus(self, *args):
-        '''Force the focus on this widget
-        '''
-        self.focus = True
-
-    def do_select_all(self, *args):
-        '''Function to select all text
-        '''
-        self.select_all()
-
-
-    def find_next(self, search, use_regex=False, case=False):
-        '''Find the next occurrence of the string according to the cursor
-        position
-        '''
-        text = self.text
-        if not case:
-            text = text.upper()
-            search = search.upper()
-        lines = text.splitlines()
-
-        col = self.cursor_col
-        row = self.cursor_row
-
-        found = -1
-        size = 0  # size of string before selection
-        line = None
-        search_size = len(search)
-
-        for i, line in enumerate(lines):
-            if i >= row:
-                if use_regex:
-                    if i == row:
-                        line_find = line[col + 1:]
-                    else:
-                        line_find = line[:]
-                    found = re.search(search, line_find)
-                    if found:
-                        search_size = len(found.group(0))
-                        found = found.start()
-                    else:
-                        found = -1
-                else:
-                    # if on current line, consider col
-                    if i == row:
-                        found = line.find(search, col + 1)
-                    else:
-                        found = line.find(search)
-                # has found the string. found variable indicates the initial po
-                if found != -1:
-                    self.cursor = (found, i)
-                    break
-            size += len(line)
-
-        if found != -1:
-            pos = text.find(line) + found
-            self.select_text(pos, pos + search_size)
-
-    def find_prev(self, search, use_regex=False, case=False):
-        '''Find the previous occurrence of the string according to the cursor
-        position
-        '''
-        text = self.text
-        if not case:
-            text = text.upper()
-            search = search.upper()
-        lines = text.splitlines()
-
-        col = self.cursor_col
-        row = self.cursor_row
-        lines = lines[:row + 1]
-        lines.reverse()
-        line_number = len(lines)
-
-        found = -1
-        line = None
-        search_size = len(search)
-
-        for i, line in enumerate(lines):
-            i = line_number - i - 1
-            if use_regex:
-                if i == row:
-                    line_find = line[:col]
-                else:
-                    line_find = line[:]
-                found = re.search(search, line_find)
-                if found:
-                    search_size = len(found.group(0))
-                    found = found.start()
-                else:
-                    found = -1
-            else:
-                # if on current line, consider col
-                if i == row:
-                    found = line[:col].find(search)
-                else:
-                    found = line.find(search)
-            # has found the string. found variable indicates the initial po
-            if found != -1:
-                self.cursor = (found, i)
-                break
-
-        if found != -1:
-            pos = text.find(line) + found
-            self.select_text(pos, pos + search_size)
-
     def on_text(self, *args):
-        '''Listen text changes
-        '''
-        # print(self.find_prev(self.text))
         if self.focus:
             self.parent.saved = False
 
 
     def on_focus(self, *a):
-        '''
-        if not self.focus:
-            style_list = list(styles.get_all_styles())
-            try:
-                self.style_name = style_list[style_list.index(self.style_name)+1]
-            except IndexError:
-                self.style_name = style_list[0]
-            print(self.style_name)
-        '''
         if self.focus:
             Window.bind(on_keyboard=self._on_keyboard)
         else:
@@ -179,10 +74,10 @@ class InnerCodeInput(CodeInput):
     def _on_keyboard(self, instance, keyboard, *args):
 
         # a comment
-        if args[0] == 61 and args[2] == ['ctrl']:     # comment
+        if args[0] == 61 and args[2] == ['ctrl']:
             self.do_comment()
         
-        elif args[0] == 36:      # 
+        elif args[0] == 36:      # auto indentation
             Clock.schedule_once(lambda dt: self.do_auto_indent())
 
 
@@ -218,7 +113,6 @@ class InnerCodeInput(CodeInput):
                     self.do_multiline_comment(lines)
                 else:
                     self.uncomment_multiline(lines)
-
 
 
     def do_multiline_comment(self, lines):
@@ -365,7 +259,6 @@ class InnerCodeInput(CodeInput):
                         break
                     break
                 count += 1
-
             else:
                 if line:
                     counter.append(len(line))
@@ -386,9 +279,6 @@ class InnerCodeInput(CodeInput):
             self.delete_word_left()
 
         elif keycode[0] == 115 and modifiers == ['ctrl']:
-            # with open('CodeInputer/kivy_text.kv', 'w') as f:
-            #     f.write(self.text)
-
             return super(CodeInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
         else:
@@ -398,7 +288,6 @@ class InnerCodeInput(CodeInput):
         if not self.selection_text and self._lines[self.cursor_row]:
 
             line = self._lines[self.cursor_row].replace('\t', '    ')
-
             indent = self.get_closest_indentation([line])
 
             if indent != 0:
@@ -499,6 +388,28 @@ class InnerCodeInput(CodeInput):
         else:
             Window.set_system_cursor('arrow')
 
+    def on_touch_down(self, touch):
+        if self.rightclick_dropdown in Window.children:
+            Window.remove_widget(self.rightclick_dropdown) 
+
+        if self.collide_point(*touch.pos):
+            if touch.button == 'right':
+                self.show_right_click_info()
+                FocusBehavior.ignored_touch.append(touch)
+                return True
+
+
+        if touch.button == 'left':
+            return super(InnerCodeInput,self).on_touch_down(touch)
+
+    def show_right_click_info(self):
+        if self.rightclick_dropdown in Window.children:
+           return
+        else:
+            set_auto_mouse_position(self.rightclick_dropdown)
+            Window.add_widget(self.rightclick_dropdown) 
+
+
 
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -563,8 +474,6 @@ class FullCodeInput(GridLayout):
 
         self._former_line_lenght = 1
 
-        # with open('FilePicker/main.kv', 'r') as f:
-        #     self.ids.code_input.text = f.read()
 
     def _number_pressed(self, lb):
         self.ids.code_input.cursor = (self.ids.code_input.cursor[0], int(lb.text)-1)
@@ -664,4 +573,4 @@ if __name__ == "__main__":
     runTouchApp(FullCodeInput())
 
 
-'rrt, xcode, friendly, algol'
+    'rrt, xcode, friendly, algol'

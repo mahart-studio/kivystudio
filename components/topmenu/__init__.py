@@ -43,29 +43,23 @@ class TopMenuItem(HoverBehavior, ButtonBehavior, Label):
     def on_hover(self, *args):
         if self.hover:
             self.text = "[u]" + self.text + "[/u]"
-            self.color = (1,.9,.9,1)
+            self.color = (.1,.1,.1,1)
                 
         else:
             self.text = self.text.replace('[u]','').replace('[/u]','')
-            self.color = (.9,.9,.9,1)
+            self.color = (0,0,0,1)
             
-
-class DropMenu(DropDown):
-    pass
-
-class DropMenuItem(Button):
-    pass
 
 
 Builder.load_string('''
 
 <TopMenu>:
     size_hint_y: None
-    height: '36dp'
+    height: '24dp'
     rows: 1
     canvas.before:
         Color:
-            rgba: .2,.2,.2,1
+            rgba: .8,.8,.8,1
         Rectangle:
             size: self.size
             pos: self.pos
@@ -92,25 +86,8 @@ Builder.load_string('''
     size_hint_x: None
     width: '60dp'
     markup: True
+    color: (0,0,0,1)
 
-<DropMenu>:
-    Button:
-        text: 'My first Item'
-        size_hint_y: None
-        height: 40
-        on_release: root.select('item1')
-    Label:
-        text: 'Unselectable item'
-        size_hint_y: None
-        height: 40
-    Button:
-        text: 'My second Item'
-        size_hint_y: None
-        height: 40
-        on_release: root.select('item2')
 
-<DropMenuItem>:
-    size_hint_y: None
-    height: 40
 
 ''')

@@ -1,9 +1,12 @@
 
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, ScreenManagerException
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
+from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
+from kivy.properties import (ObjectProperty,
+                            StringProperty,
+                            BooleanProperty,
+                            NumericProperty, )
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -11,6 +14,8 @@ from kivy.lang import Builder
 from kivy.extras.highlight import KivyLexer
 
 from kivystudio.behaviors import HoverBehavior
+from kivystudio.widgets.codeinput import FullCodeInput
+from kivystudio.tools import infolabel
 
 import os
 
@@ -35,9 +40,8 @@ class CodeScreenManager(ScreenManager):
 
         screen = CodeScreen(name=name)
         screen.add_widget(widget)
-        Clock.schedule_once(lambda dt: self.open_file(widget))       # open the file
+        Clock.schedule_once(lambda dt: self.open_file(widget),1)       # open the file
         super(CodeScreenManager, self).add_widget(screen)
-
 
     def open_file(self, code_input):
         if os.path.exists(code_input.filename):
@@ -45,6 +49,12 @@ class CodeScreenManager(ScreenManager):
                 code_input.code_input.focus = False    
                 code_input.code_input.text = f.read()
 
+    def get_children_with_filename(self, filename):
+        try:
+            child = filter(lambda child: child.name==filename, self.children)[0]
+            return child
+        except IndexError:
+            raise Exception('code manager as no child with such filename {}'.format(filename))
 
 class CodeScreen(Screen):
     
@@ -65,7 +75,6 @@ class CodeScreen(Screen):
 
     def on_enter(self):
         self.code_field.code_input.focus = True
-
 
     def save_file(self):
         with open(self.name, 'w') as fn:
@@ -91,7 +100,7 @@ class CodeScreen(Screen):
             return False
 
 
-class TabToggleButton(ToggleButtonBehavior, BoxLayout):
+class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
 
     filename = StringProperty('')
 
@@ -113,6 +122,16 @@ class TabToggleButton(ToggleButtonBehavior, BoxLayout):
         elif self.state=='normal':
             self.ids.indicator.source ='images/invisible.png'
 
+    def on_hover(self, *a):
+        if self.hover:
+            Clock.schedule_once(self.show_label_info,1)
+        else:
+            Clock.unschedule(self.show_label_info)
+            infolabel.remove_info_on_mouse()
+            
+    def show_label_info(self,dt):
+        infolabel.show_info_on_mouse('/root/kivy/kivystudio/main.py')
+
 
 #switching
 
@@ -122,11 +141,22 @@ class CodePlace(BoxLayout):
 
     tab_manager = ObjectProperty(None)
 
+    new_empty_tab = NumericProperty(0)
+    '''count of empty tabs that has been opened
+    '''
+
     def __init__(self, **kwargs):
         super(CodePlace, self).__init__(**kwargs)
         self.code_manager = CodeScreenManager()
         self.add_widget(self.code_manager)
         Window.bind(on_key_down=self.keyboard_down)
+        Window.bind(on_dropfile=self.file_droped)
+
+    def file_droped(self, window, filename, *args):
+        if self.collide_point(*window.mouse_pos):
+            print('File droped on code input')
+            if filename:
+                self.add_code_tab(filename=filename)
 
     def add_widget(self, widget):
         if len(self.children) > 1:
@@ -141,20 +171,46 @@ class CodePlace(BoxLayout):
         else:
             super(CodePlace, self).add_widget(widget)
 
-
     def change_screen(self, tab, state):
         if state == 'down':
             self.code_manager.current = tab.filename
-
 
     def keyboard_down(self, window, *args):
 
         if args[0] == 9 and args[3] == ['ctrl']:   # switching screen with ctrl tab
             self.code_manager.current = self.code_manager.next()
-
             return True
 
-class TabPannelIndicator(HoverBehavior, Image):
+    def remove_code_tab(self, tab):
+        self.tab_manager.remove_widget(tab)
+        codeinput=self.code_manager.get_children_with_filename(tab.filename)
+        self.code_manager.remove_widget(codeinput)
+
+        print(tab)
+        print(tab.filename)
+        if tab.filename.startswith('Untitled-') and not os.path.exists(tab.filename):
+            self.new_empty_tab -= 1
+
+    def add_code_tab(self, filename=''):
+        if filename:
+            try:
+                self.code_manager.get_screen(filename)
+            except ScreenManagerException:   # then it is not added
+                self.add_widget(FullCodeInput(filename=filename))
+        else:   # a new tab
+            self.new_empty_tab += 1
+            while True:
+                try:
+                    self.code_manager.get_screen(filename)
+                except ScreenManagerException:   # then it is not added
+                    filename = 'Untitled-{}'.format(self.new_empty_tab)
+                    self.add_widget(FullCodeInput(filename=filename))
+                    return
+                self.new_empty_tab += 1
+
+
+
+class TabPannelIndicator(HoverBehavior, ButtonBehavior, Image):
     
     def on_hover(self, *a):
         if self.hover:
@@ -215,6 +271,7 @@ Builder.load_string('''
     size_hint_x: None
     width: '100dp'
     padding: '6dp'
+    spacing: '3dp'
     canvas_color: (0.12, 0.12, 0.12, 1)
     allow_no_selection: False
     group: '__tabed_btn__'
@@ -239,6 +296,7 @@ Builder.load_string('''
         shorten_from: 'right'
     TabPannelIndicator:
         id: indicator
+        on_release: root.parent.parent.parent.remove_code_tab(root)
 
 
 <TabPannelIndicator>:

@@ -9,7 +9,6 @@ import traceback
 
 from kivystudio.screens import AndroidPhoneScreen
 from kivystudio.parser import load_defualt_kv, load_py_file
-from kivystudio.widgets.codeinput import FullCodeInput
 from kivystudio.widgets.filemanager import FileManager
 
 from kivystudio.components.topmenu import TopMenu
@@ -21,7 +20,7 @@ class Assembly(BoxLayout):
     pass
 
 def add_new_tab(obj, path):
-    code_place.add_widget(FullCodeInput(filename=path))
+    code_place.add_code_tab(filename=path)
 
 file=FileManager()
 file.bind(on_finished=add_new_tab)
@@ -37,8 +36,7 @@ def key_down(self, *args):
             file.open()
 
     elif args[0] == 110 and args[3] == ['ctrl']:
-        print('added')
-        add_new_tab(None, 'Untitled-1')
+        code_place.add_code_tab()
 
 def emulate():
     emulator_area.screen_display.screen.clear_widgets()
@@ -64,8 +62,8 @@ kv_file = os.path.join(project_dir, 'main.kv')
 sys.path.append(project_dir)
 
 code_place = CodePlace()
-code_place.add_widget(FullCodeInput(filename=main_file))
-code_place.add_widget(FullCodeInput(filename=kv_file))
+code_place.add_code_tab(filename=main_file)
+code_place.add_code_tab(filename=kv_file)
 
 emulator_area = EmulatorArea(size_hint_x=.45)
 Assembler = Assembly()

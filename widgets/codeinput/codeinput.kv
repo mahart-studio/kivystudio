@@ -1,3 +1,4 @@
+
 <FullCodeInput>:
     cols: 3
     code_input: code_input
@@ -121,3 +122,30 @@
     color: self.normal_color
     group: '_line_numbers_'
     allow_no_selection: False
+
+<CodeInputDropDown>:
+    orientation: 'vertical'
+    size: 240,self.minimum_height
+    size_hint: None,None
+
+    MenuButton:
+        on_release: root.copy()
+        MenuLabel:
+            text: 'Copy'
+        MenuLabel:
+            text: 'Ctrl+C'
+            type: 'shortcut'
+    MenuButton:
+        on_release: root.cut()
+        MenuLabel:
+            text: 'Cut'
+        MenuLabel:
+            text: 'Ctrl+X'
+            type: 'shortcut'
+    MenuButton:
+        on_release: root.paste()
+        MenuLabel:
+            text: 'Paste'
+        MenuLabel:
+            text: 'Ctrl+V'
+            type: 'shortcut'
