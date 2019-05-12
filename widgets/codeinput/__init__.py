@@ -278,9 +278,9 @@ class InnerCodeInput(HoverBehavior, CodeInput):
         elif keycode[0] == 8 and modifiers == ['ctrl']:     # delete word left
             self.delete_word_left()
 
-        elif keycode[0] == 115 and modifiers == ['ctrl']:
-            return super(CodeInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
-
+        elif keycode[0] == 27:     # on escape
+            if self.rightclick_dropdown in Window.children:    # remove from window
+                Window.remove_widget(self.rightclick_dropdown)
         else:
             return super(CodeInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
@@ -397,7 +397,6 @@ class InnerCodeInput(HoverBehavior, CodeInput):
                 self.show_right_click_info()
                 FocusBehavior.ignored_touch.append(touch)
                 return True
-
 
         if touch.button == 'left':
             return super(InnerCodeInput,self).on_touch_down(touch)

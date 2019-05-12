@@ -15,9 +15,9 @@ Allows developers test and emulate their [kivy] project.
 
 ### Installation
 
-You can install KivMob with the following command.
-```sh
-$ pip install kivmob
+You can download at.
+```
+https://mahart-studio.com/kivystudio.com
 ```
 
 ### Demo Screenshot
@@ -61,10 +61,11 @@ _Please contact us via pull request or project issue if you would like your app 
 | MIUI Hidden Settings | https://play.google.com/store/apps/details?id=com.ceyhan.sets | [Yunus Ceyhan] |
 | Themes for MIUI | https://play.google.com/store/apps/details?id=com.ceyhan.tema | [Yunus Ceyhan] |
 
-### Other 
+### Other
 
 
 <!-- Links pertinent to README -->
+[KivyStudio]: <https://mahart-studio/kivystudio.com/>
 [Google AdMob]: <https://www.google.com/admob/>
 [Kivy]: <https://kivy.org/>
 [Buildozer]: <https://github.com/kivy/buildozer>

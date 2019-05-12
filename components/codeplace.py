@@ -2,7 +2,8 @@
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, ScreenManagerException
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior, FocusBehavior
 from kivy.properties import (ObjectProperty,
                             StringProperty,
                             BooleanProperty,
@@ -132,6 +133,12 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
     def show_label_info(self,dt):
         infolabel.show_info_on_mouse('/root/kivy/kivystudio/main.py')
 
+    def on_touch_down(self,touch):
+        if self.collide_point(*touch.pos):
+            if touch.button == 'right':
+                pass
+
+
 
 #switching
 
@@ -211,7 +218,7 @@ class CodePlace(BoxLayout):
 
 
 class TabPannelIndicator(HoverBehavior, ButtonBehavior, Image):
-    
+        
     def on_hover(self, *a):
         if self.hover:
             self.source='images/cancel.png'
@@ -223,13 +230,21 @@ class TabPannelIndicator(HoverBehavior, ButtonBehavior, Image):
             self.source='images/cancel.png'
 
 
+class CodeTabsContainer(ScrollView):
+    '''horizontal scrollview where the small tab 
+        buttons lay'''
+
+    def on_touch_down(self, touch):
+        FocusBehavior.ignored_touch.append(touch)
+        return super(TabToggleButton, self).on_touch_down(touch)
+
 
 Builder.load_string('''
 
 <CodePlace>:
     tab_manager: tab_manager
     orientation: 'vertical'
-    ScrollView:
+    CodeTabsContainer:
         size_hint_y: None
         height: '36dp'
         canvas.before:
