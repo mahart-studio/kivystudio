@@ -7,10 +7,10 @@ import sys
 import traceback
 
 
-from kivystudio.screens import AndroidPhoneScreen
 from kivystudio.parser import load_defualt_kv, load_py_file
 from kivystudio.widgets.filemanager import FileManager
 
+from kivystudio.components.screens import AndroidPhoneScreen
 from kivystudio.components.topmenu import TopMenu
 from kivystudio.components.emulator_area import EmulatorArea
 from kivystudio.components.codeplace import CodePlace

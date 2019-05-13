@@ -9,7 +9,7 @@ from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 
 from kivystudio.behaviors import HoverBehavior
-from kivystudio.screens import AndroidPhoneScreen
+from kivystudio.components.screens import AndroidPhoneScreen
 from kivystudio.widgets.buttons import IconButton
 
 __all__ = ('EmulatorArea')
