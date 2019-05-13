@@ -12,10 +12,15 @@
         size_hint: None, None
         pos_hint: {'center_y': .5, 'center_x': .5}
         canvas.before:
+            PushMatrix:
+            Rotate:
+                angle: root.angle
+                origin: (0,0,1)
             BorderImage:
                 source: 'images/android_lolipop1.png'
-                size:(root.width + dp(32), root.height + dp(152))
-                pos: (-dp(16.5), -dp(85.5))
+                size: root.border_size
+                pos: root.border_pos
+            PopMatrix:
 
 # 380 743
 <IphoneScreen>:
@@ -71,10 +76,3 @@
     # scale_min: 1
     size_hint: None, None
     auto_bring_to_front: False
-    canvas.before:
-        PushMatrix:
-            Rotate:
-                angle: 90
-                origin: (0,0,1)
-    canvas.after:
-        PopMatrix:

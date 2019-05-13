@@ -34,6 +34,12 @@ class EmulatorArea(BoxLayout):
         else:
             super(EmulatorArea, self).add_widget(widget)
 
+    def toggle_orientation(self):
+        if self.screen_display.screen.orientation =='portrait': 
+            self.screen_display.screen.orientation ='landscape'
+        else:
+            self.screen_display.screen.orientation ='portrait'
+
 
 class ScreenTopMenu(BoxLayout):
     
@@ -137,6 +143,12 @@ Builder.load_string('''
                 width: '36dp'
                 icon_source: 'images/scale2.png'
                 on_release: root.screen_display.screen.scale += 0.05
+            IconButton:
+                normal_color: 0,0,0,0
+                size_hint_x: None
+                width: '36dp'
+                icon_source: 'images/scale2.png'
+                on_release: root.toggle_orientation()
 
 
 <EmulatorTab>:
