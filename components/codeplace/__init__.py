@@ -5,9 +5,7 @@ from kivy.uix.image import Image
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior, FocusBehavior
 from kivy.properties import (ObjectProperty,
-                            StringProperty,
-                            BooleanProperty,
-                            NumericProperty, )
+                            NumericProperty)
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -16,7 +14,7 @@ from kivy.extras.highlight import KivyLexer
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.widgets.codeinput import FullCodeInput
-from kivystudio.tools import infolabel
+from .codetab import TabToggleButton
 
 import os
 
@@ -99,45 +97,6 @@ class CodeScreen(Screen):
             self.save_file()
 
             return False
-
-
-class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
-
-    filename = StringProperty('')
-
-    saved = BooleanProperty(True)
-
-    text = StringProperty('')
-
-    def on_saved(self, *args):
-        if self.saved:
-            self.ids.indicator.source ='images/invisible.png'
-        elif not self.saved and self.state=='down':
-            self.ids.indicator.source = 'images/dot.png'
-
-    def on_state(self, *args):
-        if self.state=='down' and not self.saved:
-            self.ids.indicator.source ='images/dot.png'
-        elif self.state=='down' and self.saved:
-            self.ids.indicator.source ='images/cancel.png'
-        elif self.state=='normal':
-            self.ids.indicator.source ='images/invisible.png'
-
-    def on_hover(self, *a):
-        if self.hover:
-            Clock.schedule_once(self.show_label_info,1)
-        else:
-            Clock.unschedule(self.show_label_info)
-            infolabel.remove_info_on_mouse()
-            
-    def show_label_info(self,dt):
-        infolabel.show_info_on_mouse('/root/kivy/kivystudio/main.py')
-
-    def on_touch_down(self,touch):
-        if self.collide_point(*touch.pos):
-            if touch.button == 'right':
-                pass
-
 
 
 #switching
@@ -236,7 +195,7 @@ class CodeTabsContainer(ScrollView):
 
     def on_touch_down(self, touch):
         FocusBehavior.ignored_touch.append(touch)
-        return super(TabToggleButton, self).on_touch_down(touch)
+        return super(CodeTabsContainer, self).on_touch_down(touch)
 
 
 Builder.load_string('''
