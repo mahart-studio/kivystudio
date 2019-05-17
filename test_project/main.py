@@ -7,4 +7,4 @@ class Btn(Button):
 
 class MainApp(App):
 	def build(self):
-		return Btn()
+		return Btn(text='sdsd',font_size=30,bold=True)

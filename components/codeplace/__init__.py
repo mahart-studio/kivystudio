@@ -1,9 +1,8 @@
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, ScreenManagerException
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import Image
 from kivy.uix.scrollview import ScrollView
-from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior, FocusBehavior
+from kivy.uix.behaviors import ToggleButtonBehavior, FocusBehavior
 from kivy.properties import (ObjectProperty,
                             NumericProperty)
 from kivy.clock import Clock
@@ -17,6 +16,8 @@ from kivystudio.widgets.codeinput import FullCodeInput
 from .codetab import TabToggleButton
 
 import os
+Builder.load_file(os.path.join(os.path.dirname(__file__), 'code.kv'))
+
 
 def get_tab_from_group(filename):
     all_tabs = ToggleButtonBehavior.get_widgets('__tabed_btn__')
@@ -157,7 +158,6 @@ class CodePlace(BoxLayout):
         codeinput=self.code_manager.get_children_with_filename(tab.filename)
         self.code_manager.remove_widget(codeinput)
 
-        print(tab)
         print(tab.filename)
         if tab.filename.startswith('Untitled-') and not os.path.exists(tab.filename):
             self.new_empty_tab -= 1
@@ -181,19 +181,6 @@ class CodePlace(BoxLayout):
 
 
 
-class TabPannelIndicator(HoverBehavior, ButtonBehavior, Image):
-        
-    def on_hover(self, *a):
-        if self.hover:
-            self.source='images/cancel.png'
-        elif not self.hover and not self.parent.saved:
-            self.source='images/dot.png'
-        elif not self.hover and self.parent.saved and self.parent.state=='normal':
-            self.source='images/invisible.png'
-        elif not self.hover and self.parent.saved and self.parent.state=='down':
-            self.source='images/cancel.png'
-
-
 class CodeTabsContainer(ScrollView):
     '''horizontal scrollview where the small tab 
         buttons lay'''
@@ -201,84 +188,3 @@ class CodeTabsContainer(ScrollView):
     def on_touch_down(self, touch):
         FocusBehavior.ignored_touch.append(touch)
         return super(CodeTabsContainer, self).on_touch_down(touch)
-
-
-Builder.load_string('''
-
-<CodePlace>:
-    tab_manager: tab_manager
-    orientation: 'vertical'
-    CodeTabsContainer:
-        size_hint_y: None
-        height: '36dp'
-        canvas.before:
-            Color:
-                rgba: (0.12, 0.12, 0.12, 1)
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
-        # canvas to show shadow division
-        canvas.after:
-            Color:
-                rgba: (0, 0, 0, .4)
-            Line:
-                points: [self.x,self.y, self.right,self.y]
-            Color:
-                rgba: (0, 0, 0, .3)
-            Line:
-                points: [self.x,self.y-1, self.x-1,self.y-1]
-            Color:
-                rgba: (0, 0, 0, .2)
-            Line:
-                points: [self.x,self.y-2, self.x,self.y-2]
-            Color:
-                rgba: (0, 0, 0, .1)
-            Line:
-                points: [self.x,self.y-3, self.x,self.y-3]
-                width: 2
-
-        GridLayout:
-            rows: 1
-            id: tab_manager
-            size_hint_x: None
-            width: self.minimum_width
-
-
-
-<TabToggleButton>:
-    size_hint_x: None
-    width: '100dp'
-    padding: '6dp'
-    spacing: '3dp'
-    canvas_color: (0.12, 0.12, 0.12, 1)
-    allow_no_selection: False
-    group: '__tabed_btn__'
-    on_state:
-        if self.state == 'down': self.canvas_color= (.2,.2,.2,1)
-        else: self.canvas_color= (0.12, 0.12, 0.12, 1)
-    canvas.before:
-        Color:
-            rgba: self.canvas_color
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    Image:
-        size_hint_x: None
-        width: '10dp'
-        source: 'images/file.png'
-    Label:
-        font_size: '13.5dp'
-        text: root.text
-        text_size: self.width, None
-        shorten: True
-        shorten_from: 'right'
-    TabPannelIndicator:
-        id: indicator
-        on_release: root.parent.parent.parent.remove_code_tab(root)
-
-
-<TabPannelIndicator>:
-    size_hint_x: None
-    width: '12dp'
-''')
