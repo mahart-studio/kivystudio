@@ -4,6 +4,7 @@ import traceback
 
 from kivy.lang import Builder
 from kivy.resources import resource_add_path
+from .builder import Builder
 
 project_dir = 'test_project'
 main_file = 'main.py'
@@ -24,8 +25,8 @@ def load_defualt_kv():
     if app_cls_name:
         kv_filename = os.path.join(project_dir, kv_name+'.kv')
         print(kv_filename)
+        print(os.path.exists(kv_filename))
         if os.path.exists(kv_filename):
-
             try:    # cahching error with kivy files
                 Builder.unload_file(kv_filename)
                 root = Builder.load_file(kv_filename)

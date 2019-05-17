@@ -93,7 +93,7 @@ class CodeScreen(Screen):
     def keyboard_down(self, window, *args):
         # print(args)
         
-        if args[0] == 115 and args[3] == ['ctrl']:
+        if args[0] == 115 and args[3] == ['ctrl']:  # save file Ctrl+S
             self.save_file()
 
             return False
@@ -146,6 +146,11 @@ class CodePlace(BoxLayout):
         if args[0] == 9 and args[3] == ['ctrl']:   # switching screen with ctrl tab
             self.code_manager.current = self.code_manager.next()
             return True
+
+        if args[0] == 119 and args[3] == ['ctrl']:   # close tab
+            filename = self.code_manager.get_screen(self.code_manager.current).children[0].filename
+            tab = get_tab_from_group(filename)
+            self.remove_code_tab(tab)
 
     def remove_code_tab(self, tab):
         self.tab_manager.remove_widget(tab)

@@ -15,28 +15,35 @@ from kivystudio.components.topmenu import TopMenu
 from kivystudio.components.emulator_area import EmulatorArea
 from kivystudio.components.codeplace import CodePlace
 from kivystudio.components.sibebar import SideBar
+from kivystudio.components.terminal import TerminalSpace
 
 class Assembly(BoxLayout):
     pass
 
 def add_new_tab(obj, path):
+    print(path)
     code_place.add_code_tab(filename=path)
 
-file=FileManager()
-file.bind(on_finished=add_new_tab)
+def open_folder(*a):
+    print(a)
+
+filechooser=FileManager()
+filechooser.bind(on_finished=add_new_tab)
 
 
 def key_down(self, *args):
-    # print(args)
-    if args[0] == 115 and args[3] == ['ctrl']:
+    if args[0] == 114 and args[3] == ['ctrl']:     # emulate file Ctrl+R
         Clock.schedule_once(lambda dt: emulate())
 
-    elif args[0] == 111 and args[3] == ['ctrl']:
-        if not file.parent:
-            file.open()
+    elif args[0] == 107 and args[3] == ['ctrl']:    # Ctrl K pressed
+        pass
 
-    elif args[0] == 110 and args[3] == ['ctrl']:
+    elif args[0] == 111 and args[3] == ['ctrl']:    # open file Ctrl+O
+        filechooser.open_file(dir='/root',callback=add_new_tab)
+
+    elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
         code_place.add_code_tab()
+
 
 def emulate():
     emulator_area.screen_display.screen.clear_widgets()

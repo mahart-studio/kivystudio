@@ -13,7 +13,6 @@ filepath = os.path.dirname(__file__)
 from kivy.lang import Builder
 Builder.load_file(os.path.join(filepath,'main.kv'))
 
-
 from kivy.app import App
 from kivystudio.assembler import Assembler
 
