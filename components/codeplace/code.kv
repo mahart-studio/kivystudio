@@ -1,0 +1,122 @@
+<CodePlace>:
+    tab_manager: tab_manager
+    orientation: 'vertical'
+    CodeTabsContainer:
+        size_hint_y: None
+        height: '36dp'
+        canvas.before:
+            Color:
+                rgba: (0.12, 0.12, 0.12, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # canvas to show shadow division
+        canvas.after:
+            Color:
+                rgba: (0, 0, 0, .4)
+            Line:
+                points: [self.x,self.y, self.right,self.y]
+            Color:
+                rgba: (0, 0, 0, .3)
+            Line:
+                points: [self.x,self.y-1, self.x-1,self.y-1]
+            Color:
+                rgba: (0, 0, 0, .2)
+            Line:
+                points: [self.x,self.y-2, self.x,self.y-2]
+            Color:
+                rgba: (0, 0, 0, .1)
+            Line:
+                points: [self.x,self.y-3, self.x,self.y-3]
+                width: 2
+
+        GridLayout:
+            rows: 1
+            id: tab_manager
+            size_hint_x: None
+            width: self.minimum_width
+
+
+
+<TabToggleButton>:
+    size_hint_x: None
+    width: '100dp'
+    padding: '6dp'
+    spacing: '3dp'
+    canvas_color: (0.12, 0.12, 0.12, 1)
+    allow_no_selection: False
+    group: '__tabed_btn__'
+    on_state:
+        if self.state == 'down': self.canvas_color= (.2,.2,.2,1)
+        else: self.canvas_color= (0.12, 0.12, 0.12, 1)
+    canvas.before:
+        Color:
+            rgba: self.canvas_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Image:
+        size_hint_x: None
+        width: '10dp'
+        source: 'images/file.png'
+    Label:
+        font_size: '13.5dp'
+        text: root.text
+        text_size: self.width, None
+        shorten: True
+        shorten_from: 'right'
+    TabPannelIndicator:
+        id: indicator
+        on_release: root.parent.parent.parent.remove_code_tab(root)
+
+
+<TabPannelIndicator>:
+    size_hint_x: None
+    width: '12dp'
+
+
+<CodeTabDropDown>:
+    orientation: 'vertical'
+    size: '260dp',self.minimum_height
+    size_hint: None,None
+    canvas.before:
+        BorderImage:
+            source: 'shadow32.png'
+            border: (26, 26, 26, 26)
+            size:(root.width + 68, root.height + 68)
+            pos: (root.x-36, root.y-36)
+
+    MenuButton:
+        MenuLabel:
+            text: 'Close'
+        MenuLabel:
+            text: 'Ctrl+W'
+            type: 'shortcut'
+    MenuButton:
+        MenuLabel:
+            text: 'Set file for Emulation'
+    MenuButton:
+        MenuLabel:
+            text: 'Copy path'
+        MenuLabel:
+            text: 'Alt-Ctrl+C'
+            type: 'shortcut'
+    MenuButton:
+        MenuLabel:
+            text: 'Copy relative path'
+        MenuLabel:
+            text: 'Alt-Ctrl+Shift+C'
+            type: 'shortcut'
+    MenuButton:
+        MenuLabel:
+            text: 'Split Up'
+    MenuButton:
+        MenuLabel:
+            text: 'Split Down'
+    MenuButton:
+        MenuLabel:
+            text: 'Split Left'
+    MenuButton:
+        MenuLabel:
+            text: 'Split Right'
