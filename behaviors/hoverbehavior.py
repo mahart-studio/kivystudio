@@ -24,6 +24,7 @@ class HoverBehavior(object):
 
 
     def on_parent(self, *args):
+
         if self.parent:
             Window.bind(mouse_pos=self.on_mouse_move)
         else:

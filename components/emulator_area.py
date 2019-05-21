@@ -10,7 +10,7 @@ from kivy.clock import Clock
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.components.screens import AndroidPhoneScreen
-from kivystudio.widgets.buttons import IconButton
+from kivystudio.widgets.iconlabel import IconButtonLabel
 
 __all__ = ('EmulatorArea')
 
@@ -64,7 +64,6 @@ class EmulatorTab(HoverBehavior, ToggleButtonBehavior,Label):
             self.bold=False
             self.text = self.text.replace('[u]','').replace('[/u]','')
 
-    
 
 
 class EmulatorScreens(ScreenManager):
@@ -130,25 +129,42 @@ Builder.load_string('''
                 size_hint_x: None
                 width: '106dp'
                 text: 'main.py'
-            IconButton:
+            IconButtonLabel:
+                color: .8,.8,.8,1
                 size_hint_x: None
                 width: '36dp'
-                normal_color: 0,0,0,0
-                icon_source: 'images/scale1.png'
+                text: icon('fa-search-minus')
                 on_release:
                     if not root.screen_display.screen.scale < -100.0: root.screen_display.screen.scale -= 0.05
-            IconButton:
-                normal_color: 0,0,0,0
+            IconButtonLabel:
+                color: .8,.8,.8,1
+                text: icon('fa-search-plus')
                 size_hint_x: None
                 width: '36dp'
                 icon_source: 'images/scale2.png'
                 on_release: root.screen_display.screen.scale += 0.05
-            IconButton:
-                normal_color: 0,0,0,0
+            IconToggleLabel:
+                color: .8,.8,.8,1
+                text: icon('fa-tablet')
                 size_hint_x: None
                 width: '36dp'
-                icon_source: 'images/scale2.png'
-                on_release: root.toggle_orientation()
+                angle:0
+                on_state:
+                    root.toggle_orientation();
+                    if self.state=='down': self.angle=90
+                    else: self.angle=0
+                canvas:
+                    Clear
+                    PushMatrix
+                    Rotate:
+                        angle: self.angle
+                        origin: self.center_x , self.center_y
+                    Rectangle:
+                        size: self.texture_size
+                        pos: self.center_x - 8, self.center_y - 8
+                        texture: self.texture
+                    PopMatrix
+                    
 
 
 <EmulatorTab>:
@@ -171,33 +187,5 @@ Builder.load_string('''
             size: self.size
             pos: self.pos
 
-
-<ScreenTopMenu>:
-    pos_hint: {'top': 1, 'center_x': .5}
-    size_hint_y: None
-    height: '36dp'
-    canvas.before:
-        Color:
-            rgba: .34,.31,.3,.6
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    Spinner:
-        size_hint_x: None
-        width: '106dp'
-        text: 'main.py'
-    IconButton:
-        size_hint_x: None
-        width: '36dp'
-        normal_color: 0,0,0,0
-        icon_source: 'images/scale1.png'
-        on_release:
-            if not root.screen.scale < -100.0: root.screen.scale -= 0.05
-    IconButton:
-        normal_color: 0,0,0,0
-        size_hint_x: None
-        width: '36dp'
-        icon_source: 'images/scale2.png'
-        on_release: root.screen.scale += 0.05
 
 ''')

@@ -69,8 +69,8 @@ kv_file = os.path.join(project_dir, 'main.kv')
 sys.path.append(project_dir)
 
 code_place = CodePlace()
-code_place.add_code_tab(filename=main_file)
-code_place.add_code_tab(filename=kv_file)
+# code_place.add_code_tab(filename=main_file)
+# code_place.add_code_tab(filename=kv_file)
 
 emulator_area = EmulatorArea(size_hint_x=.45)
 Assembler = Assembly()

@@ -40,7 +40,8 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
             self.ids.indicator.source ='images/invisible.png'
         
     def on_parent(self, *a):
-        infolabel.remove_info_on_mouse()
+        if self.parent is None:
+            infolabel.remove_info_on_mouse()
 
     def on_hover(self, *a):
         print(self.hover)

@@ -1,6 +1,12 @@
 <FileTopMenu>:
     auto_width: False
     width: '260dp'
+    canvas.before:
+        BorderImage:
+            source: 'shadow32.png'
+            border: (26, 26, 26, 26)
+            size:(root.width + 68, root.height + 68)
+            pos: (root.x-36, root.y-36)
     MenuButton:
         MenuLabel:
             text: 'Open File'

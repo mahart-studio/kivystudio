@@ -8,9 +8,13 @@ import os
 sys.path.append(os.pardir)
 filepath = os.path.dirname(__file__)
 
-# mimetypes.add_type('text/kv', '.kv')
 
 from kivy.lang import Builder
+from kivystudio.tools import iconfonts
+font_file = os.path.join(os.path.dirname(__file__), 'resources/font-awesome.fontd')
+iconfonts.register('awesome_font', 'font-awesome.ttf',
+     font_file)
+
 Builder.load_file(os.path.join(filepath,'main.kv'))
 
 from kivy.app import App

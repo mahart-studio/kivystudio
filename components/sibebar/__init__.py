@@ -1,10 +1,12 @@
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import Image
+from kivy.uix.label import Label
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.screenmanager import ScreenManager
 from kivy.properties import OptionProperty
 
 from kivy.lang import Builder
+
+from kivystudio.behaviors import HoverBehavior
 
 from .fileexplorer import FileExplorer
 from .gitmanager import GitManager
@@ -40,10 +42,15 @@ class SideBar(BoxLayout):
                     self.remove_widget(self.children[0])
     
 
-class SideButter(ToggleButtonBehavior, Image):
+class SideButter(HoverBehavior, ToggleButtonBehavior, Label):
     '''
     buttons on the sidebar 
     '''
+    def on_hover(self, *a):
+        if self.hover:
+            self.color = (1,1,1,1)
+        elif not self.hover and self.state == 'normal':
+            self.color = (.5,.5,.5,1)
 
 class SideToggleBar(ScreenManager):
     '''ScreenManager of the sidebar

@@ -11,12 +11,10 @@ from kivy.lang import Builder
 
 from kivy.extras.highlight import KivyLexer
 
-from kivystudio.behaviors import HoverBehavior
 from kivystudio.widgets.codeinput import FullCodeInput
 from .codetab import TabToggleButton
 
 import os
-Builder.load_file(os.path.join(os.path.dirname(__file__), 'code.kv'))
 
 
 def get_tab_from_group(filename):
@@ -188,3 +186,5 @@ class CodeTabsContainer(ScrollView):
     def on_touch_down(self, touch):
         FocusBehavior.ignored_touch.append(touch)
         return super(CodeTabsContainer, self).on_touch_down(touch)
+
+Builder.load_file(os.path.join(os.path.dirname(__file__), 'code.kv'))

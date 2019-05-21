@@ -59,12 +59,24 @@ Builder.load_string('''
     rows: 1
     canvas.before:
         Color:
-            rgba: .8,.8,.8,1
+            rgba: .85,.85,.85,1
         Rectangle:
             size: self.size
             pos: self.pos
     TopMenuItem:
         text: 'File'
+        on_release:
+            root.drop_on_hover=False;
+            root.drop_menu('FileTopMenu', 4)
+
+    TopMenuItem:
+        text: 'Edit'
+        on_release:
+            root.drop_on_hover=False;
+            root.drop_menu('FileTopMenu', 3)
+
+    TopMenuItem:
+        text: 'View'
         on_release:
             root.drop_on_hover=False;
             root.drop_menu('FileTopMenu', 2)
@@ -76,11 +88,10 @@ Builder.load_string('''
             root.drop_menu('FileTopMenu', 1)
 
     TopMenuItem:
-        text: 'Edit'
+        text: 'Help'
         on_release:
             root.drop_on_hover=False;
             root.drop_menu('FileTopMenu', 0)
-
 
 <TopMenuItem>:
     size_hint_x: None

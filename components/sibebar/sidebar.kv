@@ -1,3 +1,4 @@
+#: import icon kivystudio.tools.iconfonts.icon
 
 <SideBar>:
     size_hint_x:  None
@@ -18,16 +19,23 @@
             height: self.minimum_height
             pos_hint: {'center_x': .5, 'center_y': .5}
             SideButter:
-                down_source: 'images/search2.png'
-                normal_source: 'images/search1.png'
+                text: '%s'%(icon('fa-search'))
                 tab_type: 'generalsearch'
                 on_state: root.toggle_bar(self)
             SideButter:
+                text: '%s'%(icon('fa-folder-open'))
                 down_source: 'images/folder2.png'
                 normal_source: 'images/folder1.png'
                 tab_type: 'fileexplorer'
                 on_state: root.toggle_bar(self)
             SideButter:
+                text: '%s'%(icon('fa-cogs'))
+                normal_source: 'images/settings2.png'
+                down_source: 'images/settings.png'
+                tab_type: 'gitmanager'
+                on_state: root.toggle_bar(self)
+            SideButter:
+                text: '%s'%(icon('fa-github'))
                 normal_source: 'images/settings2.png'
                 down_source: 'images/settings.png'
                 tab_type: 'gitmanager'
@@ -37,7 +45,9 @@
 <SideButter>:
     size_hint: 1, None
     height: '46dp'
-    down_source: ''
-    normal_source: ''
-    source: self.down_source if self.state=='down' else self.normal_source
+    font_size: '32dp'
+    markup: True
+    on_state:
+        if self.state=='down': self.color=(1,1,1,1) 
+        else: self.color=(.5,.5,.5,1)
     group: 'side_butters'
