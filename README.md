@@ -8,29 +8,35 @@
 
 Allows developers test and emulate their [kivy] project.
 
-  - Emulation can e done on real time
+  - Emulation can be done on real time
   - Supports multiple screen views for mobile devices
-  - Also support outer window emulation for destop intended emulation of for real test of mobile devices
+  - Supports orientation changes for mobile devices
+  - Also support outer window emulation for destop intended emulation and for full test for mobile devices
 
 
 ### Installation
 
 You can download at.
 ```
-https://mahart-studio.com/kivystudio.com
+https://mahart-studio.com/kivystudio
 ```
 
 ### Demo Screenshot
 <p align="center">
-  <img src="https://raw.githubusercontent.com/MichaelStott/KivMob/master/demo/assets/demo_screenshotv2.png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(1).png">
 </p>
 
 ### Quickstart
 
 Create an new folder
-open kivystudio then on the top menu bar.
+open kivystudio.
+on the top menu bar.
 go to [file] - then click [open-folder], then pick your folder
-then enter [Ctrl-O] a new file ta will be opened for your
+then enter [Ctrl-N] a new file will be opened for your
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(2).png">
+</p>
 
 Copy the following into the file tab.
 ```python
@@ -45,9 +51,13 @@ class MyApp(App):
 MyApp.run()
 ```
 
-Finally, enter [Ctrl-r].
+Finally, enter [Ctrl-S].
+then, enter [Ctrl-R]. to see the output,
 or you can set auto-emulation
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(3).png">
+</p>
 
 ### kivy Studio Showcase
 
@@ -65,11 +75,11 @@ _Please contact us via pull request or project issue if you would like your app 
 
 
 <!-- Links pertinent to README -->
-[KivyStudio]: <https://mahart-studio/kivystudio.com/>
+[KivyStudio]: <https://mahart-studio.com/kivystudio/>
 [Google AdMob]: <https://www.google.com/admob/>
 [Kivy]: <https://kivy.org/>
 [Buildozer]: <https://github.com/kivy/buildozer>
 
 <!-- App showcase author links -->
-[thegameguy]: <https://github.com/thegameguy>
-[Yunus Ceyhan]: <https://github.com/yunus-ceyhan>
+[avour]: <https://github.com/avour>
+[solomon]: <https://github.com/solomon1998>
