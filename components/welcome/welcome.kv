@@ -1,34 +1,65 @@
 #: import icon kivystudio.tools.iconfonts.icon
+            # IconLabel:
+            #     text: '%s'%(icon('fa-bug'))
+            # IconLabel:
+            #     text: '%s'%(icon('fa-code-fork'))
 
 <WelcomeTab>:
     BoxLayout:
+        orientation: 'vertical'
         BoxLayout:
-            size_hint_x: None
-            width: '200dp'
-            orientation: 'vertical'
-            Image:
-                source: 'resources/images/kivy-icon-256'
-            Label:
-                text: 'Kivy Studio' 
-                bold: True
-                font_size: '20dp'
-        GridLayout:
-            cols: 3
-            IconLabel:
-                text: '%s'%(icon('fa-android'))
-                color: .2,1,.2
-                font_size: '32dp'
-            IconLabel:
-                text: '%s'%(icon('fa-apple'))
-                color: .9,.9,.95
-                font_size: '32dp'
-            IconLabel:
-                text: '%s'%(icon('fa-linux'))
-                font_size: '32dp'
-            IconLabel:
-                text: '%s'%(icon('fa-windows'))
-                font_size: '32dp'
-            IconLabel:
-                text: '%s'%(icon('fa-bug'))
-            IconLabel:
-                text: '%s'%(icon('fa-code-fork'))
+            BoxLayout:
+                size_hint_x: None
+                width: '200dp'
+                orientation: 'vertical'
+                # Image:
+                #     source: 'resources/images/kivy-icon-256.png'
+                Label:
+                    text: 'Kivy Studio' 
+                    bold: True
+                    font_size: '20dp'
+            GridLayout:
+                cols: 3
+                IconLabel:
+                    text: '%s'%(icon('fa-android'))
+                    color: .2,1,.2
+                    font_size: '64dp'
+                IconLabel:
+                    text: '%s'%(icon('fa-apple'))
+                    color: .9,.9,.95
+                    font_size: '64dp'
+                IconLabel:
+                    text: '%s'%(icon('fa-linux'))
+                    font_size: '64dp'
+                IconLabel:
+                    text: '%s'%(icon('fa-windows'))
+                    font_size: '64dp'
+        BoxLayout:
+            size_hint_y: None
+            height: '120dp'
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Start'
+                    bold: True
+                    font_size: '18dp'
+                    size_hint_y: None
+                    height: '24dp'
+                BoxLayout:
+                    orientation: 'vertical'
+                    Label:
+                        text: '[color=2255FF]Open file[/color] - [ctrl O]'
+                        markup: True
+                    Label:
+                        text: '[color=2255FF]Open folder[/color] - [ctrl K+O]'
+                        markup: True
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    height: '24dp'
+                    text: 'Recent'
+                    bold: True
+                    font_size: '18dp'
+                    size_hint_y: None
+                BoxLayout:
+                    orientation: 'vertical'
