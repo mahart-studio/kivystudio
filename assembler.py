@@ -75,6 +75,8 @@ code_place = CodePlace()
 emulator_area = EmulatorArea(size_hint_x=.45)
 Assembler = Assembly()
 
+from kivystudio.components.welcome import WelcomeTab
+
 Assembler.ids.box.add_widget(SideBar())
-Assembler.ids.box.add_widget(code_place)
+Assembler.ids.box.add_widget(WelcomeTab())
 Assembler.ids.box.add_widget(emulator_area)
