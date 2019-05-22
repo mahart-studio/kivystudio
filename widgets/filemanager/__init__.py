@@ -41,10 +41,9 @@ class FileManager(ModalView):
     _file_chooser = ObjectProperty(None)
     ''' the internal file chooser a subclass of FileChooserController'''
 
-    mode = OptionProperty('open_file', options=['open_file, open_folder', 'save_file'])
+    mode = OptionProperty('open_file', options=['open_file', 'save_file', 'choose_dir'])
 
-    __events__ = ('on_oserror', 'on_finished', )
-
+    __events__ = ('on_finished', )
 
     def __init__(self, **k):
         super(FileManager, self).__init__(**k)
@@ -123,7 +122,6 @@ class FileManager(ModalView):
         elif key == 13:     # enter
             pass
 
-
     def reverse_dir(self):
         previous_path = os.path.dirname(self._file_chooser.path)
 
@@ -181,14 +179,25 @@ class FileManager(ModalView):
             self.dispatch('on_finished', path)
             self.dismiss()
 
-
-    def on_oserror(self):
-        pass
-
     def on_finished(self, path):
-        pass
+        self.callback(path)
 
+    def open_file(self, path='', callback=None):
+        self.mode = 'open_file'
+        self.callback = callback
+        self.open()
 
+    def save_file(self, path='', callback=None):
+        self.mode = 'save_file'
+        self.callback = callback
+        self.open()
+        
+    def choose_dir(self, path='', callback=None):
+        self.mode = 'choose_dir'
+        self.callback = callback
+        self.open()
+
+filemanager = FileManager()
 
 
 if __name__ == "__main__":
