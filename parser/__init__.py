@@ -3,18 +3,46 @@ import sys
 import traceback
 
 from kivy.lang import Builder
-from kivy.resources import resource_add_path
-from .builder import Builder
+from kivy.resources import resource_add_path, resource_remove_path
 
-project_dir = 'test_project'
-main_file = 'main.py'
-sys.path.append(project_dir)
-resource_add_path(project_dir)
+from kivystudio.components.emulator_area import emulator_area
 
+def emulate_file(filename):
+    root=None
 
+    dirname=os.path.dirname(filename)
+    sys.path.append(dirname)
+    resource_add_path(dirname)
 
-def load_defualt_kv():
-    app_cls_name = get_app_cls_name()
+    emulator_area().screen_display.screen.clear_widgets()    
+
+    if os.path.splitext(filename)[1] =='.kv':    # load the kivy file directly
+        try:    # cahching error with kivy files
+            Builder.unload_file(filename)
+            root = Builder.load_file(filename)
+        except:
+            traceback.print_exc()
+            print("You kivy file has a problem")
+
+    elif os.path.splitext(filename)[1] =='.py':
+        load_defualt_kv(filename)
+
+        try:    # cahching error with python files
+            root = load_py_file(filename)
+        except:
+            traceback.print_exc()
+            print("You python file has a problem")
+
+    if root:
+        emulator_area().screen_display.screen.add_widget(root)
+    else:
+        pass
+
+    sys.path.pop()
+    resource_remove_path(dirname)
+
+def load_defualt_kv(filename):
+    app_cls_name = get_app_cls_name(filename)
     if app_cls_name is None:
         return
 
@@ -22,8 +50,10 @@ def load_defualt_kv():
     if app_cls_name.endswith('App'):
         kv_name = app_cls_name[:len(app_cls_name)-3].lower()
     print(kv_name)    
+
     if app_cls_name:
-        kv_filename = os.path.join(project_dir, kv_name+'.kv')
+        file_dir = os.path.dirname(filename)
+        kv_filename = os.path.join(file_dir, kv_name+'.kv')
         print(kv_filename)
         print(os.path.exists(kv_filename))
         if os.path.exists(kv_filename):
@@ -36,8 +66,8 @@ def load_defualt_kv():
 
 
 
-def get_app_cls_name():
-    with open(os.path.join(project_dir, main_file)) as fn:
+def get_app_cls_name(filename):
+    with open(filename) as fn:
         text =  fn.read()
 
     lines = text.splitlines()
@@ -56,7 +86,7 @@ def get_app_cls_name():
 
 
 def get_root_from_runTouch():
-    with open(os.path.join(project_dir, main_file)) as fn:
+    with open(filename) as fn:
         text =  fn.read()
 
     lines = text.splitlines()
@@ -74,43 +104,40 @@ def get_root_from_runTouch():
         root_name = line.strip().split('(')[1].split(')')[0]
 
 
-        root_file = import_from_project_dir(main_file)
+        root_file = import_from_dir(filename)
         root = getattr(reload(root_file), root_name)
         
         return root
 
 
-def load_py_file():
+def load_py_file(filename):
 
-    app_cls_name = get_app_cls_name()
+    app_cls_name = get_app_cls_name(filename)
     if app_cls_name:
 
-        root_file = import_from_project_dir(main_file)
-        print(root_file)
+        root_file = import_from_dir(filename)
         app_cls = getattr(reload(root_file), app_cls_name)
         root = app_cls().build()
 
         return root
     
-    run_root = get_root_from_runTouch()
+    run_root = get_root_from_runTouch(filename)
     if run_root:
         return run_root
 
 
-def import_from_project_dir(filename):
+def import_from_dir(filename):
     ''' force python to import this file
     from the project_ dir'''
 
-    # first clear the sys path
-    former_path = sys.path
-    sys.path = []
-    sys.path.append(project_dir)
+    dirname, file = os.path.split(filename)
+    sys.path = [dirname] + sys.path
 
-    import_word = os.path.splitext(filename)[0]
+    import_word = os.path.splitext(file)[0]
     return __import__(import_word)
 
-    sys.path = []
-    sys.path = former_path
+    sys.path = sys.path[1:]
+
 
 
 

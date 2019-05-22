@@ -10,7 +10,6 @@ import sys
 filepath = join(os.getcwd(), __file__) 
 
 sys.path.append(dirname(dirname(filepath)))
-print(sys.path)
 from iconfonts import register, icon
 
 font_file = join(dirname(__file__), 'font-awesome.fontd')

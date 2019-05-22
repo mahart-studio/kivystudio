@@ -12,6 +12,7 @@ from kivy.lang import Builder
 from kivy.extras.highlight import KivyLexer
 
 from kivystudio.widgets.codeinput import FullCodeInput
+from kivystudio.components.welcome import WelcomeTab
 from .codetab import TabToggleButton
 
 import os
@@ -32,13 +33,14 @@ class CodeScreenManager(ScreenManager):
         super(CodeScreenManager, self).__init__(**kwargs)
         self.transition = NoTransition()
 
-    def add_widget(self, widget, name):
-        if os.path.splitext(widget.filename)[1] == '.kv':
-            widget.code_input.lexer = KivyLexer()
+    def add_widget(self, widget, name, tab_type='code'):
+        if tab_type=='code':
+            if os.path.splitext(widget.filename)[1] == '.kv':
+                widget.code_input.lexer = KivyLexer()
+            Clock.schedule_once(lambda dt: self.open_file(widget),1)       # open the file
 
         screen = CodeScreen(name=name)
-        screen.add_widget(widget)
-        Clock.schedule_once(lambda dt: self.open_file(widget),1)       # open the file
+        screen.add_widget(widget,tab_type=tab_type)
         super(CodeScreenManager, self).add_widget(screen)
 
     def open_file(self, code_input):
@@ -59,8 +61,9 @@ class CodeScreen(Screen):
     code_field = ObjectProperty(None)
 
     def on_pre_enter(self):
-        self.code_field.code_input.focus = True
-        Window.bind(on_key_down=self.keyboard_down)
+        if self.code_field:
+            self.code_field.code_input.focus = True
+            Window.bind(on_key_down=self.keyboard_down)
 
         tab = get_tab_from_group(self.name)
         if tab:
@@ -69,10 +72,12 @@ class CodeScreen(Screen):
             Clock.schedule_once(lambda dt: map(lambda child: setattr(child, 'state', 'normal'), checked_list))
 
     def on_pre_leave(self):
-        Window.unbind(on_key_down=self.keyboard_down)
+        if self.code_field:
+            Window.unbind(on_key_down=self.keyboard_down)
 
     def on_enter(self):
-        self.code_field.code_input.focus = True
+        if self.code_field:
+            self.code_field.code_input.focus = True
 
     def save_file(self):
         with open(self.name, 'w') as fn:
@@ -80,10 +85,11 @@ class CodeScreen(Screen):
 
         self.code_field.saved = True
 
-    def add_widget(self, widget):
-        self.code_field = widget
+    def add_widget(self, widget, tab_type='code'):
         super(CodeScreen, self).add_widget(widget)
-        self.code_field.bind(saved=self.saving_file)
+        if tab_type=='code':
+            self.code_field = widget
+            self.code_field.bind(saved=self.saving_file)
 
     def saving_file(self, ins, saved):
         tab = get_tab_from_group(self.name)
@@ -123,15 +129,22 @@ class CodePlace(BoxLayout):
             if filename:
                 self.add_code_tab(filename=filename)
 
-    def add_widget(self, widget):
+    def add_widget(self, widget, tab_type=''):
         if len(self.children) > 1:
-            self.code_manager.add_widget(widget, widget.filename)
-            tab = TabToggleButton(text=os.path.split(widget.filename)[1],
-                                 filename=widget.filename)
-            tab.bind(state=self.change_screen)
-            print(tab.text)
-            self.tab_manager.add_widget(tab)
-            Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
+            if tab_type =='code' or tab_type =='new_file':
+                self.code_manager.add_widget(widget, widget.filename, tab_type=tab_type)
+                tab = TabToggleButton(text=os.path.split(widget.filename)[1],
+                                    filename=widget.filename)
+                tab.bind(state=self.change_screen)
+                self.tab_manager.add_widget(tab)
+                Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
+
+            elif tab_type=='welcome':
+                self.code_manager.add_widget(widget, 'kivystudiowelcome', tab_type=tab_type)
+                tab = TabToggleButton(text='Welcome',filename='kivystudiowelcome')
+                tab.bind(state=self.change_screen)
+                self.tab_manager.add_widget(tab)
+                Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))                
 
         else:
             super(CodePlace, self).add_widget(widget)
@@ -160,22 +173,29 @@ class CodePlace(BoxLayout):
         if tab.filename.startswith('Untitled-') and not os.path.exists(tab.filename):
             self.new_empty_tab -= 1
 
-    def add_code_tab(self, filename=''):
+    def add_code_tab(self, filename='', tab_type='code'):
         if filename:
             try:
                 self.code_manager.get_screen(filename)
             except ScreenManagerException:   # then it is not added
-                self.add_widget(FullCodeInput(filename=filename))
-        else:   # a new tab
+                self.add_widget(FullCodeInput(filename=filename), tab_type=tab_type)
+
+        elif tab_type=='new_file':   # a new tab
             self.new_empty_tab += 1
             while True:
                 try:
                     self.code_manager.get_screen(filename)
                 except ScreenManagerException:   # then it is not added
                     filename = 'Untitled-{}'.format(self.new_empty_tab)
-                    self.add_widget(FullCodeInput(filename=filename))
+                    self.add_widget(FullCodeInput(filename=filename), tab_type=tab_type)
                     return
                 self.new_empty_tab += 1
+
+        elif tab_type == 'welcome':
+            try:
+                self.code_manager.get_screen('kivystudiowelcome')
+            except ScreenManagerException:   # then it is not added
+                self.add_widget(WelcomeTab(), tab_type=tab_type)
 
 
 

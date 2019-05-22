@@ -5,18 +5,20 @@ from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.clock import Clock
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.components.screens import AndroidPhoneScreen
 from kivystudio.widgets.iconlabel import IconButtonLabel
 
-__all__ = ('EmulatorArea')
+__all__ = ('get_emulator',)
 
 class EmulatorArea(BoxLayout):
 
     screen_display = ObjectProperty(None)
+
+    emulation_file = StringProperty('')
 
     def __init__(self, **kwargs):
         super(EmulatorArea, self).__init__(**kwargs)
@@ -88,13 +90,6 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
 
     def on_hover(self, *args):
         pass
-        # if self.hover:
-        #     if self.scaler not in self.children:
-        #         self.add_widget(self.scaler)
-        # else:
-        #     if self.scaler in self.children:
-        #             Clock.schedule_once(
-        #                 lambda dt: self.remove_widget(self.scaler), 0.5)
 
     def on_screen(self, obj, screen):
         if self.screen not in self.children:
@@ -103,7 +98,16 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
             self.bind(center=self.screen.setter('center'))
             self.scaler.screen = screen
 
+instatance=[]
 
+
+def emulator_area():
+    if instatance:
+        return instatance[0]
+    else:
+        emulator_area = EmulatorArea(size_hint_x=.45)
+        instatance.append(emulator_area)
+        return emulator_area
 
 Builder.load_string('''
 

@@ -7,15 +7,16 @@ import sys
 import traceback
 
 
-from kivystudio.parser import load_defualt_kv, load_py_file
+from kivystudio.parser import emulate_file
 from kivystudio.widgets.filemanager import filemanager
 
 from kivystudio.components.screens import AndroidPhoneScreen
 from kivystudio.components.topmenu import TopMenu
-from kivystudio.components.emulator_area import EmulatorArea
 from kivystudio.components.codeplace import CodePlace
 from kivystudio.components.sibebar import SideBar
 from kivystudio.components.terminal import TerminalSpace
+from kivystudio.components.emulator_area import emulator_area
+
 
 class Assembly(BoxLayout):
     pass
@@ -30,7 +31,7 @@ def open_folder(*a):
 
 def key_down(self, *args):
     if args[0] == 114 and args[3] == ['ctrl']:     # emulate file Ctrl+R
-        Clock.schedule_once(lambda dt: emulate())
+        Clock.schedule_once(lambda dt: emulate_file(emulator_area.emulation_file))
 
     elif args[0] == 107 and args[3] == ['ctrl']:    # Ctrl K pressed
         pass
@@ -41,19 +42,6 @@ def key_down(self, *args):
     elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')
 
-
-def emulate():
-    emulator_area.screen_display.screen.clear_widgets()
-    
-    load_defualt_kv()
-
-    try:    # cahching error with python files
-        root = load_py_file()
-        print(root)
-        emulator_area.screen_display.screen.add_widget(root)
-    except:
-        traceback.print_exc()
-        print("You python file has a problem")
 
 
 Window.bind(on_key_down=key_down)
@@ -70,7 +58,7 @@ code_place.add_code_tab(tab_type='welcome')
 # code_place.add_code_tab(filename=main_file)
 # code_place.add_code_tab(filename=kv_file)
 
-emulator_area = EmulatorArea(size_hint_x=.45)
+emulator_area = emulator_area()
 Assembler = Assembly()
 
 Assembler.ids.box.add_widget(SideBar())

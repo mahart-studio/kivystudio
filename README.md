@@ -8,10 +8,10 @@
 
 Allows developers test and emulate their [kivy] project.
 
-  - Emulation can be done on real time
+  - Emulation can be done in real time
   - Supports multiple screen views for mobile devices
   - Supports orientation changes for mobile devices
-  - Also support outer window emulation for destop intended emulation and for full test for mobile devices
+  - Also supports outer window emulation for destop intended emulation and for full test for mobile devices
 
 
 ### Installation

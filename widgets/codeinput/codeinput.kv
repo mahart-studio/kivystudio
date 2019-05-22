@@ -1,4 +1,5 @@
 
+
 <FullCodeInput>:
     cols: 3
     code_input: code_input
@@ -75,8 +76,8 @@
     ScrollingBar:
         bar_width: '12dp'
         scroll_type: ['bars', 'content']
-        bar_color: 1,1,1,.5
-        bar_inactive_color: self.bar_color
+        bar_inactive_color:  1,1,1,.4
+        bar_active_color:  1,1,1,.2
         id: scroll
         kv_lang_area: code_input
         size_hint_x: None
@@ -124,10 +125,6 @@
     allow_no_selection: False
 
 <CodeInputDropDown>:
-    orientation: 'vertical'
-    size: 240,self.minimum_height
-    size_hint: None,None
-
     MenuButton:
         on_release: root.copy()
         MenuLabel:

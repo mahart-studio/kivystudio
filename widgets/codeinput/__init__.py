@@ -8,8 +8,9 @@ from pygments import styles
 from .codeinput import CodeInput
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.tools import set_auto_mouse_position
+from kivystudio.widgets.rightclick_drop import RightClickDrop
 
-class CodeInputDropDown(BoxLayout):
+class CodeInputDropDown(RightClickDrop):
 
     def __init__(self, codeinput, **kwargs):
         super(CodeInputDropDown, self).__init__(**kwargs)
@@ -278,9 +279,8 @@ class InnerCodeInput(HoverBehavior, CodeInput):
         elif keycode[0] == 8 and modifiers == ['ctrl']:     # delete word left
             self.delete_word_left()
 
-        elif keycode[0] == 27:     # on escape
-            if self.rightclick_dropdown in Window.children:    # remove from window
-                Window.remove_widget(self.rightclick_dropdown)
+        elif keycode[0] == 27:     # on escape, do nothing
+            return True
         else:
             return super(CodeInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
@@ -389,25 +389,15 @@ class InnerCodeInput(HoverBehavior, CodeInput):
             Window.set_system_cursor('arrow')
 
     def on_touch_down(self, touch):
-        if self.rightclick_dropdown in Window.children:
-            Window.remove_widget(self.rightclick_dropdown) 
 
         if self.collide_point(*touch.pos):
             if touch.button == 'right':
-                self.show_right_click_info()
+                self.rightclick_dropdown.open()
                 FocusBehavior.ignored_touch.append(touch)
                 return True
 
         if touch.button == 'left':
             return super(InnerCodeInput,self).on_touch_down(touch)
-
-    def show_right_click_info(self):
-        if self.rightclick_dropdown in Window.children:
-           return
-        else:
-            set_auto_mouse_position(self.rightclick_dropdown)
-            Window.add_widget(self.rightclick_dropdown) 
-
 
 
 from kivy.lang import Builder
@@ -551,15 +541,17 @@ class Numbers_(ToggleButtonBehavior, Label):
     selected_color = ListProperty([1,1,1,1])
     ' color of the number when selected'
 
-    normal_color = ListProperty([.6,.6,.6,1])
+    normal_color = ListProperty([.5,.5,.5,1])
     ' color of the number when selected'
     
     def on_state(self, *args):
 
         if self.state == 'down':
             self.color = self.selected_color
+            self.canvas_color = self.normal_color[:3]+[.3]
         else:
             self.color = self.normal_color
+            self.canvas_color = [0,0,0,0]
 
 
 

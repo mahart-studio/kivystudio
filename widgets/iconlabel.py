@@ -14,6 +14,9 @@ class IconButtonLabel(ButtonBehavior, IconLabel):
 
 class IconToggleLabel(ToggleButtonBehavior, IconLabel):
     pass
+
+class HoverIconLabel(HoverBehavior, IconLabel):
+    pass
     
 class HoverIconButtonLabel(HoverBehavior, IconButtonLabel):
     pass

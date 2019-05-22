@@ -1,3 +1,6 @@
+#: import icon kivystudio.tools.iconfonts.icon
+    
+
 <CodePlace>:
     tab_manager: tab_manager
     orientation: 'vertical'
@@ -56,10 +59,11 @@
         Rectangle:
             size: self.size
             pos: self.pos
-    Image:
+    IconLabel:
         size_hint_x: None
         width: '10dp'
-        source: 'images/file.png'
+        text: '%s'%(icon('fa-file-code-o'))
+        color: 1,.1,.3
     Label:
         font_size: '13.5dp'
         text: root.text
@@ -77,16 +81,6 @@
 
 
 <CodeTabDropDown>:
-    orientation: 'vertical'
-    size: '260dp',self.minimum_height
-    size_hint: None,None
-    canvas.before:
-        BorderImage:
-            source: 'shadow32.png'
-            border: (26, 26, 26, 26)
-            size:(root.width + 68, root.height + 68)
-            pos: (root.x-36, root.y-36)
-
     MenuButton:
         MenuLabel:
             text: 'Close'
@@ -94,6 +88,7 @@
             text: 'Ctrl+W'
             type: 'shortcut'
     MenuButton:
+        on_release: root.set_for_emulation()
         MenuLabel:
             text: 'Set file for Emulation'
     MenuButton:

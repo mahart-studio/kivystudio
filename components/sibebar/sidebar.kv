@@ -24,20 +24,14 @@
                 on_state: root.toggle_bar(self)
             SideButter:
                 text: '%s'%(icon('fa-folder-open'))
-                down_source: 'images/folder2.png'
-                normal_source: 'images/folder1.png'
                 tab_type: 'fileexplorer'
                 on_state: root.toggle_bar(self)
             SideButter:
                 text: '%s'%(icon('fa-cogs'))
-                normal_source: 'images/settings2.png'
-                down_source: 'images/settings.png'
                 tab_type: 'gitmanager'
                 on_state: root.toggle_bar(self)
             SideButter:
                 text: '%s'%(icon('fa-github'))
-                normal_source: 'images/settings2.png'
-                down_source: 'images/settings.png'
                 tab_type: 'gitmanager'
                 on_state: root.toggle_bar(self)
 
@@ -47,7 +41,8 @@
     height: '46dp'
     font_size: '32dp'
     markup: True
+    color: .5,.5,.5,1
     on_state:
-        if self.state=='down': self.color=(1,1,1,1) 
+        if self.state=='down': self.color=(1,1,1,1)
         else: self.color=(.5,.5,.5,1)
     group: 'side_butters'
