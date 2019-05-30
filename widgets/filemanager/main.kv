@@ -55,31 +55,31 @@
                         size: self.size
                         pos: self.pos
 
-                Button_:
+                SideButton_:
                     text: 'Home'
                     source: 'small_home.png'
                     on_release: file_chooser.path = root.get_defualt_user_dir()
-                Button_:
+                SideButton_:
                     text: 'Documents'
                     source: 'small_document.png'
                     on_release: root.set_side_panel_dir(self.text)
-                Button_:
+                SideButton_:
                     text: 'Downloads'
                     source: 'small_download.png'
                     on_release: root.set_side_panel_dir(self.text)
-                Button_:
+                SideButton_:
                     text: 'Desktop'
                     source: 'small_folder.png'
                     on_release: root.set_side_panel_dir(self.text)
-                Button_:
+                SideButton_:
                     text: 'Pictures'
                     source: 'small_picture.png'
                     on_release: root.set_side_panel_dir(self.text)
-                Button_:
+                SideButton_:
                     text: 'Musics'
                     source: 'small_music.png'
                     on_release: root.set_side_panel_dir(self.text)
-                Button_:
+                SideButton_:
                     text: 'Videos'
                     source: 'small_video.png'
                     on_release: root.set_side_panel_dir(self.text)
@@ -144,7 +144,7 @@
                     radius: [(0, 0), (0, 0), (10.0, 10.0), (10.0, 10.0)]
 
 
-<Button_@Button>:
+<SideButton_>:
     background_normal: ''
     background_color: .9,.9,.9,1
     source: ''
@@ -217,6 +217,7 @@
         pos_hint: {'center_y': .5}
         text: 'Untitled-1'
     Button:
+        id: save_btn
         text: 'Save'
         size_hint: None, None
         background_normal: 'button.png'
