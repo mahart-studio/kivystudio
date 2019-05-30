@@ -29,8 +29,8 @@ scroll.add_widget(grid)
 keys = fontd.keys()
 keys.sort()
 for icon_name in keys:
-	lb = Label(markup=True, size_hint_y=None, color=(1,0,0))
-	lb.text= '%s '%(icon(icon_name, 32)) + icon_name
+	lb = Label(markup=True, size_hint_y=None, color=(1,1,1))
+	lb.text= '[color=3088ff]%s[/color] '%(icon(icon_name, 32)) + icon_name
 	grid.add_widget(lb)
 
 runTouchApp(scroll)
