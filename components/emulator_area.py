@@ -149,10 +149,10 @@ Builder.load_string('''
                 on_release: root.screen_display.screen.scale += 0.05
             IconToggleLabel:
                 color: .8,.8,.8,1
-                text: icon('fa-tablet')
+                text: icon('fa-mobile')
                 size_hint_x: None
                 width: '36dp'
-                angle:0
+                angle:0 
                 on_state:
                     root.toggle_orientation();
                     if self.state=='down': self.angle=90

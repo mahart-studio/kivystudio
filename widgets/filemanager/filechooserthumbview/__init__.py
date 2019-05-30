@@ -175,8 +175,8 @@ class IconWidget_(GridLayout):
             else:
                 self.parent.set_highlighted(self)
                 return True
-        else:
-            return False
+        
+        return super(IconWidget_, self).on_touch_down(touch)
 
     def on_double_tap(self, touch):
         if os.path.isfile(self.path):

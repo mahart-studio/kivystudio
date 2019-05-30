@@ -432,9 +432,11 @@ class FullCodeInput(GridLayout):
 
     _do_cursor_scroll =BooleanProperty(True)
 
-    code_background = ListProperty([0,0,0,1])
-
     code_input = ObjectProperty(None)
+
+    tab = ObjectProperty(None)
+
+    tab_type = StringProperty('code')
 
     filename = StringProperty('')
     ''' name current file in the input 
