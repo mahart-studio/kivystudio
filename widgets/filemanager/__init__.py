@@ -139,6 +139,7 @@ class FileManager(ModalView):
 
     def on_mode(self, *args):
         if self.mode == 'save_file':
+            self.ids.title.text = 'Save file'
             if not hasattr(self, 'save_widget'):
                 self.save_widget = Factory.SaveWidget_()
                 self.save_widget.ids.input.bind(on_text_validate=self.handle_saving)
@@ -150,6 +151,12 @@ class FileManager(ModalView):
         else:
             if self.save_widget in self.ids.saving_container.children:
                 self.ids.saving_container.remove_widget(self.save_widget)
+
+            if self.mode == 'open_file':
+                self.ids.title.text = 'Open file'
+
+            elif self.mode == 'choose_dir':
+                self.ids.title.text = 'Open folder'
 
     def handle_escape(self):
         if self.new_bub in Window.children:

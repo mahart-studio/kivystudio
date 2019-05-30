@@ -26,9 +26,11 @@ class RightClickDrop(BoxLayout):
     def _on_keyboard(self, instance, keycode, *args):
 
         print(keycode)
-        if keycode[0] == 27:     # on escape
+        if keycode == 27:     # on escape
             self.dismiss()
             return True
+
+        return False
 
     def open(self):
         if self not in Window.children:

@@ -86,7 +86,6 @@ class CodeTabDropDown(RightClickDrop):
         return super(CodeTabDropDown,self).on_touch_down(touch)
 
     def set_for_emulation(self):
-        print(self.tab.filename)
         emulator_area().emulation_file=self.tab.filename
 
 
