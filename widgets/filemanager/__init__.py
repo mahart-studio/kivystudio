@@ -4,6 +4,7 @@ from filechooserthumbview import FileChooserThumbView
 from kivy.uix.modalview import ModalView
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.button import Button
 
 from kivy.properties import ObjectProperty, OptionProperty
 from kivy.factory import Factory
@@ -32,6 +33,14 @@ filepath_for_cool_icons ='/usr/share/icons/Vibrancy-Kali/apps/64'
 class SideSelector_(HighlightBehavior, FocusBehavior, GridLayout):
     pass
 
+
+class SideButton_(Button):
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.parent.set_highlighted(self)
+
+        return super(SideButton_, self).on_touch_down(touch)
 
 class FileManager(ModalView):
 
@@ -130,17 +139,30 @@ class FileManager(ModalView):
 
     def on_mode(self, *args):
         if self.mode == 'save_file':
-            self.save_widget = Factory.SaveWidget_()
-            self.save_widget.ids.input.bind(on_text_validate=self.handle_saving)
+            self.ids.title.text = 'Save file'
+            if not hasattr(self, 'save_widget'):
+                self.save_widget = Factory.SaveWidget_()
+                self.save_widget.ids.input.bind(on_text_validate=self.handle_saving)
+                func = lambda *args: self.handle_saving(self.save_widget.ids.input)
+                self.save_widget.ids.save_btn.bind(on_release=func)
 
-            self.ids.saving_container.add_widget(self.save_widget)
+            if self.save_widget not in self.ids.saving_container.children:
+                self.ids.saving_container.add_widget(self.save_widget)
+        else:
+            if self.save_widget in self.ids.saving_container.children:
+                self.ids.saving_container.remove_widget(self.save_widget)
+
+            if self.mode == 'open_file':
+                self.ids.title.text = 'Open file'
+
+            elif self.mode == 'choose_dir':
+                self.ids.title.text = 'Open folder'
 
     def handle_escape(self):
         if self.new_bub in Window.children:
             Window.remove_widget(self.new_bub)
         else:
-            self.dismiss()
-        
+            self.dismiss()        
 
     def handle_bubble(self, btn):
         if self.new_bub in Window.children:
@@ -170,9 +192,9 @@ class FileManager(ModalView):
     def handle_saving(self, textinput):
         path = os.path.join(self._file_chooser.path, textinput.text)
         if not os.path.exists(path):
-            pass
+            self.dispatch('on_finished', path)
         else:
-            print('error making dir')
+            print('file already exist')
 
     def file_selected(self, obj, path):
         if self.mode == 'open_file':
@@ -181,6 +203,7 @@ class FileManager(ModalView):
 
     def on_finished(self, path):
         self.callback(path)
+        self.dismiss()
 
     def open_file(self, path='', callback=None):
         self.mode = 'open_file'

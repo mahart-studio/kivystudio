@@ -142,14 +142,16 @@ VIDEO_ICON = 'video.png'
 PYTHON_ICON = 'python.png'
 KV_ICON = 'kv.png'
 JAVA_ICON = 'java.png'
+PDF_ICON = 'pdf.png'
+ARCHIVE_ICON = 'archive.png'
 # UNKWON_ICON = '.png'
 
 
 
-ZIP_MIME = 'application/zip'
-TAR_MIME = 'application/x-tar'
+ARCHIVES_MIME = ('application/zip', 'application/x-tar',)
 APK_MIME = 'application/vnd.android.package-archive'
 EXE_MIME = 'application/x-msdos-program'
+PDF_MIME = 'application/pdf'
 ##############################3
 FLAC_MIME = "audio/flac"
 MP3_MIME = "audio/mpeg"
@@ -175,8 +177,8 @@ class IconWidget_(GridLayout):
             else:
                 self.parent.set_highlighted(self)
                 return True
-        else:
-            return False
+        
+        return super(IconWidget_, self).on_touch_down(touch)
 
     def on_double_tap(self, touch):
         if os.path.isfile(self.path):
@@ -313,6 +315,12 @@ class FileChooserThumbView(FileChooserController):
             if mime == JAVA_MIME:
                 return JAVA_ICON 
 
+            if mime in ARCHIVES_MIME:
+                return ARCHIVE_ICON
+
+            if mime == PDF_MIME:
+                return PDF_ICON
+
             # if it's a video we will extract a frame out of it
             if "video/" in mime:
                 return self._generate_image_from_video(ctx.path)
@@ -320,10 +328,6 @@ class FileChooserThumbView(FileChooserController):
             extention = os.path.splitext(ctx.name)[1]
             if extention  == '.kv':
                 return KV_ICON
-            
-            if extention:
-                pass
-                
 
         except:
             traceback.print_exc()

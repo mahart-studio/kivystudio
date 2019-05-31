@@ -8,6 +8,8 @@
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
+            # size_hint_y: None
+            # height: '240dp'
             BoxLayout:
                 size_hint_x: None
                 width: '200dp'
@@ -35,31 +37,35 @@
                     text: '%s'%(icon('fa-windows'))
                     font_size: '64dp'
         BoxLayout:
-            size_hint_y: None
-            height: '120dp'
-            BoxLayout:
-                orientation: 'vertical'
+            GridLayout:
+                cols: 1
                 Label:
+                    size_hint_y: None
+                    height: '32dp'
                     text: 'Start'
                     bold: True
                     font_size: '18dp'
-                    size_hint_y: None
-                    height: '24dp'
                 BoxLayout:
                     orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
                     Label:
                         text: '[color=2255FF]Open file[/color] - [ctrl O]'
                         markup: True
+                        size_hint_y: None
+                        height: '32dp'
                     Label:
                         text: '[color=2255FF]Open folder[/color] - [ctrl K+O]'
                         markup: True
-            BoxLayout:
-                orientation: 'vertical'
+                        size_hint_y: None
+                        height: '32dp'
+            GridLayout:
+                cols: 1
                 Label:
-                    height: '24dp'
+                    size_hint_y: None
+                    height: '32dp'
                     text: 'Recent'
                     bold: True
                     font_size: '18dp'
-                    size_hint_y: None
                 BoxLayout:
                     orientation: 'vertical'

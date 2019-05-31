@@ -12,6 +12,7 @@ from kivy.lang import Builder
 from kivy.extras.highlight import KivyLexer
 
 from kivystudio.widgets.codeinput import FullCodeInput
+from kivystudio.widgets.filemanager import filemanager
 from kivystudio.components.welcome import WelcomeTab
 from .codetab import TabToggleButton
 
@@ -80,15 +81,28 @@ class CodeScreen(Screen):
             self.code_field.code_input.focus = True
 
     def save_file(self):
-        with open(self.name, 'w') as fn:
-            fn.write(self.code_field.code_input.text)
-
+        if self.code_field.tab_type=='code':
+            with open(self.name, 'w') as fn:
+                fn.write(self.code_field.code_input.text)
+                
+        if self.code_field.tab_type=='new_file':
+            filemanager.save_file(path='/root', callback=self.save_new_file)
+    
         self.code_field.saved = True
+
+    def save_new_file(self, path):
+        print(path)
+        self.code_field.tab.filename=path
+        self.code_field.tab.text = os.path.split(path)[1]
+        self.code_field.tab_type='code'
+        self.name=path
+        self.save_file()
 
     def add_widget(self, widget, tab_type='code'):
         super(CodeScreen, self).add_widget(widget)
-        if tab_type=='code':
+        if tab_type=='code' or tab_type=='new_file':
             self.code_field = widget
+            self.code_field.tab_type=tab_type
             self.code_field.bind(saved=self.saving_file)
 
     def saving_file(self, ins, saved):
@@ -132,12 +146,14 @@ class CodePlace(BoxLayout):
     def add_widget(self, widget, tab_type=''):
         if len(self.children) > 1:
             if tab_type =='code' or tab_type =='new_file':
-                self.code_manager.add_widget(widget, widget.filename, tab_type=tab_type)
                 tab = TabToggleButton(text=os.path.split(widget.filename)[1],
                                     filename=widget.filename)
                 tab.bind(state=self.change_screen)
                 self.tab_manager.add_widget(tab)
                 Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
+                widget.tab = tab
+                widget.tab_type = tab_type
+                self.code_manager.add_widget(widget, widget.filename, tab_type=tab_type)
 
             elif tab_type=='welcome':
                 self.code_manager.add_widget(widget, 'kivystudiowelcome', tab_type=tab_type)
