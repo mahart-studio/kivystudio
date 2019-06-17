@@ -49,13 +49,12 @@ def load_defualt_kv(filename):
     kv_name = app_cls_name.lower()
     if app_cls_name.endswith('App'):
         kv_name = app_cls_name[:len(app_cls_name)-3].lower()
-    print(kv_name)    
 
     if app_cls_name:
         file_dir = os.path.dirname(filename)
         kv_filename = os.path.join(file_dir, kv_name+'.kv')
-        print(kv_filename)
-        print(os.path.exists(kv_filename))
+
+        print('kv file '+ os.path.exists(kv_filename) + ' exsits')
         if os.path.exists(kv_filename):
             try:    # cahching error with kivy files
                 Builder.unload_file(kv_filename)

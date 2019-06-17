@@ -1,6 +1,6 @@
 *.pyc
 *.zip
 *.gif
+pyc.py
 __pycache__/
-test_project/
 .vscode/

@@ -349,7 +349,10 @@ class InnerCodeInput(HoverBehavior, CodeInput):
             return None
 
         line = self._lines[self.cursor[1]]
-        if self.cursor[0]==0 and line=='':
+        if self.cursor[0]==0:
+            return None
+
+        if line.strip()=='':
             return None
 
 

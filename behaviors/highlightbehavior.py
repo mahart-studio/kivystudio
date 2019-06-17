@@ -19,10 +19,6 @@ class HighlightBehavior(object):
     ''' current highlighted child
         on ObjectProperty and defualts to None '''
 
-    instruction_canvas = ObjectProperty(InstructionGroup())
-    ''' internal instruction group used to draw the canvas on the
-        currently highlighted child '''
-
     highlighted_color = ListProperty([.2,.5,1,.5])
     ''' color that show highlighted widget
         a ListProperty defualts to [.2,.5,1.5] make sure it transparent
@@ -40,6 +36,9 @@ class HighlightBehavior(object):
     ''' Orientation in which the highlighting will take place if
     grid grid len must be set'''
 
+    instruction_canvas = ObjectProperty(InstructionGroup())
+    ''' internal instruction group used to draw the canvas on the
+        currently highlighted child '''
 
     grid_len = NumericProperty(0)
 

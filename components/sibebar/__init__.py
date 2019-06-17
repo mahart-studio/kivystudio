@@ -44,7 +44,7 @@ class SideBar(BoxLayout):
 
 class SideButter(HoverBehavior, ToggleButtonBehavior, Label):
     '''
-    buttons on the sidebar 
+    buttons on the sidebar
     '''
     def on_hover(self, *a):
         if self.hover:

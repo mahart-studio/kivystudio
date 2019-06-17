@@ -9,6 +9,7 @@ from kivy.properties import (StringProperty,
                             BooleanProperty)
 
 from kivystudio.behaviors import HoverBehavior
+from kivystudio.behaviors import HighlightBehavior
 from kivystudio.widgets.iconlabel import HoverIconButtonLabel
 from kivystudio.widgets.rightclick_drop import RightClickDrop
 from kivystudio.tools import infolabel
@@ -16,6 +17,7 @@ from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
 from kivystudio.components.emulator_area import emulator_area
 
+rightclick_dropdown = [None]
 
 class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
 
@@ -25,11 +27,14 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
 
     text = StringProperty('')
 
-    rightclick_dropdown = ObjectProperty(None)
-
     def __init__(self, **kwargs):
         super(TabToggleButton, self).__init__(**kwargs)
-        self.rightclick_dropdown = CodeTabDropDown(self)
+        if rightclick_dropdown[0] is None:
+            self.rightclick_dropdown = CodeTabDropDown()
+            rightclick_dropdown[0] = self.rightclick_dropdown
+        else:
+            self.rightclick_dropdown=rightclick_dropdown[0]
+        # self.rightclick_dropdown = get_rightclick_drop()
 
     def on_saved(self, *args):
         if self.saved:
@@ -66,7 +71,7 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
     def on_touch_down(self,touch):
         if self.collide_point(*touch.pos):
             if touch.button == 'right':
-                self.rightclick_dropdown.open()
+                self.rightclick_dropdown.open(self)
                 FocusBehavior.ignored_touch.append(touch)
                 return True
 
@@ -74,16 +79,21 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
             super(TabToggleButton, self).on_touch_down(touch)
 
 
-class CodeTabDropDown(RightClickDrop):
+class CodeTabDropDown(HighlightBehavior, RightClickDrop):
 
-    def __init__(self, tab, **kwargs):
+    def __init__(self, **kwargs):
         super(CodeTabDropDown, self).__init__(**kwargs)
-        self.tab = tab
+        self.tab = None
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):  # touch should not unfocus input
             FocusBehavior.ignored_touch.append(touch)
         return super(CodeTabDropDown,self).on_touch_down(touch)
+
+
+    def open(self, tab):
+        self.tab=tab
+        super(CodeTabDropDown, self).open()
 
     def set_for_emulation(self):
         emulator_area().emulation_file=self.tab.filename
