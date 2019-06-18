@@ -88,28 +88,30 @@ class ScreenContainer(RelativeLayout):
 
 
 class IphoneScreen(ScreenScatter):
-
     @property
     def set_pos(self):
+        pos = (-25, -dp(133))
         if self.orientation == 'landscape':
-            return (-self.container.height-21, -dp(138))
-        return (-dp(21), -dp(138))
+            return (-self.container.height+pos[0], pos[1])
+        return pos
 
     @property
     def set_size(self):
-        return (self.width + dp(42), self.height + dp(280))
+
+        return (self.width + dp(50), self.height + dp(270))
 
 class IpadScreen(ScreenScatter):
     @property
     def set_pos(self):
+        pos = (-dp(95), -dp(77))
         if self.orientation == 'landscape':
-            return (-self.container.height-99, -dp(51))
-        return (-dp(99), -dp(51))
+            return (-self.container.height+pos[0], pos[1])
+        return pos
 
     @property
     def set_size(self):
-        return (self.width + dp(118), self.height + dp(102))
-        
+        return (self.width + dp(190), self.height + dp(154))
+
 class AndriodTabScreen(ScreenScatter):
     @property
     def set_pos(self):

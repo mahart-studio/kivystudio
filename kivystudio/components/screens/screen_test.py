@@ -14,7 +14,7 @@ BoxLayout:
                 size: self.size
                 pos: self.pos
         FloatLayout:
-            IpadScreen:
+            IphoneScreen:
                 on_scale: self.center=root.center
                 center: root.center
                 id: screen
