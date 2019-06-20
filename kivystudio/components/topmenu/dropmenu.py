@@ -5,6 +5,8 @@ from kivy.lang import Builder
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.widgets.dropdown import DropDownBase
+from kivystudio.widgets.filemanager import filemanager
+from kivystudio.tools import quicktools
 
 import os
 filepath = os.path.dirname(__file__)
@@ -20,26 +22,29 @@ class FileTopMenu(DropDownBase):
     def __init__(self, **k):
         super(FileTopMenu, self).__init__(**k)
 
+    def new_file(self):
+        quicktools.open_new_file()
+
     def open_file(self):
-        pass
+        quicktools.open_file()
 
     def open_folder(self):
-        pass
+        quicktools.open_file()
     
     def open_recent(self):
-        pass
-
-    def exit_window(self):
-        pass
+        quicktools.open_recent()
 
     def save(self):
-        pass
+        quicktools.save()
 
     def save_all(self):
-        pass
+        quicktools.save_all()
 
     def save_as(self):
-        pass
+        quicktools.save_as()
+
+    def exit_window(self):
+        quicktools.exit_window()
 
 
 class EditTopMenu(DropDownBase):

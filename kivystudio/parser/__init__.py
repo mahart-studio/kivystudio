@@ -54,7 +54,7 @@ def load_defualt_kv(filename):
         file_dir = os.path.dirname(filename)
         kv_filename = os.path.join(file_dir, kv_name+'.kv')
 
-        print('kv file '+ os.path.exists(kv_filename) + ' exsits')
+        print('kv file '+ str(os.path.exists(kv_filename)) + ' exsits')
         if os.path.exists(kv_filename):
             try:    # cahching error with kivy files
                 Builder.unload_file(kv_filename)

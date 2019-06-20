@@ -1,0 +1,104 @@
+
+<EmulatorArea>:
+    orientation: 'vertical'
+    GridLayout:
+        canvas.before:
+            Color:
+                rgba: (0.12, 0.12, 0.12, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        rows: 1
+        id: tab_manager
+        size_hint_x: None
+        width: self.minimum_width
+        size_hint_y: None
+        height: '36dp'
+
+        Label:
+            size_hint_x: None
+            width: '106dp'
+            text: 'main.py'
+        IconButtonLabel:
+            color: .8,.8,.8,1
+            size_hint_x: None
+            width: '36dp'
+            text: icon('fa-search-minus')
+            on_release:
+                if not root.screen_display.screen.scale < 0.10: root.screen_display.screen.scale -= 0.05
+        IconButtonLabel:
+            color: .8,.8,.8,1
+            text: icon('fa-search-plus')
+            size_hint_x: None
+            width: '36dp'
+            icon_source: 'images/scale2.png'
+            on_release:
+                if not root.screen_display.screen.scale > 1.0: root.screen_display.screen.scale += 0.05
+        IconToggleLabel:
+            color: .8,.8,.8,1
+            text: icon('fa-mobile', 24)
+            size_hint_x: None
+            width: '36dp'
+            angle:0
+            on_state:
+                root.toggle_orientation();
+                if self.state=='down': self.angle=90
+                else: self.angle=0
+            canvas:
+                Clear
+                PushMatrix
+                Rotate:
+                    angle: self.angle
+                    origin: self.center_x , self.center_y
+                Rectangle:
+                    size: self.texture_size
+                    pos: self.center_x - 12, self.center_y - 12
+                    texture: self.texture
+                PopMatrix
+
+        IconButtonLabel:
+            on_release: root.open_screen_drop(self)
+            size_hint_x: None
+            width: '36dp'
+            text: icon('fa-ellipsis-h')
+
+
+<EmulatorTab>:
+    size_hint_x: None
+    width: '100dp'
+    # allow_no_selection: False
+    group: 'emulator_tab'
+    font_size: '13.5dp'
+    color: .5,.5,.5,1
+    markup: True
+
+
+
+<ScreenDisplay>:
+    name: 'Emulator'
+    canvas.before:
+        Color:
+            rgba: .5,.5,.5,1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<ScreenDrop>:
+    auto_width: False
+    width: '260dp'
+    MenuButton:
+        on_release: root.screen_display.screen_name=self.children[0].text
+        MenuLabel:
+            text: 'IphoneScreen'
+    MenuButton:
+        on_release: root.screen_display.screen_name=self.children[0].text
+        MenuLabel:
+            text: 'IpadScreen'
+    MenuButton:
+        on_release: root.screen_display.screen_name=self.children[0].text
+        MenuLabel:
+            text: 'AndriodTabScreen'
+    MenuButton:
+        on_release: root.screen_display.screen_name=self.children[0].text
+        MenuLabel:
+            text: 'AndroidPhoneScreen'

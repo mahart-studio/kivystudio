@@ -1,0 +1,64 @@
+#: import Window kivy.core.window.Window
+
+# 398 804
+<AndroidPhoneScreen>:
+    size: container.size
+    container: container
+    scale: 0.75
+    ScreenContainer:
+        id: container
+        size: '320dp', '610dp'
+        source: 'images/android_lolipop1.png'
+
+# 380 743
+<IphoneScreen>:
+    size: container.size
+    container: container
+    scale: 0.75
+    ScreenContainer:
+        id: container
+        size: ('300dp', '500dp')
+        source: 'images/iphone.png'
+
+#1271 992
+<IpadScreen>:
+    size: container.size
+    container: container
+    scale: 0.75
+    ScreenContainer:
+        id: container
+        size: ('800dp', '512dp')
+        source: 'images/ipad.png'
+
+# 953 612
+<AndriodTabScreen>:
+    size: container.size
+    container: container
+    ScreenContainer:
+        id: container
+        size: ('500dp', '280dp')
+        source: 'images/android_tab.png'
+        my_parent: self.parent
+
+<ScreenScatter>:
+    do_rotation: False
+    do_scale: False
+    do_translation: False
+    # scale_min: 1
+    size_hint: None, None
+    auto_bring_to_front: False
+
+<ScreenContainer>:
+    source: ''
+    size_hint: None, None
+    pos_hint: {'center_y': .5, 'center_x': .5}
+    canvas.before:
+        PushMatrix:
+        Rotate:
+            angle: root.parent.angle if self.parent else 0
+            origin: (0,0,1)
+        BorderImage:
+            source: root.source
+            size: root.parent.border_size if self.parent else (0,0)
+            pos: root.parent.border_pos if self.parent else (0,0)
+        PopMatrix:

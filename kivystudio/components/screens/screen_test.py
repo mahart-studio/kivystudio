@@ -14,7 +14,7 @@ BoxLayout:
                 size: self.size
                 pos: self.pos
         FloatLayout:
-            IpadScreen:
+            IphoneScreen:
                 on_scale: self.center=root.center
                 center: root.center
                 id: screen
@@ -35,7 +35,7 @@ BoxLayout:
                     text: '+'
                     bold: True
                     on_release:
-                    if not(screen.scale > 4.0): screen.scale += 0.05
+                        if not(screen.scale > 4.0): screen.scale += 0.05
 
 # Carousel:
 #     AndroidPhoneScreen:

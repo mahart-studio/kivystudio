@@ -47,8 +47,15 @@ class CodeScreenManager(ScreenManager):
     def open_file(self, code_input):
         if os.path.exists(code_input.filename):
             with open(code_input.filename, 'r') as f:
-                code_input.code_input.focus = False    
+                code_input.code_input.focus = False
                 code_input.code_input.text = f.read()
+
+    def save_current_tab(self):
+        self.get_screen(self.current).save_file()
+
+    def save_all_tabs(self):
+        for name in self.screen_names:
+            self.get_screen(name).save_file()
 
     def get_children_with_filename(self, filename):
         try:
@@ -82,8 +89,9 @@ class CodeScreen(Screen):
 
     def save_file(self):
         if self.code_field.tab_type=='code':
-            with open(self.name, 'w') as fn:
-                fn.write(self.code_field.code_input.text)
+            if not self.code_field.saved:
+                with open(self.name, 'w') as fn:
+                    fn.write(self.code_field.code_input.text)
                 
         if self.code_field.tab_type=='new_file':
             filemanager.save_file(path='/root', callback=self.save_new_file)
