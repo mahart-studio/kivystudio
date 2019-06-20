@@ -81,17 +81,13 @@ To contribute to this project
 * Then we review and merge
 
 ### Other
-
+<-- 
 [[!KivyStudio]:(https://mahartstudio.com/kivystudio)
 [!Kivy]: <https://kivy.org/>
 [Mahart Studio]: <https://github.com/mahart-studio/>
 
-<p align="center">
-    <a href='<https://mahartstudio.com>'> <b>Mahart Studio</b> </a>
-</p>
-
 [avour]: <https://github.com/avour>
 [solomon]: <https://github.com/solomon1999>
 [curiouspaul1]: <https://github.com/curiouspaul1>
-
+-->
 
