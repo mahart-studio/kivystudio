@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.com/MichaelStott/KivMob.svg?branch=master)](https://travis-ci.com/MichaelStott/KivMob)
 [![PyPI version](https://badge.fury.io/py/kivmob.svg)](https://badge.fury.io/py/kivmob)
-[![Python](https://img.shields.io/badge/python-2.7-green.svg)](https://www.python.org/downloads/release/python-270/)
+[![Python](https://img.shields.io/badge/python-3-green.svg)](https://www.python.org/downloads/release/python-270/)
 [![Downloads](https://pepy.tech/badge/kivmob)](https://pepy.tech/project/kivmob)
 [![Maintainability](https://api.codeclimate.com/v1/badges/add8cd9bd9600d898b79/maintainability)](https://codeclimate.com/github/MichaelStott/KivMob/maintainability)
 
