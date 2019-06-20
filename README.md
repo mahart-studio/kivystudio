@@ -14,8 +14,7 @@ A kivy software development environment targeted towards fast testing and intera
   - Supports orientation changes for mobile devices
   - Also supports outer window emulation for destop intended emulation and for full test for mobile devices
 
-Status: Underdevelopment....
-     Release: 0
+Status: underdevelopment...                  Release: 0
 
 
 ### Installation
