@@ -61,6 +61,8 @@ if __name__ == '__main__':
 ```
 
 Finally, enter [Ctrl-S].
+Right click on file tab
+clcik set for emulation
 then, enter [Ctrl-R]. to see the output,
 or you can set auto-emulation
 
@@ -70,22 +72,13 @@ or you can set auto-emulation
 
 <!-- ### kivy Studio Showcase -->
 
-_Please contact us via pull request or project issue if you would like to contribute to the project._
-
-<!-- List alphabetically please.  -->
-<!-- | App | Play Store Link | Author |
-| ------ | ------ | ------ |
-| Learn Python Offline | https://play.google.com/store/apps/details?id=com.prog.ders.eng | [Yunus Ceyhan] |
-| Gloworld | https://play.google.com/store/apps/details?id=com.worldglowfree.dom.com.world.glowfree | Prozee Games, [thegameguy] |
-| MIUI Hidden Settings | https://play.google.com/store/apps/details?id=com.ceyhan.sets | [Yunus Ceyhan] |
-| Themes for MIUI | https://play.google.com/store/apps/details?id=com.ceyhan.tema | [Yunus Ceyhan] | -->
 
 ### Other
 
 <!-- Links pertinent to README -->
 [KivyStudio]: <https://mahartstudio.com/kivystudio/>
 [Kivy]: <https://kivy.org/>
-[Buildozer]: <https://github.com/kivy/buildozer>
+[Mahart Studio]: <https://github.com/mahart-studio/>
 
 <!-- App showcase author links -->
 <p align="center">
@@ -95,3 +88,7 @@ _Please contact us via pull request or project issue if you would like to contri
 [avour]: <https://github.com/avour>
 [solomon]: <https://github.com/solomon1999>
 [curiouspaul1]: <https://github.com/curiouspaul1>
+
+
+_Please contact us via pull request or project issue if you would like to contribute to the project._
+
