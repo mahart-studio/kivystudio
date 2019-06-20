@@ -1,5 +1,5 @@
 
-from filechooserthumbview import FileChooserThumbView
+from .filechooserthumbview import FileChooserThumbView
 
 from kivy.uix.modalview import ModalView
 from kivy.uix.behaviors import FocusBehavior

@@ -2,7 +2,7 @@ from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.core.window import Window
 
-from __init__ import set_auto_mouse_position
+from .__init__ import set_auto_mouse_position
 
 def show_info_on_mouse(message=''):
     if message:

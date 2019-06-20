@@ -94,7 +94,7 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
     def on_screen(self, obj, screen):
         if self.screen not in self.children:
             self.add_widget(screen)
-            self.screen.bind(scale=lambda *args: setattr(self.screen, 'center', self.center))
+            # self.screen.bind(scale=lambda *args: setattr(self.screen, 'center', self.center))
             self.bind(center=self.screen.setter('center'))
             self.scaler.screen = screen
 
