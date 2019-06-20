@@ -14,7 +14,8 @@ A kivy software development environment targeted towards fast testing and intera
   - Supports orientation changes for mobile devices
   - Also supports outer window emulation for destop intended emulation and for full test for mobile devices
 
-Status: underdevelopment...                  Release: 0
+* Status: underdevelopment...
+* Release: 0
 
 
 ### Installation
@@ -29,22 +30,22 @@ Package file for various platform will be available on first release
 
 ### Quickstart
 
-Create an new folder
-open kivystudio.
-on the top menu bar.
-go to [file] - then click [open-folder],
+* Create an new folder
+* open kivystudio.
+* on the top menu bar. go to [file]
+* then click [open-folder],
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(2).png">
 </p>
 
-then pick your folder
+* pick your folder
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(3).png">
 </p>
 
-Then enter [Ctrl-N] a new file will be opened for your
+* Then enter [Ctrl-N] a new file will be opened for your
 
 
 Copy the following into the file tab.
@@ -60,10 +61,10 @@ if __name__ == '__main__':
 	MyApp().run()
 ```
 
-Finally, enter [Ctrl-S].
-Right click on file tab
-clcik set for emulation
-then, enter [Ctrl-R]. to see the output,
+* Finally, enter [Ctrl-S].
+* Right click on file tab
+* clcik set for emulation
+* then, enter [Ctrl-R]. to see the output,
 or you can set auto-emulation
 
 <p align="center">
@@ -81,8 +82,8 @@ To contribute to this project
 
 ### Other
 
-[KivyStudio]: <https://mahartstudio.com/kivystudio/>
-[Kivy]: <https://kivy.org/>
+[[!KivyStudio]:(https://mahartstudio.com/kivystudio)
+[!Kivy]: <https://kivy.org/>
 [Mahart Studio]: <https://github.com/mahart-studio/>
 
 <p align="center">
