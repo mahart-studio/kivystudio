@@ -19,10 +19,8 @@ Status: underdevelopment...                  Release: 0
 
 ### Installation
 
-You can download at.
-```
-https://mahartstudio.com/kivystudio
-```
+Package file for various platform will be available on first release
+
 
 ### Demo Screenshot
 <p align="center">
