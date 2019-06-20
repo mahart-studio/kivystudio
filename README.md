@@ -44,7 +44,7 @@ then pick your folder
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(3).png">
 </p>
 
-then enter [Ctrl-N] a new file will be opened for your
+Then enter [Ctrl-N] a new file will be opened for your
 
 
 Copy the following into the file tab.
@@ -70,8 +70,14 @@ or you can set auto-emulation
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(4).png">
 </p>
 
-<!-- ### kivy Studio Showcase -->
-
+##
+### Contributions
+To contribute to this project
+you just fork the repository
+Clone it
+Then start, by solving an issue or fixing a known bug
+Then you send a pull request
+Then we review and merge
 
 ### Other
 
@@ -89,6 +95,4 @@ or you can set auto-emulation
 [solomon]: <https://github.com/solomon1999>
 [curiouspaul1]: <https://github.com/curiouspaul1>
 
-
-_Please contact us via pull request or project issue if you would like to contribute to the project._
 
