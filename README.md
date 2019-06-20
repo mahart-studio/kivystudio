@@ -14,7 +14,7 @@ A kivy software development environment targeted towards fast testing and intera
   - Supports orientation changes for mobile devices
   - Also supports outer window emulation for destop intended emulation and for full test for mobile devices
 
-* Status: underdevelopment...
+* Status: under development...
 * Release: 0
 
 
@@ -76,18 +76,7 @@ or you can set auto-emulation
 To contribute to this project
 * you just fork the repository
 * Clone it
+``` git clone https://github.com/mahart-studio/kivystudio.git``` 
 * Then start, by solving an issue or fixing a known bug
 * Then you send a pull request
 * Then we review and merge
-
-### Other
-<-- 
-[[!KivyStudio]:(https://mahartstudio.com/kivystudio)
-[!Kivy]: <https://kivy.org/>
-[Mahart Studio]: <https://github.com/mahart-studio/>
-
-[avour]: <https://github.com/avour>
-[solomon]: <https://github.com/solomon1999>
-[curiouspaul1]: <https://github.com/curiouspaul1>
--->
-
