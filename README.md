@@ -73,20 +73,18 @@ or you can set auto-emulation
 ##
 ### Contributions
 To contribute to this project
-you just fork the repository
-Clone it
-Then start, by solving an issue or fixing a known bug
-Then you send a pull request
-Then we review and merge
+* you just fork the repository
+* Clone it
+* Then start, by solving an issue or fixing a known bug
+* Then you send a pull request
+* Then we review and merge
 
 ### Other
 
-<!-- Links pertinent to README -->
 [KivyStudio]: <https://mahartstudio.com/kivystudio/>
 [Kivy]: <https://kivy.org/>
 [Mahart Studio]: <https://github.com/mahart-studio/>
 
-<!-- App showcase author links -->
 <p align="center">
     <a href='<https://mahartstudio.com>'> <b>Mahart Studio</b> </a>
 </p>
