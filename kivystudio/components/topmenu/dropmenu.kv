@@ -1,40 +1,47 @@
 <FileTopMenu>:
     auto_width: False
     width: '260dp'
-    canvas.before:
-        BorderImage:
-            source: 'shadow32.png'
-            border: (26, 26, 26, 26)
-            size:(root.width + 68, root.height + 68)
-            pos: (root.x-36, root.y-36)
     MenuButton:
+        on_release: root.new_file()
+        MenuLabel:
+            text: 'New File'
+        MenuLabel:
+            text: 'Ctrl+N'
+            type: 'shortcut'
+    MenuButton:
+        on_release: root.open_file()
         MenuLabel:
             text: 'Open File'
         MenuLabel:
             text: 'Ctrl+O'
             type: 'shortcut'
     MenuButton:
+        on_release: root.open_folder()
         MenuLabel:
             text: 'Open Folder'
         MenuLabel:
             text: '[Ctrl+K Ctrl+O]'
             type: 'shortcut'
     MenuButton:
+        on_release: root.save()
         MenuLabel:
             text: 'Save'
         MenuLabel:
             text: 'Ctrl+S'
             type: 'shortcut'
     MenuButton:
+        on_release: root.save_as()
         MenuLabel:
             text: 'Save as'
         MenuLabel:
             text: 'Ctrl+Shift+S'
             type: 'shortcut'
     MenuButton:
+        on_release: root.save_all()
         MenuLabel:
             text: 'Save All'
     MenuButton:
+        on_release: root.exit_window()
         MenuLabel:
             text: 'Exit'
         MenuLabel:
@@ -55,7 +62,7 @@
     size_hint_y: None
     height: '30dp'
     canvas_color: 1,1,1,1
-    text_colors: ((0,0,0,1), (.5,.5,.5,1))
+    text_colors: ((.1,.1,.1,1), (.5,.5,.5,1))
     on_hover:
         if self.hover: self.canvas_color = .2,.5,1,1; self.text_colors=((1,1,1,1),(1,1,1,1))
         else: self.canvas_color = 1,1,1,1; self.text_colors=((0,0,0,1), (.5,.5,.5,1))

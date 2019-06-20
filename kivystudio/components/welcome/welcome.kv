@@ -1,4 +1,5 @@
 #: import icon kivystudio.tools.iconfonts.icon
+#: import quicktools kivystudio.tools.quicktools
             # IconLabel:
             #     text: '%s'%(icon('fa-bug'))
             # IconLabel:
@@ -46,12 +47,20 @@
                     size_hint_y: None
                     height: self.minimum_height
                     Label:
-                        text: '[color=2255FF]Open file[/color] - [ctrl O]'
+                        on_ref_press: quicktools.open_new_file()
+                        text: '[u][color=2255FF][ref="d"]Open new file[/ref][/color][/u] - [ctrl N]'
                         markup: True
                         size_hint_y: None
                         height: '32dp'
                     Label:
-                        text: '[color=2255FF]Open folder[/color] - [ctrl K+O]'
+                        on_ref_press: quicktools.open_file()
+                        text: '[u][color=2255FF][ref="d"]Open file[/ref][/color][/u] - [ctrl O]'
+                        markup: True
+                        size_hint_y: None
+                        height: '32dp'
+                    Label:
+                        on_ref_press: quicktools.open_folder()
+                        text: '[u][color=2255FF][ref="d"]Open folder[/ref][/color][/u] - [ctrl K+O]'
                         markup: True
                         size_hint_y: None
                         height: '32dp'

@@ -27,7 +27,7 @@ https://mahartstudio.com/kivystudio
 
 ### Demo Screenshot
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(1).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(1).png">
 </p>
 
 ### Quickstart
@@ -38,13 +38,13 @@ on the top menu bar.
 go to [file] - then click [open-folder],
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(2).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(2).png">
 </p>
 
 then pick your folder
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(3).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(3).png">
 </p>
 
 then enter [Ctrl-N] a new file will be opened for your
@@ -68,7 +68,7 @@ then, enter [Ctrl-R]. to see the output,
 or you can set auto-emulation
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/resources/showcase/Screenshot(4).png">
+  <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(4).png">
 </p>
 
 <!-- ### kivy Studio Showcase -->

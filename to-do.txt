@@ -5,7 +5,8 @@ Down Menu
 hover bugs
 
 Textinput
-tripple quote highlighting
+tripple quote highlighting bug
+
 ctrl cancel still has bugs that doesn't show text 'this sometimes happens after deleting after a line'
 multiple indent doesn't work
 
