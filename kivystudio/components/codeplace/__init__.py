@@ -10,14 +10,13 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 
 from kivy.extras.highlight import KivyLexer
-
+from kivy.app import App
 from kivystudio.widgets.codeinput import FullCodeInput
 from kivystudio.widgets.filemanager import filemanager
 from kivystudio.components.welcome import WelcomeTab
 from .codetab import TabToggleButton
 
 import os
-
 
 def get_tab_from_group(filename):
     all_tabs = ToggleButtonBehavior.get_widgets('__tabed_btn__')
@@ -142,6 +141,7 @@ class CodePlace(BoxLayout):
     def __init__(self, **kwargs):
         super(CodePlace, self).__init__(**kwargs)
         self.code_manager = CodeScreenManager()
+
         self.add_widget(self.code_manager)
         Window.bind(on_key_down=self.keyboard_down)
         Window.bind(on_dropfile=self.file_droped)
