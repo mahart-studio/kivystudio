@@ -59,7 +59,7 @@ class CodeScreenManager(ScreenManager):
 
     def get_children_with_filename(self, filename):
         try:
-            child = filter(lambda child: child.name==filename, self.screens)[0]
+            child = list(filter(lambda child: child.name==filename, self.screens))[0]
             return child
         except IndexError:
             raise Exception('code manager as no child with such filename {}'.format(filename))
