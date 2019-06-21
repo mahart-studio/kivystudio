@@ -25,7 +25,7 @@ def get_tab_from_group(filename):
         for tab in all_tabs:
             if tab.filename == filename:
                 return tab
-                break
+                # break
 
 
 class CodeScreenManager(ScreenManager):
@@ -63,6 +63,7 @@ class CodeScreenManager(ScreenManager):
             return child
         except IndexError:
             raise Exception('code manager as no child with such filename {}'.format(filename))
+
 
 class CodeScreen(Screen):
     
