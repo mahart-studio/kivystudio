@@ -30,7 +30,7 @@ class FileWidgetBase(HoverBehavior, BoxLayout):
 
 class FileWidget(FileWidgetBase):
 
-    file_icon = StringProperty(icon('fa-code', 16))
+    file_icon = StringProperty(icon('fa-file-code-o', 16))
 
 class DirWidget(FileWidgetBase):
 

@@ -9,15 +9,16 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 
-from kivy.extras.highlight import KivyLexer
-
 from kivystudio.widgets.codeinput import FullCodeInput
 from kivystudio.widgets.filemanager import filemanager
 from kivystudio.components.welcome import WelcomeTab
 from .codetab import TabToggleButton
 
+from kivy.extras.highlight import KivyLexer
+from pygments import lexers
 import os
 
+# all_formats = ['.py', '.kv', '.spec', '.txt']
 
 def get_tab_from_group(filename):
     all_tabs = ToggleButtonBehavior.get_widgets('__tabed_btn__')
@@ -36,8 +37,11 @@ class CodeScreenManager(ScreenManager):
 
     def add_widget(self, widget, name, tab_type='code'):
         if tab_type=='code':
-            if os.path.splitext(widget.filename)[1] == '.kv':
+            ext = os.path.splitext(widget.filename)[1]            
+            if ext == '.kv':
                 widget.code_input.lexer = KivyLexer()
+
+
             Clock.schedule_once(lambda dt: self.open_file(widget),1)       # open the file
 
         screen = CodeScreen(name=name)
@@ -87,9 +91,9 @@ class CodeScreen(Screen):
         if self.code_field:
             self.code_field.code_input.focus = True
 
-    def save_file(self):
+    def save_file(self, new_file=False):
         if self.code_field.tab_type=='code':
-            if not self.code_field.saved:
+            if not self.code_field.saved or new_file:
                 with open(self.name, 'w') as fn:
                     fn.write(self.code_field.code_input.text)
                 
@@ -104,7 +108,7 @@ class CodeScreen(Screen):
         self.code_field.tab.text = os.path.split(path)[1]
         self.code_field.tab_type='code'
         self.name=path
-        self.save_file()
+        self.save_file(new_file=True)
 
     def add_widget(self, widget, tab_type='code'):
         super(CodeScreen, self).add_widget(widget)
