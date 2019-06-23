@@ -125,7 +125,8 @@ class FileManager(ModalView):
 
     def handle_key(self, keyboard, key, codepoint, text, modifier, *args):
         if key == 8:    # if user press the backspace reverse dir
-            self.reverse_dir()
+            if not(self.save_widget.ids.input.focus):
+                self.reverse_dir()
 
         elif key == 27:
             self.handle_escape()

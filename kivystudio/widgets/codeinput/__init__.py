@@ -265,7 +265,7 @@ class InnerCodeInput(HoverBehavior, CodeInput):
         return min(counter)
 
 
-    def keyboard_on_key_down(self, window, keycode, text, modifiers):
+    def keyboard_on_key_down(self, keyboard, keycode, text, modifiers):
         'overiding the default keyboard listener '
         # print(keycode)
 
@@ -281,7 +281,7 @@ class InnerCodeInput(HoverBehavior, CodeInput):
         elif keycode[0] == 27:     # on escape, do nothing
             return True
         else:
-            return super(CodeInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
+            return super(CodeInput, self).keyboard_on_key_down(keyboard, keycode, text, modifiers)
 
     def _do_reverse_indentation(self):
         if not self.selection_text and self._lines[self.cursor_row]:

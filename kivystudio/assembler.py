@@ -47,16 +47,8 @@ def key_down(self, *args):
 Window.bind(on_key_down=key_down)
 
 
-project_dir = 'test_project'
-main_file = os.path.join(project_dir, 'main.py')
-kv_file = os.path.join(project_dir, 'main.kv')
-
-sys.path.append(project_dir)
-
 code_place = CodePlace()
 code_place.add_code_tab(tab_type='welcome')
-# code_place.add_code_tab(filename=main_file)
-# code_place.add_code_tab(filename=kv_file)
 
 emulator_area = emulator_area()
 Assembler = Assembly()

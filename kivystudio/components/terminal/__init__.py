@@ -30,7 +30,6 @@ class TerminalSpace(BoxLayout):
             screen.add_widget(widget)
             self.manager.add_widget(screen)
         else:
-
             super(TerminalSpace, self).add_widget(widget)
 
     def tab_state(self, tab, state):
