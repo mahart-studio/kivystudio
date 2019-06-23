@@ -10,7 +10,7 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty, BooleanProperty
 
 from kivystudio.behaviors import HoverBehavior
-import dropmenu
+from . import dropmenu
 
 __all__ = ('TopMenu',)
 

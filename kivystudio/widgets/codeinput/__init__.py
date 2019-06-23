@@ -47,8 +47,7 @@ class InnerCodeInput(HoverBehavior, CodeInput):
     def __init__(self, **kwargs):
         super(InnerCodeInput, self).__init__(**kwargs)
         self.rightclick_dropdown = CodeInputDropDown(self)
-
-        self.style_name = 'native_tweak'
+        self.style_name = 'native'
         self.background_normal= ''
         self.background_active= ''
 

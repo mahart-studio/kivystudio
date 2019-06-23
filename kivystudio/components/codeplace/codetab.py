@@ -16,7 +16,8 @@ from kivystudio.tools import infolabel
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
 from kivystudio.components.emulator_area import emulator_area
-
+# from kivystudio.components.codeplace import CodeScreenManager
+# from . import C
 rightclick_dropdown = [None]
 
 class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
@@ -29,6 +30,8 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super(TabToggleButton, self).__init__(**kwargs)
+        # self.mananger = CodePlace.code_manager
+        # self.code_manager = CodeScreenManager()
         if rightclick_dropdown[0] is None:
             self.rightclick_dropdown = CodeTabDropDown()
             rightclick_dropdown[0] = self.rightclick_dropdown
@@ -76,7 +79,25 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
                 return True
 
         if touch.button == 'left':
-            super(TabToggleButton, self).on_touch_down(touch)
+            screen_manager = self.parent.parent.parent.code_manager
+            screen = screen_manager.get_children_with_filename(self.filename)
+            print(self.text)
+            print(self.filename)
+            print(screen_manager.current)
+            print(screen)
+            # screen_manager.current = screen.name
+            # print(screen)
+            # for screen in screen_manager:
+            #     print(screen)
+            # print(self.parent.parent.parent)
+
+
+            # manager = self.mananger
+            # print(manager)
+            # self.code_manager.current = self.code_manager.next()
+            return True
+
+            # super(TabToggleButton, self).on_touch_down(touch)
 
 
 class CodeTabDropDown(HighlightBehavior, RightClickDrop):

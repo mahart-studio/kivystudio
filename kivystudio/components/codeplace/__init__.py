@@ -26,7 +26,7 @@ def get_tab_from_group(filename):
         for tab in all_tabs:
             if tab.filename == filename:
                 return tab
-                break
+                # break
 
 
 class CodeScreenManager(ScreenManager):
@@ -63,10 +63,11 @@ class CodeScreenManager(ScreenManager):
 
     def get_children_with_filename(self, filename):
         try:
-            child = filter(lambda child: child.name==filename, self.screens)[0]
+            child = list(filter(lambda child: child.name==filename, self.screens))[0]
             return child
         except IndexError:
             raise Exception('code manager as no child with such filename {}'.format(filename))
+
 
 class CodeScreen(Screen):
     
@@ -145,6 +146,7 @@ class CodePlace(BoxLayout):
     def __init__(self, **kwargs):
         super(CodePlace, self).__init__(**kwargs)
         self.code_manager = CodeScreenManager()
+
         self.add_widget(self.code_manager)
         Window.bind(on_key_down=self.keyboard_down)
         Window.bind(on_dropfile=self.file_droped)

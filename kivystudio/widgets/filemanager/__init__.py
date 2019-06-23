@@ -1,5 +1,5 @@
 
-from filechooserthumbview import FileChooserThumbView
+from .filechooserthumbview import FileChooserThumbView
 
 from kivy.uix.modalview import ModalView
 from kivy.uix.behaviors import FocusBehavior
@@ -66,16 +66,18 @@ class FileManager(ModalView):
 
     def get_defualt_user_dir(self):
         username = os.getlogin()
+        default_dir = None
         if platform == 'linux':
             if username != 'root':
-                defualt_dir = r'/home/%s'%username
+                default_dir = r'/home/%s'%username
             else:
-                defualt_dir = r'/root'
+                default_dir = r'/root'
 
-        elif platform == 'Windows':
-            defualt_dir = r'C:\\Users\\%s'%username
+        elif platform == 'win':
+            base = os.getcwd().split("\\")[:3]
+            default_dir = "\\".join(base)
 
-        return defualt_dir
+        return default_dir
 
     def set_side_panel_dir(self, name):
         user_dir = self.get_defualt_user_dir()

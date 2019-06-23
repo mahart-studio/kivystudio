@@ -352,9 +352,7 @@ class FileChooserThumbView(FileChooserController):
                 art,
                 flacPath
             )
-        except IndexError, TypeError:
-            return FILE_ICON
-        except:
+        except(IndexError, TypeError):
             return FILE_ICON
 
     def _generate_image_from_mp3(self, mp3Path):
@@ -373,11 +371,8 @@ class FileChooserThumbView(FileChooserController):
                 art,
                 mp3Path
             )
-        except IndexError, TypeError:
+        except(IndexError, TypeError):
             return MP3_ICON
-        except:
-            return MP3_ICON
-
     def _generate_image_from_art(self, art, path):
         pix = pix_from_art(art)
         ext = mimetypes.guess_extension(pix.mime)
