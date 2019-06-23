@@ -66,6 +66,7 @@ if __name__ == '__main__':
 * clcik set for emulation
 * then, enter [Ctrl-R]. to see the output,
 or you can set auto-emulation
+* To switch screen use the [Ctrl] + [Tab] to do so
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(4).png">
