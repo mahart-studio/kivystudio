@@ -1,7 +1,12 @@
 import os
 import sys
 import traceback
-from importlib import reload
+
+try:
+    from importlib import reload
+except:
+    pass
+
 from kivy.lang import Builder
 from kivy.resources import resource_add_path, resource_remove_path
 
