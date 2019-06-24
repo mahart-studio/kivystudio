@@ -1,13 +1,15 @@
 FilExplorer
-Git Intergration
 Down Menu
 
 hover bugs
+an image tab to display image when an image is selected
 
 Textinput
-tripple quote highlighting bug
+*tripple quote highlighting bug
 
-ctrl cancel still has bugs that doesn't show text 'this sometimes happens after deleting after a line'
-multiple indent doesn't work
+*ctrl cancel still has bugs that doesn't show text 'this sometimes happens after deleting after a line'
 
+*multiple indent doesn't work
+
+Git Intergration
 
