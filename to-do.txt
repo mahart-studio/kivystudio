@@ -1,15 +1,22 @@
-FilExplorer
-Down Menu
 
-hover bugs
-an image tab to display image when an image is selected
+To-Do List
 
+* FilExplorer
+* CodeInput Search
+* Auto Suggestion in CodeInput
+* Bottom Menu
+* Custom terminal (Command Line)
+* Splitter
+* General Project Search (on side bar)
+
+* When an image file is selected Show up an image tab
+
+
+Bugs
 Textinput
 *tripple quote highlighting bug
+*multiple indent doesn't work well
 
-*ctrl cancel still has bugs that doesn't show text 'this sometimes happens after deleting after a line'
-
-*multiple indent doesn't work
-
-Git Intergration
-
+# Later
+* Git Intergration
+* Theming
