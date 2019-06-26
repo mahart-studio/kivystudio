@@ -104,7 +104,6 @@ class CodeScreen(Screen):
         self.code_field.saved = True
 
     def save_new_file(self, path):
-        print(path)
         self.code_field.tab.filename=path
         self.code_field.tab.text = os.path.split(path)[1]
         self.code_field.tab_type='code'
@@ -199,7 +198,6 @@ class CodePlace(BoxLayout):
         codeinput=self.code_manager.get_children_with_filename(tab.filename)
         self.code_manager.remove_widget(codeinput)
 
-        print(tab.filename)
         if tab.filename.startswith('Untitled-') and not os.path.exists(tab.filename):
             self.new_empty_tab -= 1
 

@@ -22,7 +22,6 @@ class Assembly(BoxLayout):
     pass
 
 def add_new_tab(path):
-    print(path)
     code_place.add_code_tab(filename=path)
 
 def open_folder(*a):
