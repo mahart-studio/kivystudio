@@ -9,7 +9,7 @@ from kivy.properties import (StringProperty,
                             BooleanProperty)
 from kivystudio.behaviors import HoverInfoBehavior
 from kivystudio.behaviors import HighlightBehavior
-from kivystudio.widgets.iconlabel import HoverIconButtonLabel
+from kivystudio.widgets.iconlabel import IconButtonLabel
 from kivystudio.widgets.rightclick_drop import RightClickDrop
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
@@ -28,7 +28,7 @@ class TabToggleButton(HoverInfoBehavior, ToggleButtonBehavior, BoxLayout):
     def __init__(self, **kwargs):
         super(TabToggleButton, self).__init__(**kwargs)
         # set the info attr because filename could change
-        self.hover_info_attr = 'filename'
+        self.info_text_attr = 'filename'
 
         if rightclick_dropdown[0] is None:
             self.rightclick_dropdown = CodeTabDropDown()
@@ -85,7 +85,7 @@ class CodeTabDropDown(HighlightBehavior, RightClickDrop):
         emulator_area().emulation_file=self.tab.filename
 
 
-class TabPannelIndicator(HoverIconButtonLabel):
+class TabPannelIndicator(IconButtonLabel):
         
     def on_hover(self, *a):
         if self.hover:
@@ -99,3 +99,5 @@ class TabPannelIndicator(HoverIconButtonLabel):
         if not self.hover and self.parent.saved and self.parent.state=='down':
             self.text = '%s' % (icon('fa-close'))
             self.font_size = '16dp'
+
+        return super(TabPannelIndicator, self).on_hover(*a)

@@ -52,7 +52,7 @@ class SideButter(HoverInfoBehavior, ToggleButtonBehavior, Label):
         elif not self.hover and self.state == 'normal':
             self.color = (.5,.5,.5,1)
 
-        # return super(SideB)
+        return super(SideButter, self).on_hover(*a)
 
 class SideToggleBar(ScreenManager):
     '''ScreenManager of the sidebar

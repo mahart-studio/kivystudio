@@ -11,6 +11,6 @@ def set_auto_mouse_position(widget):
         widget.x = Window.mouse_pos[0]
     
     if (Window.mouse_pos[1]+widget.height > Window.height):
-        widget.top = Window.mouse_pos[1]
+        widget.top = Window.mouse_pos[1]-(widget.height/2)
     else:
-        widget.top = Window.mouse_pos[1]
+        widget.top = Window.mouse_pos[1]-(widget.height/2)

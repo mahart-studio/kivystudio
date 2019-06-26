@@ -28,7 +28,7 @@ class HoverInfoBehavior(HoverBehavior):
 
     info_text = StringProperty('')
     
-    info__text_attr = StringProperty('')
+    info_text_attr = StringProperty('')
 
     def on_parent(self, *a):
         if self.parent is None:
@@ -44,7 +44,8 @@ class HoverInfoBehavior(HoverBehavior):
 
     def show_label_info(self,dt):
         info_text = self.info_text
-        if self.hover_info_attr:
-            info_text = getattr(self, self.hover_info_attr)
+        if self.info_text_attr:
+            info_text = getattr(self, self.info_text_attr)
 
+        # if info_text:
         infolabel.show_info_on_mouse(info_text)
