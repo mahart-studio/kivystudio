@@ -17,6 +17,8 @@ __all__ = ('IphoneScreen', 'IpadScreen', 'AndroidPhoneScreen', 'AndriodTabScreen
 class ScreenScatter(Scatter):
     ''' base widget for screens'''
 
+    root_widget = ObjectProperty(None, allow_none=True)
+
     angle = NumericProperty(0)
 
     orientation = StringProperty('portrait')
@@ -36,6 +38,7 @@ class ScreenScatter(Scatter):
 
     def add_widget(self, widget):
         if len(self.children) > 0:
+            self.root_widget = widget
             self.container.add_widget(widget)
         else:
             super(ScreenScatter, self).add_widget(widget)

@@ -64,6 +64,9 @@ class TabToggleButton(HoverInfoBehavior, ToggleButtonBehavior, BoxLayout):
         if touch.button == 'left':
             return super(TabToggleButton, self).on_touch_down(touch)
 
+    def __str__(self):
+        return self.filename
+
 
 class CodeTabDropDown(HighlightBehavior, RightClickDrop):
 

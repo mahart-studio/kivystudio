@@ -76,16 +76,19 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
     def on_hover(self, *args):
         pass
 
-    def on_screen_name(self, obj, screen):
+    def on_screen_name(self, *a):
+        self.former_screen = self.screen
         self.screen = getattr(screens, self.screen_name)()
 
     def on_screen(self, obj, screen):
-        children = self.children[0].container.children if self.children else None
-        child = children[0] if children else None
-        if child:
-            self.children[0].container.remove_widget(child)
-            screen.add_widget(child)
+        if self.former_screen:
+            root = self.former_screen.root_widget
+            if root:
+                self.former_screen.clear_widgets()
+                # self.children[0].container.remove_widget(child)
+                screen.add_widget(root)
 
+        # now add new screen 
         self.clear_widgets()
         self.add_widget(screen)
         self.screen.bind(scale=lambda *args: setattr(self.screen, 'center', self.center))

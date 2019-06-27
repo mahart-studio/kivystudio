@@ -81,8 +81,7 @@ class CodeScreen(Screen):
         tab = get_tab_from_group(self.name)
         if tab:
             Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
-            checked_list = list(filter(lambda child: child != tab, ToggleButtonBehavior.get_widgets(tab.group)))
-            Clock.schedule_once(lambda dt: map(lambda child: setattr(child, 'state', 'normal'), checked_list))
+
 
     def on_pre_leave(self):
         if self.code_field:
@@ -161,9 +160,6 @@ class CodePlace(BoxLayout):
             if tab_type =='code' or tab_type =='new_file':
                 tab = TabToggleButton(text=os.path.split(widget.filename)[1],
                                     filename=widget.filename)
-                tab.bind(state=self.change_screen)
-                self.tab_manager.add_widget(tab)
-                Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
                 widget.tab = tab
                 widget.tab_type = tab_type
                 self.code_manager.add_widget(widget, widget.filename, tab_type=tab_type)
@@ -171,9 +167,10 @@ class CodePlace(BoxLayout):
             elif tab_type=='welcome':
                 self.code_manager.add_widget(widget, 'kivystudiowelcome', tab_type=tab_type)
                 tab = TabToggleButton(text='Welcome',filename='kivystudiowelcome')
-                tab.bind(state=self.change_screen)
-                self.tab_manager.add_widget(tab)
-                Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))                
+
+            tab.bind(state=self.change_screen)
+            self.tab_manager.add_widget(tab)
+            Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
 
         else:
             super(CodePlace, self).add_widget(widget)
@@ -181,6 +178,10 @@ class CodePlace(BoxLayout):
     def change_screen(self, tab, state):
         if state == 'down':
             self.code_manager.current = tab.filename
+            checked_list = list(filter(lambda child: child != tab, ToggleButtonBehavior.get_widgets(tab.group)))
+            for child in checked_list:
+                if child != tab:
+                    child.state='normal'
 
     def keyboard_down(self, window, *args):
 

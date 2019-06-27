@@ -87,9 +87,9 @@
             StudioSplitter:
                 min_size: self.parent.width*0.7
                 max_size: max(self.parent.width*0.8, dp(130))
-                on_right:
-                    self.right=self.parent.right;
-                    _side_selector.width = self.parent.width-self.width
+                # on_right:
+                #     self.right=self.parent.right;
+                #     _side_selector.width = self.parent.width-self.width
                 BoxLayout:
                     orientation: 'vertical'
                     canvas.before:
