@@ -41,7 +41,6 @@ class CodeScreenManager(ScreenManager):
             if ext == '.kv':
                 widget.code_input.lexer = KivyLexer()
 
-
             Clock.schedule_once(lambda dt: self.open_file(widget),1)       # open the file
 
         screen = CodeScreen(name=name)
@@ -190,8 +189,8 @@ class CodePlace(BoxLayout):
             return True
 
         if args[0] == 119 and args[3] == ['ctrl']:   # close tab
-            filename = self.code_manager.get_screen(self.code_manager.current).children[0].filename
-            tab = get_tab_from_group(filename)
+            name = self.code_manager.get_screen(self.code_manager.current).name
+            tab = get_tab_from_group(name)
             self.remove_code_tab(tab)
 
     def remove_code_tab(self, tab):
