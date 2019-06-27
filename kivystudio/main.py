@@ -21,9 +21,8 @@ from kivy.app import App
 from kivystudio.assembler import Assembler
 
 class KivyStudio(App):
-    # screen
+
     def build(self):
-        # self.screen_manager = None
         return Assembler
 
 if __name__ == "__main__":
