@@ -77,7 +77,6 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
         pass
 
     def on_screen_name(self, obj, screen):
-        print(obj)
         self.screen = getattr(screens, self.screen_name)()
 
     def on_screen(self, obj, screen):
