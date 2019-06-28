@@ -1,5 +1,5 @@
 from kivy.uix.dropdown import DropDown
-from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 
@@ -16,6 +16,8 @@ Builder.load_file(os.path.join(filepath,'dropmenu.kv'))
 class MenuButton(HoverBehavior, ButtonBehavior, BoxLayout):
     pass
 
+class ToggleMenuButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
+    pass
 
 class FileTopMenu(DropDownBase):
     

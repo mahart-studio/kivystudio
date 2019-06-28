@@ -15,7 +15,7 @@ Builder.load_string('''
 <StudioSplitterStrip>
     background_down: ''
     background_normal: ''
-    background_color: 0,0,0,0
+    background_color: .12,.12,.12,1
 
  ''')
 
@@ -32,8 +32,6 @@ class StudioSplitterStrip(HoverBehavior, SplitterStrip):
         else:
             if not self.moving:
                 Window.set_system_cursor('arrow')
-                self.moving = False
-
 
     def on_press(self):
         self.moving = True
@@ -43,19 +41,22 @@ class StudioSplitterStrip(HoverBehavior, SplitterStrip):
             Window.set_system_cursor('arrow')
             self.moving = False
         
-        return False
+        return super(StudioSplitterStrip, self).on_touch_up(touch)
 
-root = Builder.load_string('''
-BoxLayout:
-    Button:
-        id: w1
-        size_hint_x: None
-    StudioSplitter:
-        on_right: self.right=root.right; w1.width = root.width-self.width
-        Button:
-            text: 'Spit'
-''')
 
 if __name__ == "__main__":
+    root = Builder.load_string('''
+    BoxLayout:
+        Button:
+            id: w1
+            size_hint_x: None
+            width: 200
+        StudioSplitter:
+            min_size: self.parent.width-200
+            max_size: max(self.parent.width*0.8, dp(130))
+            on_right: self.right=root.right; w1.width = root.width-self.width
+            Button:
+                text: 'Spit'
+    ''')
     from kivy.base import runTouchApp
     runTouchApp(root)

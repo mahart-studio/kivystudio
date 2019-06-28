@@ -63,6 +63,18 @@ class InnerCodeInput(HoverBehavior, CodeInput):
         if self.focus:
             self.parent.saved = False
 
+            # import kivystudio app to not confuse it with current emulating app
+            from kivystudio.main import KivyStudio
+            app = KivyStudio.get_running_app()
+            auto_save = app.user_settings.get('file-settings')['auto_save']
+            auto_emulate = app.user_settings.get('emulator-settings')['auto_emulate']
+            if auto_save:
+                self.parent.parent.save_file(auto_save=True)
+            if auto_emulate:
+                from kivystudio.parser import emulate_file
+                from kivystudio.components.emulator_area import emulator_area
+                if emulator_area().emulation_file == self.parent.filename:
+                    emulate_file(self.parent.filename)
 
     def on_focus(self, *a):
         if self.focus:
