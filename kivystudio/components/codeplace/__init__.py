@@ -1,24 +1,25 @@
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, ScreenManagerException
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.behaviors import ToggleButtonBehavior, FocusBehavior
-from kivy.properties import (ObjectProperty,
+from kivy.properties import (ObjectProperty, BooleanProperty,
                             NumericProperty)
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.extras.highlight import KivyLexer
+
 
 from kivystudio.widgets.codeinput import FullCodeInput
 from kivystudio.widgets.filemanager import filemanager
+from kivystudio.widgets.splitter import StudioSplitter
 from kivystudio.components.welcome import WelcomeTab
 from .codetab import TabToggleButton
 
-from kivy.extras.highlight import KivyLexer
 from pygments import lexers
 import os
 
-# all_formats = ['.py', '.kv', '.spec', '.txt']
+# file_formats = ['.py', '.kv', '.spec', '.txt']
 
 def get_tab_from_group(filename):
     all_tabs = ToggleButtonBehavior.get_widgets('__tabed_btn__')
@@ -29,6 +30,19 @@ def get_tab_from_group(filename):
                 # break
 
 
+def get_lexer_for_file(filename):
+    ext = os.path.splitext(filename)[1]
+
+    try:
+        lexer = lexers.get_lexer_for_filename(filename)
+    except lexers.ClassNotFound:
+        if ext == '.kv':
+            lexer = KivyLexer()
+        else: lexer = lexers.TextLexer()
+    # print('found {} for {}'.format(lexer, filename))
+    return lexer
+
+
 class CodeScreenManager(ScreenManager):
 
     def __init__(self, **kwargs):
@@ -37,11 +51,12 @@ class CodeScreenManager(ScreenManager):
 
     def add_widget(self, widget, name, tab_type='code'):
         if tab_type=='code':
-            ext = os.path.splitext(widget.filename)[1]            
-            if ext == '.kv':
-                widget.code_input.lexer = KivyLexer()
+            Clock.schedule_once(lambda dt: self.open_file(widget),1)     # open the file
 
-            Clock.schedule_once(lambda dt: self.open_file(widget),1)       # open the file
+        try:
+            widget.code_input.lexer = get_lexer_for_file(widget.filename)
+        except:
+            pass
 
         screen = CodeScreen(name=name)
         screen.add_widget(widget,tab_type=tab_type)
@@ -90,16 +105,19 @@ class CodeScreen(Screen):
         if self.code_field:
             self.code_field.code_input.focus = True
 
-    def save_file(self, new_file=False):
+    def save_file(self, new_file=False, auto_save=False):
         if self.code_field.tab_type=='code':
             if not self.code_field.saved or new_file:
                 with open(self.name, 'w') as fn:
                     fn.write(self.code_field.code_input.text)
-                
-        if self.code_field.tab_type=='new_file':
-            filemanager.save_file(path='/root', callback=self.save_new_file)
     
-        self.code_field.saved = True
+            self.code_field.saved = True
+            if new_file:
+                self.code_field.lexer = get_lexer_for_file(self.name)
+                
+        if self.code_field.tab_type=='new_file' and not auto_save:
+            filemanager.save_file(path='/root', callback=self.save_new_file)
+
 
     def save_new_file(self, path):
         self.code_field.tab.filename=path
@@ -121,16 +139,13 @@ class CodeScreen(Screen):
 
     def keyboard_down(self, window, *args):
         # print(args)
-        
         if args[0] == 115 and args[3] == ['ctrl']:  # save file Ctrl+S
             self.save_file()
 
             return False
 
 
-#switching
-
-class CodePlace(BoxLayout):
+class CodePlace(StudioSplitter):
     
     code_manager = ObjectProperty(None)
 
@@ -143,8 +158,8 @@ class CodePlace(BoxLayout):
     def __init__(self, **kwargs):
         super(CodePlace, self).__init__(**kwargs)
         self.code_manager = CodeScreenManager()
+        self.ids.box.add_widget(self.code_manager)
 
-        self.add_widget(self.code_manager)
         Window.bind(on_key_down=self.keyboard_down)
         Window.bind(on_dropfile=self.file_droped)
 
@@ -155,7 +170,7 @@ class CodePlace(BoxLayout):
                 self.add_code_tab(filename=filename)
 
     def add_widget(self, widget, tab_type=''):
-        if len(self.children) > 1:
+        if len(self.children) > 0:
             if tab_type =='code' or tab_type =='new_file':
                 tab = TabToggleButton(text=os.path.split(widget.filename)[1],
                                     filename=widget.filename)
