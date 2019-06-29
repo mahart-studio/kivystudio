@@ -11,7 +11,7 @@
 
 from pygments.style import Style
 from pygments.token import Keyword, Name, Comment, String, Error, \
-     Number, Operator, Generic, Token, Whitespace
+     Number, Operator, Generic, Token, Whitespace, Punctuation
 
 
 class NativeTweakStyle(Style):
@@ -26,7 +26,7 @@ class NativeTweakStyle(Style):
         Token:              '#d0d0d0',
         Whitespace:         '#666666',
 
-        Comment:            'italic #888888',
+        Comment:            'italic #777777',
         Comment.Preproc:    'noitalic bold #cd2828',
         Comment.Special:    'noitalic bold #e50808 bg:#520000',
 
@@ -35,9 +35,9 @@ class NativeTweakStyle(Style):
         Operator.Word:      'bold #CC6600',
         Operator:           '#CC6600',
 
-        String:             '#ed9d13',
+        String:             '#FFCC00',
         String.Other:       '#ffa500',
-
+        
         Number:             '#3677a9',
 
         Name.Builtin:       '#24909d',
@@ -46,11 +46,11 @@ class NativeTweakStyle(Style):
         Name.Class:         'underline #447fcf',
         Name.Function:      '#447fcf',
         Name.Namespace:     'underline #447fcf',
-        Name.Exception:     '#bbbbbb',
+        Name.Exception:     '#33CCFF',
         Name.Tag:           'bold #CC6600',
         Name.Attribute:     '#bbbbbb',
         Name.Decorator:     '#ffa500',
-        Name.Builtin.Pseudo:  '#FFFF33',
+        Name.Builtin.Pseudo:  '#33CCFF',
 
 
         Generic.Heading:    'bold #ffffff',
@@ -64,5 +64,5 @@ class NativeTweakStyle(Style):
         Generic.Output:     '#cccccc',
         Generic.Traceback:  '#d22323',
 
-        Error:              'bg:#e3d2d2 #a61717'
+        Error:              'bg:#FFFFFF #FFFFFF'
     }
