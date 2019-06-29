@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""FileChooserThumbView
+"""StudioFileChooserThumbView
 ====================
 
-The FileChooserThumbView widget is similar to FileChooserIconView,
+The StudioFileChooserThumbView widget is similar to FileChooserIconView,
 but if possible it shows a thumbnail instead of a normal icon.
 
 Usage
@@ -57,7 +57,7 @@ _path = os.path.dirname(os.path.realpath(__file__))
 Builder.load_string("""
 #: import Clock kivy.clock.Clock
 
-<FileChooserThumbView>:
+<StudioFileChooserThumbView>:
     stacklayout: stacklayout
     on_entry_added: stacklayout.add_widget(args[1])
     on_entries_cleared: stacklayout.clear_widgets()
@@ -79,7 +79,7 @@ Builder.load_string("""
             auto_scroll_to: True
             on_size: Clock.schedule_once(lambda dt: setattr(self, 'grid_len', int(self.width/(self.children[0].width+10))), 1)
 
-[FileThumbEntry@IconWidget_]:
+[StudioFileThumbEntry@IconWidget_]:
     image: image
     locked: False
     path: ctx.path
@@ -107,22 +107,10 @@ Builder.load_string("""
         text: ctx.name
         text_size: (ctx.controller().thumbsize + dp(20), None)
         halign: 'center'
-        # shorten: True
         size: ctx.controller().thumbsize + dp(10), self.texture_size[1]
-        # pos: root.center_x - self.width / 2, root.y + dp(16)
         color: 0,0,0,1
         valign: 'top'
         shorten_from: 'right'
-
-    # Label:
-
-    #     text: ctx.controller()._gen_label(ctx)
-    #     font_size: '11dp'
-    #     color: .8, .8, .8, 1
-    #     size: ctx.controller().thumbsize, '16dp'
-    #     pos: root.center_x - self.width / 2, root.y
-    #     halign: 'center'
-    #     color: 0,0,0,1
 
 
 <IconWidget_>:
@@ -198,11 +186,11 @@ class FileStack_(HighlightBehavior, FocusBehavior, StackLayout):
         elif os.path.isfile(new_path):
             self.filechooser.dispatch('on_file_select', new_path)
 
-class FileChooserThumbView(FileChooserController):
+class StudioFileChooserThumbView(FileChooserController):
     '''Implementation of :class:`FileChooserController` using an icon view
     with thumbnails.
     '''
-    _ENTRY_TEMPLATE = 'FileThumbEntry'
+    _ENTRY_TEMPLATE = 'StudioFileThumbEntry'
 
     thumbdir = StringProperty(mkdtemp(prefix="kivy-", suffix="-thumbs"))
     '''Custom directory for the thumbnails. By default it uses tempfile to
@@ -238,11 +226,8 @@ class FileChooserThumbView(FileChooserController):
     _thumbs = DictProperty({})
     scrollview = ObjectProperty(None)
 
-    __events__ = ('on_file_select', )
-
-
     def __init__(self, **kwargs):
-        super(FileChooserThumbView, self).__init__(**kwargs)
+        super(StudioFileChooserThumbView, self).__init__(**kwargs)
         self.register_event_type('on_file_select')
         self.thumbnail_generator = ThreadedThumbnailGenerator()
         if not exists(self.thumbdir):
@@ -265,7 +250,7 @@ class FileChooserThumbView(FileChooserController):
 
     def _create_entry_widget(self, ctx):
         # instantiate the widget
-        widget = super(FileChooserThumbView, self)._create_entry_widget(ctx)
+        widget = super(StudioFileChooserThumbView, self)._create_entry_widget(ctx)
 
         kctx = QueryDict(ctx)
         # default icon
@@ -581,7 +566,7 @@ if __name__ == "__main__":
     from kivy.uix.label import Label
 
     box = BoxLayout(orientation="vertical")
-    fileChooser = FileChooserThumbView(thumbsize=128)
+    fileChooser = StudioFileChooserThumbView(thumbsize=128)
     label = Label(markup=True, size_hint_y=None)
     fileChooser.mylabel = label
 
