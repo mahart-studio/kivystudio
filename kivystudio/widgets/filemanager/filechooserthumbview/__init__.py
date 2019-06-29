@@ -68,6 +68,7 @@ Builder.load_string("""
 
         FileStack_:
             id: stacklayout
+            filechooser: root
             width: scrollview.width
             size_hint_y: None
             height: self.minimum_height
@@ -186,8 +187,13 @@ class IconWidget_(GridLayout):
             
 
 class FileStack_(HighlightBehavior, FocusBehavior, StackLayout):
-    pass
-
+    
+    # overiding enter from highlightbehavior
+    def do_enter(self):
+        new_path = self.current_highlighted_child.path
+        if new_path=='../': # move back
+            new_path = os.path.dirname(self.filechooser.path)
+        self.filechooser.path = new_path
 
 class FileChooserThumbView(FileChooserController):
     '''Implementation of :class:`FileChooserController` using an icon view

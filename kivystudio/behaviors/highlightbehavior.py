@@ -186,9 +186,11 @@ class HighlightBehavior(object):
         else:
             raise Exception('invalid highlight_orientation %s'%self.highlight_orientation)
 
-    def do_ctrl_up(self):
+    def do_enter(self):
         pass
 
+    def do_ctrl_up(self):
+        pass
     def do_shift_up(self):
         pass
     def do_shift_down(self):
