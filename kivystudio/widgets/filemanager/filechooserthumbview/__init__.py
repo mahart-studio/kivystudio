@@ -191,9 +191,12 @@ class FileStack_(HighlightBehavior, FocusBehavior, StackLayout):
     # overiding enter from highlightbehavior
     def do_enter(self):
         new_path = self.current_highlighted_child.path
-        if new_path=='../': # move back
-            new_path = os.path.dirname(self.filechooser.path)
-        self.filechooser.path = new_path
+        if os.path.isdir(new_path):
+            if new_path=='../': # move back
+                new_path = os.path.dirname(self.filechooser.path)
+            self.filechooser.path = new_path
+        elif os.path.isfile(new_path):
+            self.filechooser.dispatch('on_file_select', new_path)
 
 class FileChooserThumbView(FileChooserController):
     '''Implementation of :class:`FileChooserController` using an icon view
