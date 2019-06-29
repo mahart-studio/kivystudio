@@ -14,7 +14,7 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
      Number, Operator, Generic, Token, Whitespace
 
 
-class NativeStyle(Style):
+class NativeTweakStyle(Style):
     """
     Pygments version of the "native" vim theme.
     """
