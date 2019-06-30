@@ -1,26 +1,34 @@
-import os
-import sys
+import os, sys
 import traceback
-
+from threading import Thread
+from functools import partial
 try:
     from importlib import reload
 except:
     pass
 
 from kivy.lang import Builder
+from kivy.clock import mainthread
 from kivy.resources import resource_add_path, resource_remove_path
 
 from kivystudio.components.emulator_area import emulator_area
 
-def emulate_file(filename):
+def emulate_file(filename, threaded=False):
     root=None
 
     dirname=os.path.dirname(filename)
     sys.path.append(dirname)
     resource_add_path(dirname)
 
-    emulator_area().screen_display.screen.clear_widgets()    
+    emulator_area().screen_display.screen.clear_widgets()
 
+    if threaded:
+        Thread(target=partial(start_emulation, filename, threaded=threaded)).start()
+    else:
+        start_emulation(filename, threaded=threaded)
+
+def start_emulation(filename, threaded=False):
+    root = None
     if os.path.splitext(filename)[1] =='.kv':    # load the kivy file directly
         try:    # cahching error with kivy files
             Builder.unload_file(filename)
@@ -35,16 +43,24 @@ def emulate_file(filename):
         try:    # cahching error with python files
             root = load_py_file(filename)
         except:
-            traceback.print_exc()
+            traceback.print_exc()        
             print("You python file has a problem")
 
     if root:
-        emulator_area().screen_display.screen.add_widget(root)
-    else:
-        pass
+        if threaded:
+            emulation_done(root, filename)
+        else:
+            emulator_area().screen_display.screen.add_widget(root)
 
+    dirname=os.path.dirname(filename)
     sys.path.pop()
     resource_remove_path(dirname)
+
+@mainthread
+def emulation_done(root, filename):
+    if root:
+        emulator_area().screen_display.screen.add_widget(root)
+
 
 def load_defualt_kv(filename):
     app_cls_name = get_app_cls_name(filename)
@@ -59,7 +75,6 @@ def load_defualt_kv(filename):
         file_dir = os.path.dirname(filename)
         kv_filename = os.path.join(file_dir, kv_name+'.kv')
 
-        print('kv file '+ str(os.path.exists(kv_filename)) + ' exsits')
         if os.path.exists(kv_filename):
             try:    # cahching error with kivy files
                 Builder.unload_file(kv_filename)
@@ -138,9 +153,8 @@ def import_from_dir(filename):
     sys.path = [dirname] + sys.path
 
     import_word = os.path.splitext(file)[0]
-    return __import__(import_word)
-
-    sys.path = sys.path[1:]
+    imported = __import__(import_word)
+    return imported
 
 
 

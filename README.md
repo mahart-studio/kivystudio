@@ -64,8 +64,7 @@ if __name__ == '__main__':
 * Finally, enter [Ctrl-S].
 * Right click on file tab
 * clcik set for emulation
-* then, enter [Ctrl-R]. to see the output,
-or you can set auto-emulation
+* then, enter [Ctrl-R]. to see the output, or you can set auto-emulation
 * To switch screen use the [Ctrl] + [Tab] to do so
 
 <p align="center">

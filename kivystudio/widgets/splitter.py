@@ -3,7 +3,7 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.properties import BooleanProperty
 
-from behaviors.hoverbehavior import HoverBehavior
+from kivystudio.behaviors import HoverBehavior
 
 Builder.load_string('''
 #: import Factory kivy.factory.Factory

@@ -7,19 +7,17 @@ from kivy.clock import Clock
 from kivy.properties import (StringProperty,
                             ObjectProperty,
                             BooleanProperty)
-
-from kivystudio.behaviors import HoverBehavior
+from kivystudio.behaviors import HoverInfoBehavior
 from kivystudio.behaviors import HighlightBehavior
-from kivystudio.widgets.iconlabel import HoverIconButtonLabel
+from kivystudio.widgets.iconlabel import IconButtonLabel
 from kivystudio.widgets.rightclick_drop import RightClickDrop
-from kivystudio.tools import infolabel
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
 from kivystudio.components.emulator_area import emulator_area
 
 rightclick_dropdown = [None]
 
-class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
+class TabToggleButton(HoverInfoBehavior, ToggleButtonBehavior, BoxLayout):
 
     filename = StringProperty('')
 
@@ -29,6 +27,9 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super(TabToggleButton, self).__init__(**kwargs)
+        # set the info attr because filename could change
+        self.info_text_attr = 'filename'
+
         if rightclick_dropdown[0] is None:
             self.rightclick_dropdown = CodeTabDropDown()
             rightclick_dropdown[0] = self.rightclick_dropdown
@@ -52,20 +53,6 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
         elif self.state=='normal':
             self.ids.indicator.source =''
  
-    def on_parent(self, *a):
-        if self.parent is None:
-            infolabel.remove_info_on_mouse()
-        return super(TabToggleButton, self).on_parent(*a)
-
-    def on_hover(self, *a):
-        if self.hover:
-            Clock.schedule_once(self.show_label_info,1)
-        else:
-            Clock.unschedule(self.show_label_info)
-            infolabel.remove_info_on_mouse()
-
-    def show_label_info(self,dt):
-        infolabel.show_info_on_mouse(self.filename)
 
     def on_touch_down(self,touch):
         if self.collide_point(*touch.pos):
@@ -76,6 +63,9 @@ class TabToggleButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
 
         if touch.button == 'left':
             return super(TabToggleButton, self).on_touch_down(touch)
+
+    def __str__(self):
+        return self.filename
 
 
 class CodeTabDropDown(HighlightBehavior, RightClickDrop):
@@ -98,7 +88,7 @@ class CodeTabDropDown(HighlightBehavior, RightClickDrop):
         emulator_area().emulation_file=self.tab.filename
 
 
-class TabPannelIndicator(HoverIconButtonLabel):
+class TabPannelIndicator(IconButtonLabel):
         
     def on_hover(self, *a):
         if self.hover:
@@ -112,3 +102,5 @@ class TabPannelIndicator(HoverIconButtonLabel):
         if not self.hover and self.parent.saved and self.parent.state=='down':
             self.text = '%s' % (icon('fa-close'))
             self.font_size = '16dp'
+
+        return super(TabPannelIndicator, self).on_hover(*a)
