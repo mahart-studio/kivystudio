@@ -34,11 +34,11 @@
     ToggleMenuButton:
         text: 'Auto Save'
         on_parent:
-            if app.user_settings.get('file-settings')['auto_save']: self.state='down'
-            else: self.state='normal'
+            if studio_app().user_settings.get('file-settings')['auto_save']: self.state='down'
+            else: studio_app().state='normal'
         on_state:
-            if self.state=='down': app.user_settings.put('file-settings', auto_save=True)
-            else: app.user_settings.put('file-settings', auto_save=False)
+            if self.state=='down': studio_app().user_settings.put('file-settings', auto_save=True)
+            else: studio_app().user_settings.put('file-settings', auto_save=False)
 
     MenuButton:
         on_release: root.save_as()

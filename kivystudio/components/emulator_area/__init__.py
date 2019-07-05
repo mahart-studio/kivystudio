@@ -85,7 +85,6 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
             root = self.former_screen.root_widget
             if root:
                 self.former_screen.clear_widgets()
-                # self.children[0].container.remove_widget(child)
                 screen.add_widget(root)
 
         # now add new screen 

@@ -98,8 +98,8 @@
         text: 'Auto emulation'
         on_parent: root.default_emulation(self)
         on_state:
-            if self.state=='down': app.user_settings.put('emulator-settings', auto_emulate=True)
-            else: app.user_settings.put('emulator-settings', auto_emulate=False)
+            if self.state=='down': studio_app().user_settings.put('emulator-settings', auto_emulate=True)
+            else: studio_app().user_settings.put('emulator-settings', auto_emulate=False)
     ToggleMenuButton:
         text: 'Set file for Emulation'
         on_state:

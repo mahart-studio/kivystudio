@@ -28,7 +28,7 @@ resource_add_path(os.path.join(file_path, 'file_formats'))
 Builder.load_file(os.path.join(file_path,'main.kv'))
 
 
-filepath_for_cool_icons ='/usr/share/icons/Vibrancy-Kali/apps/64'
+# filepath_for_cool_icons ='/usr/share/icons/Vibrancy-Kali/apps/64'
 
 
 class SideSelector_(HighlightBehavior, FocusBehavior, GridLayout):

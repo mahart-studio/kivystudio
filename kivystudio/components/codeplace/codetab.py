@@ -100,8 +100,8 @@ class CodeTabDropDown(RightClickDrop):
     @mainthread
     def default_emulation(self, btn):
         if btn.parent:
-            from kivystudio.main import KivyStudio
-            app = KivyStudio.get_running_app()
+            from kivystudio import get_kivystudio_app
+            app = get_kivystudio_app()
             if app.user_settings.get('emulator-settings')['auto_emulate']: btn.state='down'
             else: btn.state='normal'
 
