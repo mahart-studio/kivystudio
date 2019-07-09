@@ -25,8 +25,7 @@ from kivy.resources import resource_add_path
 resource_add_path(os.path.join(file_path, 'images'))
 resource_add_path(os.path.join(file_path, 'file_formats'))
 
-Builder.load_file(os.path.join(file_path,'main.kv'))
-
+Builder.load_file(os.path.join(file_path,'filemanager.kv'))
 
 # filepath_for_cool_icons ='/usr/share/icons/Vibrancy-Kali/apps/64'
 
@@ -206,22 +205,22 @@ class FileManager(ModalView):
             self.dismiss()
 
     def on_finished(self, path):
-        self.callback(path)
+        self.on_selection([path])
         self.dismiss()
 
-    def open_file(self, path='', callback=None):
+    def open_file(self, path='', on_selection=None):
         self.mode = 'open_file'
-        self.callback = callback
+        self.on_selection = on_selection
         self.open()
 
-    def save_file(self, path='', callback=None):
+    def save_file(self, path='', on_selection=None):
         self.mode = 'save_file'
-        self.callback = callback
+        self.on_selection = on_selection
         self.open()
         
-    def choose_dir(self, path='', callback=None):
+    def choose_dir(self, path='', on_selection=None):
         self.mode = 'choose_dir'
-        self.callback = callback
+        self.on_selection = on_selection
         self.open()
 
 filemanager = FileManager()
