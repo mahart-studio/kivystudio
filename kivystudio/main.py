@@ -9,16 +9,17 @@ from kivy.storage.jsonstore import JsonStore
 
 from kivy.app import App
 from os.path import dirname, join
-from kivystudio.tools import iconfonts
 from kivy.lang import Builder
 
-
 filepath = dirname(__file__)
+if __name__ == "__main__":
+    Builder.load_file(join(filepath,'main.kv'))
+
+from kivystudio.tools import iconfonts
 iconfonts.register('awesome_font',
     join(filepath,'resources/font-awesome.ttf'),
     join(filepath, 'resources/font-awesome.fontd'))
 
-Builder.load_file(join(filepath,'main.kv'))
 
 from kivystudio.assembler import Assembler
 

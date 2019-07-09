@@ -1,11 +1,9 @@
-from kivy.uix.dropdown import DropDown
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.widgets.dropdown import DropDownBase
-from kivystudio.widgets.filemanager import filemanager
 from kivystudio.tools import quicktools
 
 import os

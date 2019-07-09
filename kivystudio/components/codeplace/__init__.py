@@ -11,10 +11,16 @@ from kivy.extras.highlight import KivyLexer
 
 
 from kivystudio.widgets.codeinput import FullCodeInput
-from kivystudio.widgets.filemanager import filemanager
 from kivystudio.widgets.splitter import StudioSplitter
 from kivystudio.components.welcome import WelcomeTab
 from .codetab import TabToggleButton
+
+from kivy.logger import Logger
+try:
+    from plyer import filechooser as filemanager
+except:
+    from kivystudio.widgets.filemanager import filemanager
+    Logger.warning("plyer isn't installed")
 
 from pygments import lexers
 import os
@@ -116,15 +122,17 @@ class CodeScreen(Screen):
                 self.code_field.lexer = get_lexer_for_file(self.name)
                 
         if self.code_field.tab_type=='new_file' and not auto_save:
-            filemanager.save_file(path='/root', callback=self.save_new_file)
+            filemanager.save_file(path='/root', on_selection=self.save_new_file)
 
 
-    def save_new_file(self, path):
-        self.code_field.tab.filename=path
-        self.code_field.tab.text = os.path.split(path)[1]
-        self.code_field.tab_type='code'
-        self.name=path
-        self.save_file(new_file=True)
+    def save_new_file(self, paths):
+        if paths:
+            path=paths[0]
+            self.code_field.tab.filename=path
+            self.code_field.tab.text = os.path.split(path)[1]
+            self.code_field.tab_type='code'
+            self.name=path
+            self.save_file(new_file=True)
 
     def add_widget(self, widget, tab_type='code'):
         super(CodeScreen, self).add_widget(widget)
