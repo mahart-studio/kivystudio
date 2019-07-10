@@ -95,13 +95,7 @@
             text: 'Ctrl+W'
             type: 'shortcut'
     ToggleMenuButton:
-        text: 'Auto emulation'
-        on_parent: root.default_emulation(self)
-        on_state:
-            if self.state=='down': studio_app().user_settings.put('emulator-settings', auto_emulate=True)
-            else: studio_app().user_settings.put('emulator-settings', auto_emulate=False)
-    ToggleMenuButton:
-        text: 'Set file for Emulation'
+        text: 'Set file for emulation'
         on_state:
             if self.state=='down': root.set_for_emulation()
             else: root.set_for_emulation(remove=True)

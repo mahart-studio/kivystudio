@@ -97,13 +97,6 @@ class CodeTabDropDown(RightClickDrop):
         self.dismiss()
         self.tab.close_tab()
 
-    @mainthread
-    def default_emulation(self, btn):
-        if btn.parent:
-            from kivystudio import get_kivystudio_app
-            app = get_kivystudio_app()
-            if app.user_settings.get('emulator-settings')['auto_emulate']: btn.state='down'
-            else: btn.state='normal'
 
 class TabPannelIndicator(IconButtonLabel):
         

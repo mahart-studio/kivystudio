@@ -35,11 +35,18 @@
         text: 'Auto Save'
         on_parent:
             if studio_app().user_settings.get('file-settings')['auto_save']: self.state='down'
-            else: studio_app().state='normal'
+            else: self.state='normal'
         on_state:
             if self.state=='down': studio_app().user_settings.put('file-settings', auto_save=True)
             else: studio_app().user_settings.put('file-settings', auto_save=False)
-
+    ToggleMenuButton:
+        text: 'Auto emulation'
+        on_parent:
+            if studio_app().user_settings.get('emulator-settings')['auto_emulate']: self.state='down'
+            else: self.state='normal'
+        on_state:
+            if self.state=='down': studio_app().user_settings.put('emulator-settings', auto_emulate=True)
+            else: studio_app().user_settings.put('emulator-settings', auto_emulate=False)
     MenuButton:
         on_release: root.save_as()
         MenuLabel:
