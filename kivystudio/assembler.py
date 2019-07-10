@@ -6,12 +6,7 @@ import os
 import sys
 import traceback
 
-from kivy.logger import Logger
-try:
-    from plyer import filechooser as filemanager
-except:
-    from kivystudio.widgets.filemanager import filemanager
-    Logger.warning("plyer isn't installed")
+from kivystudio.widgets.filemanager import filemanager
 
 from kivystudio.parser import emulate_file
 

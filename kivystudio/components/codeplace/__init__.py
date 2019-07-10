@@ -12,15 +12,12 @@ from kivy.extras.highlight import KivyLexer
 
 from kivystudio.widgets.codeinput import FullCodeInput
 from kivystudio.widgets.splitter import StudioSplitter
-from kivystudio.components.welcome import WelcomeTab
-from .codetab import TabToggleButton
+from kivystudio.widgets.filemanager import filemanager
+from kivystudio.tools import quicktools
 
-from kivy.logger import Logger
-try:
-    from plyer import filechooser as filemanager
-except:
-    from kivystudio.widgets.filemanager import filemanager
-    Logger.warning("plyer isn't installed")
+from .tabs.welcometab import WelcomeTab
+from .tabs.codetab import TabToggleButton
+from .tabs.errortab import FileErrorTab
 
 from pygments import lexers
 import os
@@ -33,7 +30,6 @@ def get_tab_from_group(filename):
         for tab in all_tabs:
             if tab.filename == filename:
                 return tab
-                # break
 
 
 def get_lexer_for_file(filename):
@@ -179,7 +175,7 @@ class CodePlace(StudioSplitter):
 
     def add_widget(self, widget, tab_type=''):
         if len(self.children) > 0:
-            if tab_type =='code' or tab_type =='new_file':
+            if tab_type =='code' or tab_type =='new_file' or tab_type=='unsupported':
                 tab = TabToggleButton(text=os.path.split(widget.filename)[1],
                                     filename=widget.filename)
                 widget.tab = tab
@@ -225,11 +221,16 @@ class CodePlace(StudioSplitter):
             self.new_empty_tab -= 1
 
     def add_code_tab(self, filename='', tab_type='code'):
-        if filename:
+        if filename and os.path.exists(filename):
+            if not quicktools.is_binary(filename):
+                widget=FullCodeInput(filename=filename)
+            else:
+                widget=FileErrorTab(filename=filename)
+                tab_type='unsupported'
             try:
                 self.code_manager.get_screen(filename)
             except ScreenManagerException:   # then it is not added
-                self.add_widget(FullCodeInput(filename=filename), tab_type=tab_type)
+                self.add_widget(widget, tab_type=tab_type)
 
         elif tab_type=='new_file':   # a new tab
             self.new_empty_tab += 1

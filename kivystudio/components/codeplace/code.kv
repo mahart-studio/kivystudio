@@ -123,3 +123,13 @@
     MenuButton:
         MenuLabel:
             text: 'Split Right'
+
+
+<FileErrorTab>:
+    text: "This file is not displayed because it is either binary or uses an unsupported text encoding."
+    canvas.before:
+        Color:
+            rgba: (0.12, 0.12, 0.12, 1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
