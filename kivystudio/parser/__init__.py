@@ -13,7 +13,7 @@ from kivy.resources import resource_add_path, resource_remove_path
 
 from kivystudio.components.emulator_area import emulator_area
 
-def emulate_file(filename, threaded=True):
+def emulate_file(filename, threaded=False):
     root=None
     if not os.path.exists(filename):
         return
