@@ -20,7 +20,7 @@ def emulate_file(filename, threaded=True):
 
     dirname=os.path.dirname(filename)
     sys.path.append(dirname)
-    # os.chdir(dirname)
+    os.chdir(dirname)
     resource_add_path(dirname)
 
     emulator_area().screen_display.screen.clear_widgets()
