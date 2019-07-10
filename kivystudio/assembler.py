@@ -6,9 +6,9 @@ import os
 import sys
 import traceback
 
+from kivystudio.widgets.filemanager import filemanager
 
 from kivystudio.parser import emulate_file
-from kivystudio.widgets.filemanager import filemanager
 
 from kivystudio.components.screens import AndroidPhoneScreen
 from kivystudio.components.topmenu import TopMenu
@@ -21,8 +21,9 @@ from kivystudio.components.emulator_area import emulator_area
 class Assembly(BoxLayout):
     pass
 
-def add_new_tab(path):
-    code_place.add_code_tab(filename=path)
+def add_new_tab(paths):
+    for path in paths:
+        code_place.add_code_tab(filename=path)
 
 def open_folder(*a):
     print(a)
@@ -36,7 +37,7 @@ def key_down(self, *args):
         pass
 
     elif args[0] == 111 and args[3] == ['ctrl']:    # open file Ctrl+O
-        filemanager.open_file(path='/root',callback=add_new_tab)
+        filemanager.open_file(path='/root',on_selection=add_new_tab)
 
     elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')

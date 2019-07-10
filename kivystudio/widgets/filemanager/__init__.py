@@ -1,5 +1,6 @@
 
-from .filechooserthumbview import FileChooserThumbView
+from .filechooserthumbview import StudioFileChooserThumbView
+
 
 from kivy.uix.modalview import ModalView
 from kivy.uix.behaviors import FocusBehavior
@@ -24,10 +25,9 @@ from kivy.resources import resource_add_path
 resource_add_path(os.path.join(file_path, 'images'))
 resource_add_path(os.path.join(file_path, 'file_formats'))
 
-Builder.load_file(os.path.join(file_path,'main.kv'))
+Builder.load_file(os.path.join(file_path,'filemanager.kv'))
 
-
-filepath_for_cool_icons ='/usr/share/icons/Vibrancy-Kali/apps/64'
+# filepath_for_cool_icons ='/usr/share/icons/Vibrancy-Kali/apps/64'
 
 
 class SideSelector_(HighlightBehavior, FocusBehavior, GridLayout):
@@ -125,7 +125,7 @@ class FileManager(ModalView):
 
     def handle_key(self, keyboard, key, codepoint, text, modifier, *args):
         if key == 8:    # if user press the backspace reverse dir
-            if not(self.save_widget.ids.input.focus):
+            if self.mode!='save_file' or (hasattr(self,'save_widget') and not(self.save_widget.ids.input.focus)):
                 self.reverse_dir()
 
         elif key == 27:
@@ -205,22 +205,22 @@ class FileManager(ModalView):
             self.dismiss()
 
     def on_finished(self, path):
-        self.callback(path)
+        self.on_selection([path])
         self.dismiss()
 
-    def open_file(self, path='', callback=None):
+    def open_file(self, path='', on_selection=None):
         self.mode = 'open_file'
-        self.callback = callback
+        self.on_selection = on_selection
         self.open()
 
-    def save_file(self, path='', callback=None):
+    def save_file(self, path='', on_selection=None):
         self.mode = 'save_file'
-        self.callback = callback
+        self.on_selection = on_selection
         self.open()
         
-    def choose_dir(self, path='', callback=None):
+    def choose_dir(self, path='', on_selection=None):
         self.mode = 'choose_dir'
-        self.callback = callback
+        self.on_selection = on_selection
         self.open()
 
 filemanager = FileManager()

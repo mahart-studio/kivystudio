@@ -1,3 +1,5 @@
+#: import icon kivystudio.tools.iconfonts.icon
+
 <FileTopMenu>:
     auto_width: False
     width: '260dp'
@@ -29,6 +31,22 @@
         MenuLabel:
             text: 'Ctrl+S'
             type: 'shortcut'
+    ToggleMenuButton:
+        text: 'Auto Save'
+        on_parent:
+            if studio_app().user_settings.get('file-settings')['auto_save']: self.state='down'
+            else: self.state='normal'
+        on_state:
+            if self.state=='down': studio_app().user_settings.put('file-settings', auto_save=True)
+            else: studio_app().user_settings.put('file-settings', auto_save=False)
+    ToggleMenuButton:
+        text: 'Auto emulation'
+        on_parent:
+            if studio_app().user_settings.get('emulator-settings')['auto_emulate']: self.state='down'
+            else: self.state='normal'
+        on_state:
+            if self.state=='down': studio_app().user_settings.put('emulator-settings', auto_emulate=True)
+            else: studio_app().user_settings.put('emulator-settings', auto_emulate=False)
     MenuButton:
         on_release: root.save_as()
         MenuLabel:
@@ -72,3 +90,32 @@
         Rectangle:
             size: self.size
             pos: self.pos
+
+<ToggleMenuButton>:
+    size_hint_y: None
+    height: '30dp'
+    canvas_color: 1,1,1,1
+    text_colors: ((.1,.1,.1,1), (.5,.5,.5,1))
+    text: ''
+    on_hover:
+        if self.hover: self.canvas_color = .2,.5,1,1; self.text_colors=((1,1,1,1),(1,1,1,1))
+        else: self.canvas_color = 1,1,1,1; self.text_colors=((0,0,0,1), (.5,.5,.5,1))
+    on_state: tick.state=self.state
+    canvas.before:
+        Color:
+            rgba: self.canvas_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    MenuLabel:
+        text: root.text
+    IconToggleLabel:
+        size_hint_x: None
+        width: '48dp'
+        id: tick
+        color: .2,.2,.2,1
+        on_state:
+            if self.state=='normal': self.text=''
+            else: self.text = icon('fa-check', 16)
+        # on_parent: self.state='down'

@@ -50,15 +50,21 @@
 
 <ScreenContainer>:
     source: ''
-    size_hint: None, None
-    pos_hint: {'center_y': .5, 'center_x': .5}
-    canvas.before:
-        PushMatrix:
-        Rotate:
-            angle: root.parent.angle if self.parent else 0
-            origin: (0,0,1)
-        BorderImage:
-            source: root.source
-            size: root.parent.border_size if self.parent else (0,0)
-            pos: root.parent.border_pos if self.parent else (0,0)
-        PopMatrix:
+    FloatLayout:
+        source: root.source
+        size_hint: None, None
+        pos_hint: {'center_y': .5, 'center_x': .5}
+        canvas.before:
+            PushMatrix:
+            Rotate:
+                angle: root.parent.angle if self.parent else 0
+                origin: (0,0,1)
+            BorderImage:
+                source: root.source
+                size: root.parent.border_size if self.parent else (0,0)
+                pos: root.parent.border_pos if self.parent else (0,0)
+            PopMatrix:
+    ScreenManager:
+        id: inner_container
+        Screen:
+            name: 'container'

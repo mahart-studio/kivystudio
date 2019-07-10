@@ -33,7 +33,11 @@ class TopMenu(GridLayout):
             self.dropdown.dismiss()
 
     def drop_menu(self, menu_name, index):
-        menu = getattr(dropmenu, menu_name)()
+        if not hasattr(self, menu_name):
+            print(menu_name)
+            setattr(self, menu_name, getattr(dropmenu, menu_name)())
+        
+        menu = getattr(self, menu_name)
         menu.open(self.children[index])
 
 

@@ -10,6 +10,8 @@ from kivystudio.behaviors import HoverBehavior
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.widgets.rightclick_drop import RightClickDrop
 
+from .styles import NativeTweakStyle
+
 class CodeInputDropDown(RightClickDrop):
 
     def __init__(self, codeinput, **kwargs):
@@ -55,14 +57,28 @@ class InnerCodeInput(HoverBehavior, CodeInput):
         self.style_name = value
 
     def on_style_name(self, *args):
-        super(InnerCodeInput, self).on_style_name(*args)
+        self.style = NativeTweakStyle
         self.background_color = get_color_from_hex(self.style.background_color)
         self._trigger_refresh_text()
 
     def on_text(self, *args):
         if self.focus:
             self.parent.saved = False
+            self.check_settings()
 
+    def check_settings(self):
+        # import kivystudio app to not confuse it with current emulating app
+        from kivystudio import get_kivystudio_app
+        app =  get_kivystudio_app()
+        auto_save = app.user_settings.get('file-settings')['auto_save']
+        auto_emulate = app.user_settings.get('emulator-settings')['auto_emulate']
+        if auto_save:
+            self.parent.parent.save_file(auto_save=True)
+        if auto_emulate:
+            from kivystudio.parser import emulate_file
+            from kivystudio.components.emulator_area import emulator_area
+            if emulator_area().emulation_file == self.parent.filename:
+                emulate_file(self.parent.filename)
 
     def on_focus(self, *a):
         if self.focus:

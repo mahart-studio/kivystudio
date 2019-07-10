@@ -1,3 +1,4 @@
+#: import split os.path.split
 
 <EmulatorArea>:
     orientation: 'vertical'
@@ -15,8 +16,10 @@
 
         Label:
             size_hint_x: None
-            width: '106dp'
-            text: 'main.py'
+            width: min(self.texture_size[0]+dp(7), dp(108))
+            text: split(root.emulation_file)[1]
+            shorten: True
+            shorten_from: 'right'
         IconButtonLabel:
             info_text: 'Zooom Out'
             color: .8,.8,.8,1
@@ -63,18 +66,6 @@
             size_hint_x: None
             width: '36dp'
             text: icon('fa-ellipsis-h')
-
-
-<EmulatorTab>:
-    size_hint_x: None
-    width: '100dp'
-    # allow_no_selection: False
-    group: 'emulator_tab'
-    font_size: '13.5dp'
-    color: .5,.5,.5,1
-    markup: True
-
-
 
 <ScreenDisplay>:
     name: 'Emulator'

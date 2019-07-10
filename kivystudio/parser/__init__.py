@@ -15,9 +15,12 @@ from kivystudio.components.emulator_area import emulator_area
 
 def emulate_file(filename, threaded=False):
     root=None
+    if not os.path.exists(filename):
+        return
 
     dirname=os.path.dirname(filename)
     sys.path.append(dirname)
+    os.chdir(dirname)
     resource_add_path(dirname)
 
     emulator_area().screen_display.screen.clear_widgets()

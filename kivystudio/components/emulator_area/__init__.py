@@ -85,23 +85,20 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
             root = self.former_screen.root_widget
             if root:
                 self.former_screen.clear_widgets()
-                # self.children[0].container.remove_widget(child)
                 screen.add_widget(root)
 
         # now add new screen 
         self.clear_widgets()
         self.add_widget(screen)
-        self.screen.bind(scale=lambda *args: setattr(self.screen, 'center', self.center))
         self.bind(center=self.screen.setter('center'))
         self.scaler.screen = screen
 
-instatance=[]
 
-
+instance=[]
 def emulator_area():
-    if instatance:
-        return instatance[0]
+    if instance:
+        return instance[0]
     else:
         emulator_area = EmulatorArea(size_hint_x=.45)
-        instatance.append(emulator_area)
+        instance.append(emulator_area)
         return emulator_area

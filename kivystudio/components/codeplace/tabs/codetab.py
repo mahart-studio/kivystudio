@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.image import Image
 from kivy.core.window import Window
-from kivy.clock import Clock
+from kivy.clock import Clock, mainthread
 from kivy.properties import (StringProperty,
                             ObjectProperty,
                             BooleanProperty)
@@ -64,11 +64,15 @@ class TabToggleButton(HoverInfoBehavior, ToggleButtonBehavior, BoxLayout):
         if touch.button == 'left':
             return super(TabToggleButton, self).on_touch_down(touch)
 
+    def close_tab(self):
+        self.parent.parent.parent.parent.remove_code_tab(self)
+
+
     def __str__(self):
         return self.filename
 
 
-class CodeTabDropDown(HighlightBehavior, RightClickDrop):
+class CodeTabDropDown(RightClickDrop):
 
     def __init__(self, **kwargs):
         super(CodeTabDropDown, self).__init__(**kwargs)
@@ -79,13 +83,19 @@ class CodeTabDropDown(HighlightBehavior, RightClickDrop):
             FocusBehavior.ignored_touch.append(touch)
         return super(CodeTabDropDown,self).on_touch_down(touch)
 
-
     def open(self, tab):
         self.tab=tab
         super(CodeTabDropDown, self).open()
 
-    def set_for_emulation(self):
-        emulator_area().emulation_file=self.tab.filename
+    def set_for_emulation(self, remove=False):
+        if not remove:
+            emulator_area().emulation_file=self.tab.filename
+        else:
+            emulator_area().emulation_file=''
+
+    def close_tab(self):
+        self.dismiss()
+        self.tab.close_tab()
 
 
 class TabPannelIndicator(IconButtonLabel):

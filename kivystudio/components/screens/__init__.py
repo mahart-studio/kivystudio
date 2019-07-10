@@ -1,8 +1,7 @@
 import os
 
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.base import runTouchApp as app
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty, NumericProperty, StringProperty, ListProperty
 from kivy.uix.scatter import Scatter
 from kivy.lang import Builder 
@@ -39,6 +38,8 @@ class ScreenScatter(Scatter):
     def add_widget(self, widget):
         if len(self.children) > 0:
             self.root_widget = widget
+            if widget.parent:
+                widget.parent.remove_widget(widget)
             self.container.add_widget(widget)
         else:
             super(ScreenScatter, self).add_widget(widget)
@@ -83,11 +84,6 @@ class ScreenScatter(Scatter):
     @property
     def set_size(self):
         pass
-
-    
-
-class ScreenContainer(RelativeLayout):
-    pass
 
 
 class IphoneScreen(ScreenScatter):
@@ -138,9 +134,26 @@ class AndroidPhoneScreen(ScreenScatter):
         return (self.container.width + dp(32), self.container.height + dp(152))
 
 
+class ScreenContainer(FloatLayout):
+
+    # overide
+    def add_widget(self,widget):
+        if len(self.children) > 1:
+            screen = self.ids.inner_container.get_screen('container')
+            screen.add_widget(widget)
+            # self.ids.inner_container.add_widget(screen)
+        else:
+            super(ScreenContainer,self).add_widget(widget)
+
+    # overide
+    def clear_widgets(self):
+        screen = self.ids.inner_container.get_screen('container')
+        screen.clear_widgets()
+
 Builder.load_file('screen.kv')
 
 
 
 if __name__ == "__main__":
+    from kivy.base import runTouchApp as app
     app(build)
