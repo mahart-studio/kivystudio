@@ -13,7 +13,7 @@
         bar_width: 0
         canvas.before:
             Color:
-                rgba: (0.12549019607843137, 0.12549019607843137, 0.12549019607843137, 1)
+                rgba: (0.12, 0.12, 0.125, 1)
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -59,10 +59,10 @@
         line_highlight_color: 1,1,.8,.1
         on_selection_text:
             if self.selection_text: self.line_highlight_color = 0,0,0,0
-            else: self.line_highlight_color = 1,1,.8,.1 
+            else: self.line_highlight_color = 1,1,.8,.1
         on_focus:
             if not self.focus: self.line_highlight_color = 0,0,0,0
-            else: self.line_highlight_color = 1,1,.8,.1 
+            else: self.line_highlight_color = 1,1,.8,.1
 
         # canvas to show highlighted line
         canvas.after:
@@ -146,3 +146,47 @@
         MenuLabel:
             text: 'Ctrl+V'
             type: 'shortcut'
+
+<CodeInputFind>:
+    size_hint: None,None
+    size: '230dp','40dp'
+    padding: '4dp'
+    canvas.before:
+        Color:
+            rgba: .2,.2,.2,1
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [dp(6),]
+            canvas.after:
+        Color:
+            rgba: .5,.5,.5,1
+        Line:
+            rounded_rectangle: [self.x,self.y,self.width,self.height,dp(6)]
+    SearchInput:
+        id: input
+        hint_text: 'search'
+        multiline: False
+        on_text_validate: root.find(input.text)
+    Label:
+        size_hint_x:None
+        width: self.texture_size[0]
+        id: found
+    IconButtonLabel:
+        text: '%s' %icon('fa-arrow-left')
+        size_hint_x:None
+        width: '32dp'
+        on_release: root.find_prev(input.text)
+        color: 1,1,1
+    IconButtonLabel:
+        text: '%s' %icon('fa-arrow-right')
+        size_hint_x: None
+        width: '32dp'
+        on_release: root.find_next(input.text)
+        color: 1,1,1
+    IconButtonLabel:
+        text: '%s' %icon('fa-close')
+        width: '32dp'
+        size_hint_x:None
+        color: 1,1,1
+        on_release: root.dismiss()
