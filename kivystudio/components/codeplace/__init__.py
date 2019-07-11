@@ -114,8 +114,8 @@ class CodeScreen(Screen):
                     fn.write(self.code_field.code_input.text)
     
             self.code_field.saved = True
-            if new_file:
-                self.code_field.lexer = get_lexer_for_file(self.name)
+        if new_file:
+            self.code_field.code_input.lexer = get_lexer_for_file(self.name)
                 
         if self.code_field.tab_type=='new_file' and not auto_save:
             filemanager.save_file(path='/root', on_selection=self.save_new_file)
@@ -208,9 +208,12 @@ class CodePlace(StudioSplitter):
             return True
 
         if args[0] == 119 and args[3] == ['ctrl']:   # close tab
-            name = self.code_manager.get_screen(self.code_manager.current).name
-            tab = get_tab_from_group(name)
-            self.remove_code_tab(tab)
+            try:
+                name = self.code_manager.get_screen(self.code_manager.current).name
+                tab = get_tab_from_group(name)
+                self.remove_code_tab(tab)
+            except ScreenManagerException:
+                pass
 
     def remove_code_tab(self, tab):
         self.tab_manager.remove_widget(tab)
