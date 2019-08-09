@@ -36,7 +36,7 @@ import string
 def is_binary(filename):
     s = open(filename).read(512)
     text_char = ''.join( list(map(chr, range(32,127))) + list('\n\r\t\b') )
-    _null_trans = string.maketrans('', '')
+    _null_trans = str.maketrans('', '')
 
     if not s: # empty files are considered text files
         return False
@@ -45,7 +45,9 @@ def is_binary(filename):
         # file with null bytes are likely binary
         return True
 
-    t = s.translate(_null_trans, text_char)
+    # t = s.translate(_null_trans, text_char)
+    # text = s.translate(str.maketrans('', '', string.punctuation))
+    t = s.translate(str.maketrans('', '', text_char))
     # if more than 30% are non-text charaters 
     # then it is considered binary
     if float(len(t))/float(len(s)) > 0.30:
