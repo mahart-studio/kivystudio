@@ -1,3 +1,4 @@
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.clock import Clock
@@ -19,7 +20,10 @@ from kivystudio.components.emulator_area import emulator_area
 
 
 class Assembly(BoxLayout):
-    pass
+    '''
+    Widget to assemble and structure 
+    all widgets
+    '''
 
 def add_new_tab(paths):
     for path in paths:
@@ -29,7 +33,8 @@ def open_folder(*a):
     print(a)
 
 
-def key_down(self, *args):
+def main_key_handler(self, *args):
+    '''' main keyboard and shortcut lisener '''
     if args[0] == 114 and args[3] == ['ctrl']:     # emulate file Ctrl+R
         Clock.schedule_once(lambda dt: emulate_file(emulator_area.emulation_file))
 
@@ -42,12 +47,11 @@ def key_down(self, *args):
     elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')
 
-
-
-Window.bind(on_key_down=key_down)
+Window.bind(on_key_down=main_key_handler)
 
 
 code_place = CodePlace()
+# add welcoming tab
 code_place.add_code_tab(tab_type='welcome')
 
 emulator_area = emulator_area()

@@ -20,6 +20,8 @@ Builder.load_string('''
 ''')
 
 class DropDownBase(HoverBehavior, DropDown):
+    ''' Base widget for DropDown widget.
+        usually when mouse is right clicked'''
     
     is_open = ObjectProperty(False)
     

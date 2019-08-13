@@ -1,7 +1,10 @@
+''' Etra Awesome CodeInput Mixin/Behavior
+'''
 
 class CodeExtraBehavior(object):
 
     def do_comment(self):
+        ' comment a line'
         if not self.selection_text:     # single line momment
             line = self._lines[self.cursor_row]
             self.do_one_line_comment(line)
@@ -9,22 +12,17 @@ class CodeExtraBehavior(object):
         else:   # multiline comment
             i = self._selection_from
             j = self._selection_to
-
             check_lines = list(filter(lambda line: line != '', self.selection_text.splitlines()))
             lines = self.selection_text.splitlines()
-
             if j > i:
                 # basically checking for lines that has a value
-
                 # move the cursor position
                 self.cursor = (0, self.cursor_row- len(lines))
-
                 # check if there are no comments in the  lines
                 if len(list(filter(lambda line: line.lstrip().startswith('#'), check_lines))) != len(check_lines):
                     self.do_multiline_comment(lines)
                 else:
                     self.uncomment_multiline(lines)
-
             else:
                 self.cursor = (0, self.cursor_row)
 
@@ -36,6 +34,7 @@ class CodeExtraBehavior(object):
 
 
     def do_multiline_comment(self, lines):
+        'comment multiple lines'
         closest = self.get_closest_indentation(lines)
         y_cur = self.cursor[1]
         for i, line in enumerate(lines):

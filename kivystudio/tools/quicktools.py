@@ -4,14 +4,19 @@ from kivystudio.widgets.filemanager import filemanager
 
 
 def open_new_file():
+    ''' open a new file on
+        the CodeInput '''
     from kivystudio.assembler import code_place
     code_place.add_code_tab(tab_type='new_file')
 
-def open_file():
+def open_file():    
+    ''' open a file (existing file) on
+        the CodeInput '''
     from kivystudio.assembler import add_new_tab
     filemanager.open_file(path='/root',on_selection=add_new_tab)
 
 def open_folder():
+    ''' open a folder '''
     from kivystudio.assembler import add_new_tab
     filemanager.open_folder(path='/root',on_selection=None)
 
@@ -19,10 +24,13 @@ def open_recent():
     pass
 
 def save():
+    ''' save the current opened
+        file '''
     from kivystudio.assembler import code_place
     code_place.code_manager.save_current_tab()
 
 def save_all():
+    ''' save all file currently opened '''
     from kivystudio.assembler import code_place
     code_place.code_manager.save_all_tabs()
 
@@ -34,6 +42,9 @@ def exit_window():
 
 import string
 def is_binary(filename):
+    ''' checks if a file is a binary file or not 
+        used to validate file before opening them in
+        the studio '''
     s = open(filename, 'rb').read(512)
     def func(num):
         return bytes(chr(num).encode('utf-8'))

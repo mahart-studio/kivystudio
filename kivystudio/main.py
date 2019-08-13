@@ -1,3 +1,7 @@
+'''
+KivyStudio main.py
+entry point for the Application
+'''
 
 import sys, os
 sys.path.append(os.pardir)
@@ -15,6 +19,7 @@ filepath = dirname(__file__)
 if __name__ == "__main__":
     Builder.load_file(join(filepath,'main.kv'))
 
+# registering custom icons
 from kivystudio.tools import iconfonts
 iconfonts.register('awesome_font',
     join(filepath,'resources/font-awesome.ttf'),
@@ -40,8 +45,9 @@ class KivyStudio(App):
         put('emulator-settings', auto_emulate=False)
 
 studio_app = KivyStudio()
+
 def main():
     studio_app.run()
 
 if __name__ == "__main__":
-    studio_app.run()
+    main()
