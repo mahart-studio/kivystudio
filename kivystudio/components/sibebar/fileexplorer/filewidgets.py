@@ -1,3 +1,4 @@
+from kivy.uix.treeview import TreeViewNode
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.properties import ListProperty, StringProperty, BooleanProperty
@@ -7,63 +8,60 @@ from kivystudio.behaviors import HoverBehavior
 
 import os
 
-class FileWidgetBase(HoverBehavior, BoxLayout):
+class TreeViewFile(HoverBehavior, TreeViewNode, BoxLayout):
 
     hover_color = ListProperty([.15,.15,.15,0])
+    ' default color when the mouse hovers over the widget'
 
-    file_path = StringProperty('')
+    path = StringProperty('')
+    ' path to the file or directory '
 
     display_name = StringProperty('')
+    ' name displayed for the file or directory '
+
+    display_icon = StringProperty('')
+    ''' icon displayed on the right side of the file
+    or directory '''
 
     def __init__(self, **k):
-        super(FileWidgetBase, self).__init__(**k)
+        super(TreeViewFile, self).__init__(**k)
 
     def on_hover(self, *a):
         if self.hover:
             self.hover_color = (.14,.14,.14,.8)
-        else: 
+        else:
             self.hover_color = (.15,.15,.15,0)
 
-    def on_file_path(self, *a):
-        self.display_name = os.path.split(self.file_path)[1]
+    def on_path(self, *a):
+        if os.path.isdir(self.path):
+            self.display_icon = icon('fa-caret-right',16)
+        elif os.path.isfile(self.path):
+            self.display_icon = icon('fa-file-code-o', 16)
 
+        self.display_name = os.path.split(self.path)[1]
 
-class FileWidget(FileWidgetBase):
-
-    file_icon = StringProperty(icon('fa-file-code-o', 16))
-
-class DirWidget(FileWidgetBase):
-
-    is_open = BooleanProperty(False)
 
 
 Builder.load_string('''
 #: import icon kivystudio.tools.iconfonts.icon
 
-<FileWidgetBase>:
+<TreeViewFile>:
     size_hint_y: None
     height: '24dp'
     canvas.before:
+        Clear
         Color:
             rgba: self.hover_color
         Rectangle:
             size: self.size
             pos: self.pos
-
-<FileWidget>:
+    canvas.after:
+        Clear
     IconLabel:
         size_hint_x: None
-        width: '48dp'
-        text: root.file_icon
+        width: '24dp'
+        text: root.display_icon
         color: .2,.5,1,1
-    Label:
-        text: root.display_name
-
-<DirWidget>:
-    IconLabel:
-        size_hint_x: None
-        width: '32dp'
-        text: icon('fa-caret-right', 16)
     Label:
         text: root.display_name
 ''')
