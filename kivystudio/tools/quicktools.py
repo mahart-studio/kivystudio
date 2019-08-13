@@ -48,7 +48,9 @@ def is_binary(filename):
         # file with null bytes are likely binary
         return True
 
-    t = s.translate(_null_trans, text_char)
+    # t = s.translate(_null_trans, text_char)
+    # text = s.translate(str.maketrans('', '', string.punctuation))
+    t = s.translate(str.maketrans('', '', text_char))
     # if more than 30% are non-text charaters 
     # then it is considered binary
     if float(len(t))/float(len(s)) > 0.30:
