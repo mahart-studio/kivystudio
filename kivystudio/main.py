@@ -2,7 +2,7 @@
 import sys, os
 sys.path.append(os.pardir)
 
-from kivy.config import Config
+# from kivy.config import Config
 # Config.set('modules', 'monitor', '')
 
 from kivy.storage.jsonstore import JsonStore

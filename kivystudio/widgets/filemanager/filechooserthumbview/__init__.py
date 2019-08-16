@@ -25,6 +25,7 @@ tempfile to generate it randomly.
 # Thanks to allan-simon for making the code more readable and less "spaghetti" :)
 
 import os
+from os.path import abspath, dirname
 import mimetypes
 
 #(enable for debugging)
@@ -120,19 +121,16 @@ Builder.load_string("""
 DEFAULT_THEME = 'atlas://data/images/defaulttheme/'
 FILE_ICON = DEFAULT_THEME + 'filechooser_file'
 FOLDER_ICON = DEFAULT_THEME + 'filechooser_folder'
-MP3_ICON = DEFAULT_THEME + 'filechooser_file'
-VIDEO_ICON=DEFAULT_THEME + 'filechooser_file'
-PYTHON_ICON=DEFAULT_THEME + 'filechooser_file'
-JAVA_ICON=KV_ICON=DEFAULT_THEME + 'filechooser_file'
 UNKWON_ICON=DEFAULT_THEME + 'filechooser_file'
 
-MP3_ICON = 'music.png'
-VIDEO_ICON = 'video.png'
-PYTHON_ICON = 'python.png'
-KV_ICON = 'kv.png'
-JAVA_ICON = 'java.png'
-PDF_ICON = 'pdf.png'
-ARCHIVE_ICON = 'archive.png'
+ICON_PATH = dirname(dirname(__file__)) + '/file_formats/'
+MP3_ICON = ICON_PATH + 'music.png'
+VIDEO_ICON = ICON_PATH + 'video.png'
+PYTHON_ICON = ICON_PATH + 'python.png'
+KV_ICON = ICON_PATH + 'kv.png'
+JAVA_ICON = ICON_PATH + 'java.png'
+PDF_ICON = ICON_PATH + 'pdf.png'
+ARCHIVE_ICON = ICON_PATH + 'archive.png'
 # UNKWON_ICON = '.png'
 
 
@@ -141,7 +139,7 @@ ARCHIVES_MIME = ('application/zip', 'application/x-tar',)
 APK_MIME = 'application/vnd.android.package-archive'
 EXE_MIME = 'application/x-msdos-program'
 PDF_MIME = 'application/pdf'
-##############################3
+##############################
 FLAC_MIME = "audio/flac"
 MP3_MIME = "audio/mpeg"
 PYTHON_MIME = "text/x-python"

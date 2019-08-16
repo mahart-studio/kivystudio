@@ -19,7 +19,7 @@ with io.open(join(CURDIR, "README.md"), encoding="utf8") as fd:
 with io.open(join(CURDIR, "LICENSE"), encoding="utf8") as fd:
     LICENSE = fd.read()
 
-def get_all_kv():
+def get_all_kv_files():
     kv_files = []
     for path,dirs,files in os.walk(CURDIR):
         for f in files:
@@ -46,7 +46,7 @@ setup(
                   'kivystudio': [
                         'resources/*',
                         'widgets/filemanager/images/*',
-                        'components/screens/images/*']+get_all_kv()
+                        'components/screens/images/*']+get_all_kv_files()
                 },
 
     package_dir={'kivystudio': 'kivystudio'},
