@@ -145,7 +145,6 @@ class CodeScreen(Screen):
         # print(args)
         if args[0] == 115 and args[3] == ['ctrl']:  # save file Ctrl+S
             self.save_file()
-
             return False
 
 
@@ -232,6 +231,7 @@ class CodePlace(StudioSplitter):
                 tab_type='unsupported'
             try:
                 self.code_manager.get_screen(filename)
+                self.code_manager.current=filename
             except ScreenManagerException:   # then it is not added
                 self.add_widget(widget, tab_type=tab_type)
 
@@ -240,6 +240,7 @@ class CodePlace(StudioSplitter):
             while True:
                 try:
                     self.code_manager.get_screen(filename)
+                    self.code_manager.current=filename
                 except ScreenManagerException:   # then it is not added
                     filename = 'Untitled-{}'.format(self.new_empty_tab)
                     self.add_widget(FullCodeInput(filename=filename), tab_type=tab_type)
@@ -249,6 +250,7 @@ class CodePlace(StudioSplitter):
         elif tab_type == 'welcome':
             try:
                 self.code_manager.get_screen('kivystudiowelcome')
+                self.code_manager.current=filename
             except ScreenManagerException:   # then it is not added
                 self.add_widget(WelcomeTab(), tab_type=tab_type)
 

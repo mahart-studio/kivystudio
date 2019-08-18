@@ -9,16 +9,24 @@ def open_new_file():
     from kivystudio.assembler import code_place
     code_place.add_code_tab(tab_type='new_file')
 
-def open_file():    
+def open_file(filename=''):
     ''' open a file (existing file) on
-        the CodeInput '''
+        the CodeInput, if filename, it open a 
+        new tab for the file, else it opens a filechooser'''
     from kivystudio.assembler import add_new_tab
-    filemanager.open_file(path='/root',on_selection=add_new_tab)
+    if filename:
+        add_new_tab([filename,])
+    else:
+        filemanager.open_file(path='/root',on_selection=add_new_tab)
 
-def open_folder():
-    ''' open a folder '''
-    from kivystudio.assembler import add_new_tab
-    filemanager.open_folder(path='/root',on_selection=None)
+def open_folder(folder=''):
+    ''' open a folder, if folder, it open a 
+        new project, else it opens a filechooser'''
+    from kivystudio.assembler import open_project
+    if folder:
+        open_project([folder,])
+    else:
+        filemanager.choose_dir(path='.',on_selection=open_project)
 
 def open_recent():
     pass

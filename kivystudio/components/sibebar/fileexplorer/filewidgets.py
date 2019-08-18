@@ -1,15 +1,16 @@
-from kivy.uix.treeview import TreeViewNode
+from kivy.uix.treeview import TreeViewNode, TreeViewLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.properties import ListProperty, StringProperty, BooleanProperty
 
 from kivystudio.tools.iconfonts import icon
+from kivystudio.tools import quicktools
 from kivystudio.behaviors import HoverBehavior
 
 import os
 
-class TreeViewFile(HoverBehavior, TreeViewNode, BoxLayout):
-
+# class TreeViewFile(HoverBehavior, TreeViewNode, BoxLayout):
+class TreeViewFile(TreeViewLabel):
     hover_color = ListProperty([.15,.15,.15,0])
     ' default color when the mouse hovers over the widget'
 
@@ -23,14 +24,15 @@ class TreeViewFile(HoverBehavior, TreeViewNode, BoxLayout):
     ''' icon displayed on the right side of the file
     or directory '''
 
-    def __init__(self, **k):
-        super(TreeViewFile, self).__init__(**k)
-
     def on_hover(self, *a):
         if self.hover:
             self.hover_color = (.14,.14,.14,.8)
         else:
             self.hover_color = (.15,.15,.15,0)
+
+    def on_is_selected(self, *args):
+        if self.is_selected:
+            quicktools.open_file(self.path)
 
     def on_path(self, *a):
         if os.path.isdir(self.path):
@@ -44,8 +46,17 @@ class TreeViewFile(HoverBehavior, TreeViewNode, BoxLayout):
 
 Builder.load_string('''
 #: import icon kivystudio.tools.iconfonts.icon
-
 <TreeViewFile>:
+    size_hint_y: None
+    height: '24dp'
+    canvas.before:
+        Color:
+            rgba: self.hover_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<TreeViewFile1>:
     size_hint_y: None
     height: '24dp'
     canvas.before:

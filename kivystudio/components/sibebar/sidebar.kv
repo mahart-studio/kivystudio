@@ -19,12 +19,13 @@
             height: self.minimum_height
             pos_hint: {'center_x': .5, 'center_y': .5}
             SideButter:
-                info_text: 'Explorer (Ctrl+Shift+E)'
+                info_text: 'Search (Ctrl+Shift+F)'
                 text: '%s'%(icon('fa-search'))
                 tab_type: 'generalsearch'
                 on_state: root.toggle_bar(self)
             SideButter:
-                info_text: 'Search (Ctrl+Shift+F)'
+                id: explorer_btn
+                info_text: 'Explorer (Ctrl+Shift+E)'
                 text: '%s'%(icon('fa-folder-open'))
                 tab_type: 'fileexplorer'
                 on_state: root.toggle_bar(self)
