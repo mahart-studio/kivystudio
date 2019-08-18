@@ -168,9 +168,9 @@ class CodePlace(StudioSplitter):
 
     def file_droped(self, window, filename, *args):
         if self.collide_point(*window.mouse_pos):
-            print('File droped on code input')
+            print('File droped on code input {} '.format(filename))
             if filename:
-                self.add_code_tab(filename=filename)
+                self.add_code_tab(filename=filename.decode('utf-8'))
 
     def add_widget(self, widget, tab_type=''):
         if len(self.children) > 0:
@@ -223,6 +223,7 @@ class CodePlace(StudioSplitter):
             self.new_empty_tab -= 1
 
     def add_code_tab(self, filename='', tab_type='code'):
+        print(os.path.exists(filename))
         if filename and os.path.exists(filename):
             if not quicktools.is_binary(filename):
                 widget=FullCodeInput(filename=filename)
