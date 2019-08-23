@@ -5,6 +5,8 @@ from kivy.core.window import Window
 from .__init__ import set_auto_mouse_position
 
 def show_info_on_mouse(message=''):
+    ''' func that displays an info 
+        on mouse cursor'''
     if message:
         if info_label in Window.children:
             Window.remove_widget(info_label)
@@ -18,7 +20,6 @@ def show_info_on_mouse(message=''):
 def remove_info_on_mouse():
     if info_label in Window.children:
         Window.remove_widget(info_label)
-
 
 
 class InfoLabel(Label):

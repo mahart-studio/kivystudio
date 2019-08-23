@@ -1,13 +1,13 @@
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
-from kivy.clock import Clock
+from kivy.clock import Clock, mainthread
 
 import os
 import sys
 import traceback
 
 from kivystudio.widgets.filemanager import filemanager
-
 from kivystudio.parser import emulate_file
 
 from kivystudio.components.screens import AndroidPhoneScreen
@@ -19,18 +19,23 @@ from kivystudio.components.emulator_area import emulator_area
 
 
 class Assembly(BoxLayout):
-    pass
+    '''
+    Widget to assemble and structure 
+    all widgets
+    '''
 
 def add_new_tab(paths):
     for path in paths:
         code_place.add_code_tab(filename=path)
 
-def open_folder(*a):
-    print(a)
+@mainthread
+def open_project(paths):
+    if paths:
+        side_bar.ids.explorer_btn='down'
+        side_bar.fileexplorer.load_directory(paths[0])
 
-
-def key_down(win, *args):
-    print(args)
+def main_key_handler(win, *args):
+    '''' main keyboard and shortcut lisener '''    
     if args[0] == 114 and  'ctrl' in args[3]:     # emulate file Ctrl+R
         emulate_file(emulator_area.emulation_file)
  
@@ -43,16 +48,17 @@ def key_down(win, *args):
     elif args[0] == 110 and 'ctrl' in args[3]:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')
 
-
-Window.bind(on_key_down=key_down)
+Window.bind(on_key_down=main_key_handler)
 
 
 code_place = CodePlace()
+# add welcoming tab
 code_place.add_code_tab(tab_type='welcome')
 
 emulator_area = emulator_area()
+side_bar = SideBar()
 Assembler = Assembly()
 
-Assembler.ids.box.add_widget(SideBar())
+Assembler.ids.box.add_widget(side_bar)
 Assembler.ids.box.add_widget(code_place)
 Assembler.ids.box.add_widget(emulator_area)

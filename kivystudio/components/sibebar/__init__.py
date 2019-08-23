@@ -2,7 +2,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.screenmanager import ScreenManager
-from kivy.properties import OptionProperty
 
 from kivy.lang import Builder
 
@@ -11,6 +10,7 @@ from kivystudio.behaviors import HoverInfoBehavior
 from .fileexplorer import FileExplorer
 from .gitmanager import GitManager
 from .generalsearch import GeneralSearch
+from kivy import properties as prop
 
 import os
 filepath = os.path.dirname(__file__)
@@ -26,7 +26,7 @@ class SideBar(BoxLayout):
         self.fileexplorer = FileExplorer()
         self.gitmanager = GitManager()
         self.generalsearch = GeneralSearch()
-    
+
     def toggle_bar(self, tab):
         if tab.state=='down':
             if len(self.children) > 1:

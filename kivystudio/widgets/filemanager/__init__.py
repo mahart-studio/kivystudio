@@ -1,7 +1,6 @@
 
 from .filechooserthumbview import StudioFileChooserThumbView
 
-
 from kivy.uix.modalview import ModalView
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.gridlayout import GridLayout
@@ -57,9 +56,7 @@ class FileManager(ModalView):
     def __init__(self, **k):
         super(FileManager, self).__init__(**k)
         self.new_bub = Factory.NewFolderBub_()
-
         self.new_bub.ids.input.bind(on_text_validate=self.create_new_folder)
-
         self._file_chooser.path = self.get_defualt_user_dir()
 
         # self.mode = 'save_file'
@@ -118,19 +115,17 @@ class FileManager(ModalView):
 
     def on_dismiss(self):
         Window.unbind(on_key_down=self.handle_key)
-
         # remove bubble if open
         if self.new_bub in Window.children:
             Window.remove_widget(self.new_bub)
 
     def handle_key(self, keyboard, key, codepoint, text, modifier, *args):
         if key == 8:    # if user press the backspace reverse dir
-            if self.mode!='save_file' or (hasattr(self,'save_widget') and not(self.save_widget.ids.input.focus)):
+            if self.mode!='save_file' or (hasattr(self,'save_widget') \
+                 and not(self.save_widget.ids.input.focus)):
                 self.reverse_dir()
-
         elif key == 27:
             self.handle_escape()
-        
         elif key == 13:     # enter
             pass
 
@@ -141,6 +136,13 @@ class FileManager(ModalView):
             self._file_chooser.path = previous_path
 
     def on_mode(self, *args):
+        if hasattr(self, 'save_widget') and \
+                self.save_widget in self.ids.saving_container.children:
+               self.ids.saving_container.remove_widget(self.save_widget)
+        if hasattr(self, 'folder_btn') and \
+            self.folder_btn in self.ids.saving_container.children:
+            self.ids.saving_container.remove_widget(self.folder_btn)
+
         if self.mode == 'save_file':
             self.ids.title.text = 'Save file'
             if not hasattr(self, 'save_widget'):
@@ -148,18 +150,23 @@ class FileManager(ModalView):
                 self.save_widget.ids.input.bind(on_text_validate=self.handle_saving)
                 func = lambda *args: self.handle_saving(self.save_widget.ids.input)
                 self.save_widget.ids.save_btn.bind(on_release=func)
+            self.ids.saving_container.add_widget(self.save_widget)
 
-            if self.save_widget not in self.ids.saving_container.children:
-                self.ids.saving_container.add_widget(self.save_widget)
         else:
-            if self.save_widget in self.ids.saving_container.children:
-                self.ids.saving_container.remove_widget(self.save_widget)
-
             if self.mode == 'open_file':
                 self.ids.title.text = 'Open file'
 
             elif self.mode == 'choose_dir':
                 self.ids.title.text = 'Open folder'
+
+                if not hasattr(self, 'folder_btn'):
+                    self.folder_btn = Factory.DirButton_(text='Select')
+                    self.folder_btn.bind(on_release=self.folder_selected)
+                self.ids.saving_container.add_widget(self.folder_btn)
+    
+    def folder_selected(self, *args):
+        path=self.ids.file_chooser.ids.stacklayout.current_highlighted_child.path
+        self.dispatch('on_finished', path)
 
     def handle_escape(self):
         if self.new_bub in Window.children:
