@@ -143,9 +143,8 @@ class CodeScreen(Screen):
 
     def keyboard_down(self, window, *args):
         # print(args)
-        if args[0] == 115 and args[3] == ['ctrl']:  # save file Ctrl+S
+        if args[0] == 115 and 'ctrl' in args[3]:  # save file Ctrl+S
             self.save_file()
-
             return False
 
 
@@ -169,9 +168,9 @@ class CodePlace(StudioSplitter):
 
     def file_droped(self, window, filename, *args):
         if self.collide_point(*window.mouse_pos):
-            print('File droped on code input')
+            print('File droped on code input {} '.format(filename))
             if filename:
-                self.add_code_tab(filename=filename)
+                self.add_code_tab(filename=filename.decode('utf-8'))
 
     def add_widget(self, widget, tab_type=''):
         if len(self.children) > 0:
@@ -224,6 +223,7 @@ class CodePlace(StudioSplitter):
             self.new_empty_tab -= 1
 
     def add_code_tab(self, filename='', tab_type='code'):
+        print(os.path.exists(filename))
         if filename and os.path.exists(filename):
             if not quicktools.is_binary(filename):
                 widget=FullCodeInput(filename=filename)
@@ -232,6 +232,7 @@ class CodePlace(StudioSplitter):
                 tab_type='unsupported'
             try:
                 self.code_manager.get_screen(filename)
+                self.code_manager.current=filename
             except ScreenManagerException:   # then it is not added
                 self.add_widget(widget, tab_type=tab_type)
 
@@ -240,6 +241,7 @@ class CodePlace(StudioSplitter):
             while True:
                 try:
                     self.code_manager.get_screen(filename)
+                    self.code_manager.current=filename
                 except ScreenManagerException:   # then it is not added
                     filename = 'Untitled-{}'.format(self.new_empty_tab)
                     self.add_widget(FullCodeInput(filename=filename), tab_type=tab_type)
@@ -249,6 +251,7 @@ class CodePlace(StudioSplitter):
         elif tab_type == 'welcome':
             try:
                 self.code_manager.get_screen('kivystudiowelcome')
+                self.code_manager.current=filename
             except ScreenManagerException:   # then it is not added
                 self.add_widget(WelcomeTab(), tab_type=tab_type)
 

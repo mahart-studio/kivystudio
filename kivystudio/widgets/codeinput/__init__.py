@@ -22,9 +22,12 @@ import os
 from pygments import styles
 
 class CodeInputDropDown(RightClickDrop):
+    ''' DropDown widget show when mouse 
+        is right clicked on CodeInput
+        '''
 
     def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):  # touch should not unfocus input
+        if self.collide_point(*touch.pos):  # so doesn't unfocus input
             FocusBehavior.ignored_touch.append(touch)
         return super(CodeInputDropDown,self).on_touch_down(touch)
     
@@ -91,32 +94,34 @@ class InnerCodeInput(HoverBehavior, CodeExtraBehavior, CodeInput):
         'overiding the default keyboard listener '
         # print(keycode)
 
-        if keycode[1] == 'tab' and modifiers == ['shift']:      # unindentation
+        if keycode[1] == 'tab' and modifiers == ['shift']:  # unindentation [Shit-tab]
             self._do_reverse_indentation()
 
-        elif keycode[1] == 'tab' and self.selection_text:     # multiple indentation
+        elif keycode[1] == 'tab' and self.selection_text:  # multiple indentation [Tab]
             self.do_multiline_indent()
 
-        elif keycode[1] == 'backspace' and modifiers == ['ctrl']:     # delete word left
-            print('back')
+        elif keycode[1] == 'backspace' and modifiers == ['ctrl']:   # delete word left  [Ctrl-bsc]
             self.delete_word_left()
 
         elif keycode[1] == '/' and modifiers == ['ctrl']:     # a comment ctrl /
             self.do_comment()
 
-        elif keycode[1] == 'enter':     # a comment ctrl /
+        elif keycode[1] == 'enter':
             Clock.schedule_once(lambda dt: self.do_auto_indent())
             return super(CodeInput, self).keyboard_on_key_down(keyboard, keycode, text, modifiers)
 
-        elif keycode[1] == 'f' and modifiers == ['ctrl']:     # ctrl f for a search
+        elif keycode[1] == 'f' and modifiers == ['ctrl']:     # ctrl f to open a search
             self.open_code_finder()
 
         elif keycode[0] == 27:     # on escape, do nothing
             return True
         else:
+            # then return super for others
             return super(CodeInput, self).keyboard_on_key_down(keyboard, keycode, text, modifiers)
     
     def open_code_finder(self):
+        ''' open the search finder 
+            on the codeinput '''
         code_finder = InnerCodeInput.code_finder
         if code_finder:
             code_finder.open(self)
@@ -125,6 +130,8 @@ class InnerCodeInput(HoverBehavior, CodeExtraBehavior, CodeInput):
             InnerCodeInput.code_finder.open(self)
     
     def open_rightclick_dropdown(self):
+        ''' open the dropdown right click 
+            on the codeinput '''
         rightclick_dropdown = InnerCodeInput.rightclick_dropdown
         if rightclick_dropdown:
             rightclick_dropdown.open()
@@ -133,10 +140,12 @@ class InnerCodeInput(HoverBehavior, CodeExtraBehavior, CodeInput):
             InnerCodeInput.rightclick_dropdown.open(self)
 
     def on_hover(self, *a):
+        ''' changing the mouse cursor 
+            on code input'''
         if self.hover:
-            Window.set_system_cursor('ibeam')
+            Window.set_system_cursor('ibeam')  # set cursor to ibeam
         else:
-            Window.set_system_cursor('arrow')
+            Window.set_system_cursor('arrow')  # set cursor to arrow
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
@@ -198,7 +207,6 @@ class FullCodeInput(GridLayout):
         Clock.schedule_once(lambda dt: setattr(label, 'state', 'down'))
         label.fbind('on_press', self._number_pressed)
         self.ids.numbering.add_widget(label)
-
         self._former_line_lenght = 1
 
 
@@ -225,9 +233,10 @@ class FullCodeInput(GridLayout):
             self.ids.number_scroll.scroll_to(child, dp(5))
 
             Clock.schedule_once(lambda dt: setattr(child, 'state', 'down'))
-            checked_list = list(filter(lambda chd: chd != child, ToggleButtonBehavior.get_widgets(child.group)))
-            map(lambda child: setattr(child, 'state', 'normal'), checked_list)
-
+            def toggle(chd):
+                if chd!=child:
+                    chd.state='normal'
+            map(lambda child: toggle, ToggleButtonBehavior.get_widgets(child.group))
 
 
     def do_bar_scroll(self, txt, scroll):
@@ -247,7 +256,6 @@ class FullCodeInput(GridLayout):
 
                 if line_pos == lines_lenght:
                     self.do_new_line(txt, scroll)
-
                 else:
                     self.do_new_line(txt, scroll)
 

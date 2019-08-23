@@ -59,10 +59,10 @@ class ScreenScatter(Scatter):
 
     def set_border(self, *a, **k):
         if self.orientation == 'portrait':
-            self.border_pos = self.set_pos 
-            self.border_size = self.set_size
+            self.border_pos = self.get_pos 
+            self.border_size = self.get_size
         elif self.orientation == 'landscape':
-            self.border_pos = self.set_pos
+            self.border_pos = self.get_pos
 
         try:
             from_orientation = k.pop('from_orientation')
@@ -78,59 +78,59 @@ class ScreenScatter(Scatter):
             self.center = self.parent.center
 
     @property
-    def set_pos(self):
+    def get_pos(self):
         pass
 
     @property
-    def set_size(self):
+    def get_size(self):
         pass
 
 
 class IphoneScreen(ScreenScatter):
     @property
-    def set_pos(self):
+    def get_pos(self):
         pos = (-25, -dp(133))
         if self.orientation == 'landscape':
             return (-self.container.height+pos[0], pos[1])
         return pos
 
     @property
-    def set_size(self):
+    def get_size(self):
 
         return (self.width + dp(50), self.height + dp(270))
 
 class IpadScreen(ScreenScatter):
     @property
-    def set_pos(self):
+    def get_pos(self):
         pos = (-dp(95), -dp(77))
         if self.orientation == 'landscape':
             return (-self.container.height+pos[0], pos[1])
         return pos
 
     @property
-    def set_size(self):
+    def get_size(self):
         return (self.width + dp(190), self.height + dp(154))
 
 class AndriodTabScreen(ScreenScatter):
     @property
-    def set_pos(self):
+    def get_pos(self):
         if self.orientation == 'landscape':
             return (-self.container.height-35, -dp(51))
         return (-dp(35), -dp(51))
 
     @property
-    def set_size(self):
+    def get_size(self):
         return (self.width + dp(70), self.height + dp(102))
 
 class AndroidPhoneScreen(ScreenScatter):
     @property
-    def set_pos(self):
+    def get_pos(self):
         if self.orientation == 'landscape':
             return (-self.container.height-16.5, -dp(85.5))
         return (-dp(16.5), -dp(85.5))
 
     @property
-    def set_size(self):
+    def get_size(self):
         return (self.container.width + dp(32), self.container.height + dp(152))
 
 
