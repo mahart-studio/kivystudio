@@ -41,10 +41,10 @@ def main_key_handler(win, *args):
         Clock.schedule_once(lambda dt: emulate_file(emulator_area.emulation_file))
 
     elif args[0] == 107 and args[3] == ['ctrl']:    # Ctrl K pressed
-        filemanager.choose_dir(path='/root',on_selection=open_project)
+        filemanager.choose_dir(path='.',on_selection=open_project)
 
     elif args[0] == 111 and args[3] == ['ctrl']:    # open file Ctrl+O
-        filemanager.open_file(path='/root',on_selection=add_new_tab)
+        filemanager.open_file(path='.',on_selection=add_new_tab)
 
     elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')

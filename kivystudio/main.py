@@ -4,7 +4,7 @@ entry point for the Application
 '''
 
 import sys, os
-sys.path.append(os.pardir)
+sys.path = [os.pardir] + sys.path
 
 # from kivy.config import Config
 # Config.set('modules', 'monitor', '')
