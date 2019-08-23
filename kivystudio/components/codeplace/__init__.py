@@ -143,7 +143,7 @@ class CodeScreen(Screen):
 
     def keyboard_down(self, window, *args):
         # print(args)
-        if args[0] == 115 and args[3] == ['ctrl']:  # save file Ctrl+S
+        if args[0] == 115 and 'ctrl' in args[3]:  # save file Ctrl+S
             self.save_file()
 
             return False

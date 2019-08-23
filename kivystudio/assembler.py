@@ -29,19 +29,19 @@ def open_folder(*a):
     print(a)
 
 
-def key_down(self, *args):
-    if args[0] == 114 and args[3] == ['ctrl']:     # emulate file Ctrl+R
-        Clock.schedule_once(lambda dt: emulate_file(emulator_area.emulation_file))
-
-    elif args[0] == 107 and args[3] == ['ctrl']:    # Ctrl K pressed
+def key_down(win, *args):
+    print(args)
+    if args[0] == 114 and  'ctrl' in args[3]:     # emulate file Ctrl+R
+        emulate_file(emulator_area.emulation_file)
+ 
+    elif args[0] == 107 and 'ctrl' in args[3]:    # Ctrl K pressed
         pass
 
-    elif args[0] == 111 and args[3] == ['ctrl']:    # open file Ctrl+O
+    elif args[0] == 111 and 'ctrl' in args[3]:    # open file Ctrl+O
         filemanager.open_file(path='/root',on_selection=add_new_tab)
 
-    elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
+    elif args[0] == 110 and 'ctrl' in args[3]:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')
-
 
 
 Window.bind(on_key_down=key_down)
