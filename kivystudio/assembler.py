@@ -34,8 +34,9 @@ def open_project(paths):
         side_bar.ids.explorer_btn='down'
         side_bar.fileexplorer.load_directory(paths[0])
 
-def main_key_handler(self, *args):
+def main_key_handler(win, *args):
     '''' main keyboard and shortcut lisener '''
+    print(args)
     if args[0] == 114 and args[3] == ['ctrl']:     # emulate file Ctrl+R
         Clock.schedule_once(lambda dt: emulate_file(emulator_area.emulation_file))
 

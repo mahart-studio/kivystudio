@@ -38,8 +38,9 @@ class TopMenu(GridLayout):
             setattr(self, menu_name, getattr(dropmenu, menu_name)())
         
         menu = getattr(self, menu_name)
+        if menu.parent:
+            menu.parent.remove_widget(menu)
         menu.open(self.children[index])
-
 
 
 class TopMenuItem(HoverBehavior, ButtonBehavior, Label):

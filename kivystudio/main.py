@@ -16,8 +16,7 @@ from os.path import dirname, join
 from kivy.lang import Builder
 
 filepath = dirname(__file__)
-if __name__ == "__main__":
-    Builder.load_file(join(filepath,'main.kv'))
+Builder.load_file(join(filepath,'main.kv'))
 
 # registering custom icons
 from kivystudio.tools import iconfonts

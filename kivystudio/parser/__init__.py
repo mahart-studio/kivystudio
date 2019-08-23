@@ -16,6 +16,7 @@ from kivy.resources import resource_add_path, resource_remove_path
 from kivystudio.components.emulator_area import emulator_area
 
 def emulate_file(filename, threaded=False):
+    Logger.info("KivyStudio: Emulation Started {}".format(filename))
     root=None
     if not os.path.exists(filename):
         return
