@@ -36,17 +36,16 @@ def open_project(paths):
 
 def main_key_handler(win, *args):
     '''' main keyboard and shortcut lisener '''
-    print(args)
-    if args[0] == 114 and args[3] == ['ctrl']:     # emulate file Ctrl+R
-        Clock.schedule_once(lambda dt: emulate_file(emulator_area.emulation_file))
-
-    elif args[0] == 107 and args[3] == ['ctrl']:    # Ctrl K pressed
+    if args[0] == 114 and  'ctrl' in args[3]:     # emulate file Ctrl+R
+        emulate_file(emulator_area.emulation_file)
+ 
+    elif args[0] == 107 and 'ctrl' in args[3]:    # Ctrl K pressed
         filemanager.choose_dir(path='.',on_selection=open_project)
 
-    elif args[0] == 111 and args[3] == ['ctrl']:    # open file Ctrl+O
+    elif args[0] == 111 and 'ctrl' in args[3]:    # open file Ctrl+O
         filemanager.open_file(path='.',on_selection=add_new_tab)
 
-    elif args[0] == 110 and args[3] == ['ctrl']:    # new file Ctrl+N
+    elif args[0] == 110 and 'ctrl' in args[3]:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')
 
 Window.bind(on_key_down=main_key_handler)

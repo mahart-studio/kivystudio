@@ -16,6 +16,7 @@ Bugs
 Textinput
 *tripple quote highlighting bug
 *multiple indent doesn't work well
+*Menus show the same thing and crashes
 
 # Later
 * Git Intergration
