@@ -171,19 +171,19 @@
         size_hint_x:None
         width: self.texture_size[0]
         id: found
-    IconButtonLabel:
+    IconLabelButton:
         text: '%s' %icon('fa-arrow-left')
         size_hint_x:None
         width: '32dp'
         on_release: root.find_prev(input.text)
         color: 1,1,1
-    IconButtonLabel:
+    IconLabelButton:
         text: '%s' %icon('fa-arrow-right')
         size_hint_x: None
         width: '32dp'
         on_release: root.find_next(input.text)
         color: 1,1,1
-    IconButtonLabel:
+    IconLabelButton:
         text: '%s' %icon('fa-close')
         width: '32dp'
         size_hint_x:None

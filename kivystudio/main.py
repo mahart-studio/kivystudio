@@ -14,13 +14,14 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.app import App
 from os.path import dirname, join
 from kivy.lang import Builder
+from kivystudio import tools
 
 filepath = dirname(__file__)
-Builder.load_file(join(filepath,'main.kv'))
+
+tools.load_kv(__file__,'main.kv')
 
 # registering custom icons
-from kivystudio.tools import iconfonts
-iconfonts.register('awesome_font',
+tools.iconfonts.register('awesome_font',
     join(filepath,'resources/font-awesome.ttf'),
     join(filepath, 'resources/font-awesome.fontd'))
 

@@ -8,15 +8,19 @@ except:
     pass
 
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.clock import mainthread
 from kivy.uix.widget import Widget
 from kivy.resources import resource_add_path, resource_remove_path
 
 from kivystudio.components.emulator_area import get_emulator_area
+from kivystudio.tools.logger import Logger
 
 def emulate_file(filename, threaded=False):
-    Logger.info("KivyStudio: Emulation Started {}".format(filename))
+    if not filename:
+        Logger.info("KivyStudio: No file selected")
+        return
+
+    Logger.info("KivyStudio: Emulation Started on file '{}'".format(filename))
     root=None
     if not os.path.exists(filename):
         return
@@ -39,24 +43,25 @@ def start_emulation(filename, threaded=False):
             Builder.unload_file(filename)
             root = Builder.load_file(filename)
         except:
-            traceback.print_exc()
+            trace = traceback.format_exc()
             Logger.error("KivyStudio: You kivy file has a problem")
+            Logger.error("KivyStudio: {}".format(trace))
 
     elif os.path.splitext(filename)[1] =='.py':
         load_defualt_kv(filename)
         try:    # cahching error with python files
             root = load_py_file(filename)
         except:
-            traceback.print_exc()
+            trace = traceback.format_exc()
             Logger.error("KivyStudio: You python file has a problem")
+            Logger.error("KivyStudio: {}".format(trace))
     else:
-        Logger.error("KivyStudio: can't emulate file type {}".format(filename))
+        Logger.warning("KivyStudio: can't emulate file type {}".format(filename))
 
     if not root:
-        Logger.error('KivyStudio: no root widget found for file {}'.format(filename))
-    if not isinstance(root,Widget):
-        Logger.error('KivyStudio: root instance found {} \
-             for file is not a widget'.format(root))
+        Logger.error('KivyStudio: No root widget found for file {}'.format(filename))
+    elif not isinstance(root,Widget):
+        Logger.error('KivyStudio: root instance found = {} and is not a widget'.format(root))
     else:
         if threaded:
             emulation_done(root, filename)
@@ -96,8 +101,9 @@ def load_defualt_kv(filename):
                 Builder.unload_file(kv_filename)
                 root = Builder.load_file(kv_filename)
             except:
-                traceback.print_exc()
+                trace = traceback.format_exc()
                 Logger.error("KivyStudio: You kivy file has a problem")
+                Logger.error("KivyStudio: {}".format(trace))
 
 
 def get_app_cls_name(filename):

@@ -12,11 +12,10 @@ from kivystudio.parser import emulate_file
 
 from kivystudio.components.screens import AndroidPhoneScreen
 from kivystudio.components.topmenu import TopMenu
-from kivystudio.components.codeplace import CodePlace
+from kivystudio.components.codeplace import code_place, code_container
 from kivystudio.components.sibebar import SideBar
 from kivystudio.components.terminal import TerminalSpace
 from kivystudio.components.emulator_area import get_emulator_area
-
 
 class Assembly(BoxLayout):
     '''
@@ -51,15 +50,11 @@ def main_key_handler(win, *args):
 Window.bind(on_key_down=main_key_handler)
 
 
-code_place = CodePlace()
-# add welcoming tab
-code_place.add_code_tab(tab_type='welcome')
-
 emulator_area = get_emulator_area()
 side_bar = SideBar()
 Assembler = Assembly()
 
 box = Assembler.ids.box
 box.add_widget(side_bar)
-box.add_widget(code_place)
+box.add_widget(code_container)
 box.add_widget(emulator_area)

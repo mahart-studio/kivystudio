@@ -1,48 +1,51 @@
-#: import icon kivystudio.tools.iconfonts.icon
 
-<CodePlace>:
+<CodeContainer>:
     sizable_from: 'right'
-    tab_manager: tab_manager
     max_size: root.parent.width-self.parent.children[2].width if self.parent and len(self.parent.children)>2 else 0
     min_size: '700dp'
-    BoxLayout:
-        orientation: 'vertical'
-        id: box
-        CodeTabsContainer:
-            size_hint_y: None
-            height: '36dp'
-            canvas.before:
-                Color:
-                    rgba: (0.12, 0.12, 0.12, 1)
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
+    FloatLayout:
+        id: container
 
-            # canvas to show shadow division
-            canvas.after:
-                Color:
-                    rgba: (0, 0, 0, .4)
-                Line:
-                    points: [self.x,self.y, self.right,self.y]
-                Color:
-                    rgba: (0, 0, 0, .3)
-                Line:
-                    points: [self.x,self.y-1, self.x-1,self.y-1]
-                Color:
-                    rgba: (0, 0, 0, .2)
-                Line:
-                    points: [self.x,self.y-2, self.x,self.y-2]
-                Color:
-                    rgba: (0, 0, 0, .1)
-                Line:
-                    points: [self.x,self.y-3, self.x,self.y-3]
-                    width: 2
 
-            GridLayout:
-                rows: 1
-                id: tab_manager
-                size_hint_x: None
-                width: self.minimum_width
+<CodePlace>:
+    orientation: 'vertical'
+    tab_manager: tab_manager
+    pos_hint: {'center_y': .5, 'center_x': .5}
+    CodeTabsContainer:
+        size_hint_y: None
+        height: '36dp'
+        canvas.before:
+            Color:
+                rgba: (0.12, 0.12, 0.12, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        # canvas to show shadow division
+        canvas.after:
+            Color:
+                rgba: (0, 0, 0, .4)
+            Line:
+                points: [self.x,self.y, self.right,self.y]
+            Color:
+                rgba: (0, 0, 0, .3)
+            Line:
+                points: [self.x,self.y-1, self.x-1,self.y-1]
+            Color:
+                rgba: (0, 0, 0, .2)
+            Line:
+                points: [self.x,self.y-2, self.x,self.y-2]
+            Color:
+                rgba: (0, 0, 0, .1)
+            Line:
+                points: [self.x,self.y-3, self.x,self.y-3]
+                width: 2
+
+        GridLayout:
+            rows: 1
+            id: tab_manager
+            size_hint_x: None
+            width: self.minimum_width
 
 
 
@@ -83,7 +86,7 @@
 
 <TabPannelIndicator>:
     size_hint_x: None
-    width: '10dp'
+    width: '12dp'
 
 
 <CodeTabDropDown>:
@@ -111,7 +114,6 @@
         MenuLabel:
             text: 'Alt-Ctrl+Shift+C'
             type: 'shortcut'
-    MenuButton:
         MenuLabel:
             text: 'Split Up'
     MenuButton:

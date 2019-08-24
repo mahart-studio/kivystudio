@@ -9,7 +9,7 @@ from kivy.properties import (StringProperty,
                             BooleanProperty)
 from kivystudio.behaviors import HoverInfoBehavior
 from kivystudio.behaviors import HighlightBehavior
-from kivystudio.widgets.iconlabel import IconButtonLabel
+from kivystudio.widgets.iconlabel import IconLabelButton
 from kivystudio.widgets.rightclick_drop import RightClickDrop
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
@@ -98,7 +98,7 @@ class CodeTabDropDown(RightClickDrop):
         self.tab.close_tab()
 
 
-class TabPannelIndicator(IconButtonLabel):
+class TabPannelIndicator(IconLabelButton):
         
     def on_hover(self, *a):
         if self.hover:

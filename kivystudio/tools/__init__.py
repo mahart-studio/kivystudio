@@ -1,3 +1,5 @@
+import os
+from kivy.lang import Builder
 from kivy.core.window import Window
 
 def set_auto_mouse_position(widget):
@@ -21,3 +23,4 @@ def load_kv(filepath, file):
 		where filepath is __file__ and file is a kv file''' 
 	filepath = os.path.dirname(filepath)
 	Builder.load_file(os.path.join(filepath, file))
+    

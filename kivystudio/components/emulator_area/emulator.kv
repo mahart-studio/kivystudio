@@ -20,7 +20,7 @@
             text: split(root.emulation_file)[1]
             shorten: True
             shorten_from: 'right'
-        IconButtonLabel:
+        IconLabelButton:
             info_text: 'Zooom Out'
             color: .8,.8,.8,1
             size_hint_x: None
@@ -28,7 +28,7 @@
             text: icon('fa-search-minus')
             on_release:
                 if not root.screen_display.screen.scale < 0.10: root.screen_display.screen.scale -= 0.05
-        IconButtonLabel:
+        IconLabelButton:
             info_text: 'Zooom In'
             color: .8,.8,.8,1
             text: icon('fa-search-plus')
@@ -60,7 +60,7 @@
                     texture: self.texture
                 PopMatrix
 
-        IconButtonLabel:
+        IconLabelButton:
             info_text: 'Change Screen'
             on_release: root.open_screen_drop(self)
             size_hint_x: None
