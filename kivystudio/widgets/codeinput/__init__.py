@@ -86,8 +86,8 @@ class InnerCodeInput(HoverBehavior, CodeExtraBehavior, CodeInput):
             self.parent.parent.save_file(auto_save=True)
         if auto_emulate:
             from kivystudio.parser import emulate_file
-            from kivystudio.components.emulator_area import emulator_area
-            if emulator_area().emulation_file == self.parent.filename:
+            from kivystudio.components.emulator_area import get_emulator_area
+            if get_emulator_area().emulation_file == self.parent.filename:
                 emulate_file(self.parent.filename)
 
     def keyboard_on_key_down(self, keyboard, keycode, text, modifiers):

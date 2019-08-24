@@ -95,7 +95,7 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
 
 
 instance=[]
-def emulator_area():
+def get_emulator_area():
     if instance:
         return instance[0]
     else:

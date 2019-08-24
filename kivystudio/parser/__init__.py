@@ -13,7 +13,7 @@ from kivy.clock import mainthread
 from kivy.uix.widget import Widget
 from kivy.resources import resource_add_path, resource_remove_path
 
-from kivystudio.components.emulator_area import emulator_area
+from kivystudio.components.emulator_area import get_emulator_area
 
 def emulate_file(filename, threaded=False):
     Logger.info("KivyStudio: Emulation Started {}".format(filename))
@@ -26,7 +26,7 @@ def emulate_file(filename, threaded=False):
     os.chdir(dirname)
     resource_add_path(dirname)
 
-    emulator_area().screen_display.screen.clear_widgets()
+    get_emulator_area().screen_display.screen.clear_widgets()
     if threaded:
         Thread(target=partial(start_emulation, filename, threaded=threaded)).start()
     else:
@@ -61,7 +61,7 @@ def start_emulation(filename, threaded=False):
         if threaded:
             emulation_done(root, filename)
         else:
-            emulator_area().screen_display.screen.add_widget(root)
+            get_emulator_area().screen_display.screen.add_widget(root)
 
     dirname=os.path.dirname(filename)
     sys.path.pop()
@@ -71,7 +71,7 @@ def start_emulation(filename, threaded=False):
 def emulation_done(root, filename):
     ' add root on the main thread '
     if root:
-        emulator_area().screen_display.screen.add_widget(root)
+        get_emulator_area().screen_display.screen.add_widget(root)
 
 
 def load_defualt_kv(filename):

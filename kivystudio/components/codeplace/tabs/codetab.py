@@ -13,7 +13,7 @@ from kivystudio.widgets.iconlabel import IconButtonLabel
 from kivystudio.widgets.rightclick_drop import RightClickDrop
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
-from kivystudio.components.emulator_area import emulator_area
+from kivystudio.components.emulator_area import get_emulator_area
 
 rightclick_dropdown = [None]
 
@@ -89,9 +89,9 @@ class CodeTabDropDown(RightClickDrop):
 
     def set_for_emulation(self, remove=False):
         if not remove:
-            emulator_area().emulation_file=self.tab.filename
+            get_emulator_area().emulation_file=self.tab.filename
         else:
-            emulator_area().emulation_file=''
+            get_emulator_area().emulation_file=''
 
     def close_tab(self):
         self.dismiss()

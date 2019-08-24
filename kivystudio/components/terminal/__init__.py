@@ -6,7 +6,7 @@ from kivy.properties import ObjectProperty
 
 from kivy.lang import Builder
 
-from .problem_space import ProblemSpace
+from .logger_space import ErrorLogger
 
 class TerminalSpace(BoxLayout):
 
@@ -18,7 +18,8 @@ class TerminalSpace(BoxLayout):
 
     def __init__(self, **k):
         super(TerminalSpace, self).__init__(**k)
-        self.add_widget(ProblemSpace(), title='PROBLEMS')
+        error_logger = ErrorLogger()
+        self.add_widget(error_logger, title='Logs')
 
     def add_widget(self, widget, title=''):
         if len(self.children) > 1:

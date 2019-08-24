@@ -2,12 +2,16 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from kivy.lang import Builder
 
-class ProblemSpace(BoxLayout):
+class ErrorLogger(BoxLayout):
+    
+    text = StringProperty('Hello '*39)
+
+class InternalErrorLogger(BoxLayout):
     
     text = StringProperty('Hello '*39)
 
 Builder.load_string('''
-<ProblemSpace>:
+<ErrorLogger>:
     ScrollView:
         Label:
             text: root.text
@@ -16,5 +20,4 @@ Builder.load_string('''
             height: self.texture_size[1]
             valign: 'top'
             halign: 'right'
-
 ''')

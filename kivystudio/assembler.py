@@ -15,7 +15,7 @@ from kivystudio.components.topmenu import TopMenu
 from kivystudio.components.codeplace import CodePlace
 from kivystudio.components.sibebar import SideBar
 from kivystudio.components.terminal import TerminalSpace
-from kivystudio.components.emulator_area import emulator_area
+from kivystudio.components.emulator_area import get_emulator_area
 
 
 class Assembly(BoxLayout):
@@ -55,10 +55,11 @@ code_place = CodePlace()
 # add welcoming tab
 code_place.add_code_tab(tab_type='welcome')
 
-emulator_area = emulator_area()
+emulator_area = get_emulator_area()
 side_bar = SideBar()
 Assembler = Assembly()
 
-Assembler.ids.box.add_widget(side_bar)
-Assembler.ids.box.add_widget(code_place)
-Assembler.ids.box.add_widget(emulator_area)
+box = Assembler.ids.box
+box.add_widget(side_bar)
+box.add_widget(code_place)
+box.add_widget(emulator_area)
