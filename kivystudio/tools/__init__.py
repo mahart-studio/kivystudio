@@ -14,3 +14,10 @@ def set_auto_mouse_position(widget):
         widget.top = Window.mouse_pos[1]-16
     else:
         widget.top = Window.mouse_pos[1]-16
+
+def load_kv(filepath, file):
+	''' load a kivy file from the current
+		directory of the file calling this func
+		where filepath is __file__ and file is a kv file''' 
+	filepath = os.path.dirname(filepath)
+	Builder.load_file(os.path.join(filepath, file))
