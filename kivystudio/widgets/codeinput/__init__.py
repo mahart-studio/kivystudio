@@ -77,11 +77,9 @@ class InnerCodeInput(HoverBehavior, CodeExtraBehavior, CodeInput):
             self.check_settings()
 
     def check_settings(self):
-        # import kivystudio app to not confuse it with current emulating app
-        from kivystudio import get_kivystudio_app
-        app =  get_kivystudio_app()
-        auto_save = app.user_settings.get('file-settings')['auto_save']
-        auto_emulate = app.user_settings.get('emulator-settings')['auto_emulate']
+        from kivystudio.settings import settings_obj
+        auto_save = settings_obj.auto_save
+        auto_emulate = settings_obj.auto_emulate
         if auto_save:
             self.parent.parent.save_file(auto_save=True)
         if auto_emulate:
