@@ -33,20 +33,16 @@
             type: 'shortcut'
     ToggleMenuButton:
         text: 'Auto Save'
-        on_parent:
-            if studio_app().user_settings.get('file-settings')['auto_save']: self.state='down'
-            else: self.state='normal'
+        state: 'down' if settings.auto_save else 'normal'
         on_state:
-            if self.state=='down': studio_app().user_settings.put('file-settings', auto_save=True)
-            else: studio_app().user_settings.put('file-settings', auto_save=False)
+            if self.state=='down': settings.auto_save=1
+            else: settings.auto_save=0
     ToggleMenuButton:
         text: 'Auto emulation'
-        on_parent:
-            if studio_app().user_settings.get('emulator-settings')['auto_emulate']: self.state='down'
-            else: self.state='normal'
+        state: 'down' if settings.auto_emulate else 'normal'
         on_state:
-            if self.state=='down': studio_app().user_settings.put('emulator-settings', auto_emulate=True)
-            else: studio_app().user_settings.put('emulator-settings', auto_emulate=False)
+            if self.state=='down': settings.auto_emulate=1
+            else: settings.auto_emulate=0
     MenuButton:
         on_release: root.save_as()
         MenuLabel:

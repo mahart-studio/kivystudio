@@ -65,7 +65,8 @@ class TabToggleButton(HoverInfoBehavior, ToggleButtonBehavior, BoxLayout):
             return super(TabToggleButton, self).on_touch_down(touch)
 
     def close_tab(self):
-        self.parent.parent.parent.parent.remove_code_tab(self)
+        from kivystudio.assembler import code_place
+        code_place.remove_code_tab(self)
 
 
     def __str__(self):

@@ -223,7 +223,6 @@ class CodePlace(BoxLayout):
             self.new_empty_tab -= 1
 
     def add_code_tab(self, filename='', tab_type='code'):
-        print(os.path.exists(filename))
         if filename and os.path.exists(filename):
             if not quicktools.is_binary(filename):
                 widget=FullCodeInput(filename=filename)

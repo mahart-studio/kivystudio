@@ -1,4 +1,7 @@
+
 import os
+from os.path import dirname, join, exists, expanduser
+from kivy import platform
 from kivy.lang import Builder
 from kivy.core.window import Window
 
@@ -21,6 +24,25 @@ def load_kv(filepath, file):
 	''' load a kivy file from the current
 		directory of the file calling this func
 		where filepath is __file__ and file is a kv file''' 
-	filepath = os.path.dirname(filepath)
-	Builder.load_file(os.path.join(filepath, file))
-    
+	filepath = dirname(filepath)
+	Builder.load_file(join(filepath, file))
+
+
+def get_user_data_dir(name):
+    # Determine and return the user_data_dir.
+    data_dir = ""
+    if platform == 'ios':
+        raise NotImplemented()
+    elif platform == 'android':
+        raise NotImplemented()
+    elif platform == 'win':
+        data_dir = os.path.join(os.environ['APPDATA'], name)
+    elif platform == 'macosx':
+        data_dir = '~/Library/Application Support/{}'.format(name)
+        data_dir = expanduser(data_dir)
+    else:  # _platform == 'linux' or anything else...:
+        data_dir = os.environ.get('XDG_CONFIG_HOME', '~/.config')
+        data_dir = expanduser(join(data_dir, name))
+    if not exists(data_dir):
+        os.mkdir(data_dir)
+    return data_dir
