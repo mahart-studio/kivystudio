@@ -5,8 +5,9 @@ from kivy.lang import Builder
 
 import os, json ,sys
 from os.path import join, dirname
-filepath = join(os.getcwd(), __file__) 
-sys.path.append(dirname(dirname(__file__)))
+p =(dirname(dirname(join(os.getcwd(), __file__))))
+print(p)
+sys.path.append(p)
 from iconfonts import register, icon
 
 font_file = join(dirname(__file__), 'font-awesome.fontd')

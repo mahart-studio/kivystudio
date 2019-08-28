@@ -48,10 +48,5 @@ Logger = LoggerBase()
 from kivy.clock import mainthread
 @mainthread
 def test_log(*args):
-    Logger.info('KivyStudio: sdsdsdsds')
-    Logger.info('sdsdsdsds')
-    Logger.warning('KivyStudio: sdsdsdsds')
-    Logger.warning('sdsdsdsds')
-    Logger.error('KivyStudio: sdsdsdsds')
-    Logger.error('sdsdsdsds')
+    Logger.info('Welcome to KivyStudio')
 test_log()

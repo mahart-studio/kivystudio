@@ -18,7 +18,15 @@ class IconLabelButton(ButtonBehavior, IconLabel):
     pass
 
 class IconToggleLabel(ToggleButtonBehavior, IconLabel):
-    pass
+    
+    icon_down = prop.StringProperty()
+    icon_normal = prop.StringProperty()
+    
+    def on_state(self, *args):
+        if self.state=='down':
+            self.icon = self.icon_down
+        else:
+            self.icon = self.icon_normal
 
 Builder.load_string('''
 <IconLabel>:
