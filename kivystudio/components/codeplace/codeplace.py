@@ -13,7 +13,9 @@ from kivy.extras.highlight import KivyLexer
 
 from kivystudio.widgets.codeinput import FullCodeInput
 from kivystudio.widgets.filemanager import filemanager
+from kivystudio.components.emulator_area import get_emulator_area
 from kivystudio.tools import quicktools, load_kv
+from kivystudio.tools.logger import Logger
 
 from .tabs.welcometab import WelcomeTab
 from .tabs.codetab import TabToggleButton
@@ -146,6 +148,11 @@ class CodeScreen(Screen):
         if args[0] == 115 and 'ctrl' in args[3]:  # save file Ctrl+S
             self.save_file()
             return False
+
+        if args[0] == 101 and 'ctrl' in args[3]:  # select file for emulation file Ctrl+E
+            if os.path.exists(self.name):
+                get_emulator_area().emulation_file=self.name
+                Logger.info("Emulator: File '{}' selected".format(self.name))
 
 
 class CodePlace(BoxLayout):

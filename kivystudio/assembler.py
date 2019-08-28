@@ -35,10 +35,11 @@ def open_project(paths):
 
 def main_key_handler(win, *args):
     '''' main keyboard and shortcut lisener '''
+    # print(args)
     if args[0] == 114 and  'ctrl' in args[3]:     # emulate file Ctrl+R
         emulate_file(emulator_area.emulation_file)
- 
-    elif args[0] == 107 and 'ctrl' in args[3]:    # Ctrl K pressed
+
+    elif args[0] == 107 and 'ctrl' in args[3]:    # open folder Ctrl+K
         filemanager.choose_dir(path='.',on_selection=open_project)
 
     elif args[0] == 111 and 'ctrl' in args[3]:    # open file Ctrl+O
@@ -46,6 +47,10 @@ def main_key_handler(win, *args):
 
     elif args[0] == 110 and 'ctrl' in args[3]:    # new file Ctrl+N
         code_place.add_code_tab(tab_type='new_file')
+
+    elif args[0] == 96 and 'ctrl' in args[3]:    # toggle terminal  Ctrl+`
+        from kivystudio.components.codeplace import terminal
+        terminal.toggle_state()
 
 Window.bind(on_key_down=main_key_handler)
 
