@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
+from kivy import properties as prop
 
 from kivy.lang import Builder
 from kivy.garden.resizablebehavior import ResizableBehavior
@@ -11,11 +11,13 @@ from .logger_space import ErrorLogger
 
 class TerminalSpace(ResizableBehavior, BoxLayout):
 
-    manager = ObjectProperty(None)
+    manager = prop.ObjectProperty(None)
     ''' Instance of screen manager used '''
 
-    tab_container = ObjectProperty(None)
+    tab_container = prop.ObjectProperty(None)
     ''' instance of a gridlayout where tha tab lays'''
+
+    state = prop.OptionProperty('open', options=['open', 'close'])
 
     def __init__(self, **k):
         super(TerminalSpace, self).__init__(**k)
@@ -38,6 +40,18 @@ class TerminalSpace(ResizableBehavior, BoxLayout):
     def tab_state(self, tab, state):
         if state=='down':
             self.manager.current = tab.name
+    
+    def on_state(self, *args):
+        if self.state=='open':
+            self.height = self.norm_height
+        else:
+            self.height='48dp'
+
+    def toggle_state(self):
+        if self.state=='open':
+            self.state='close'
+        else:
+            self.state='open'
 
 class TerminalTab(ToggleButtonBehavior, Label):
 
@@ -91,12 +105,14 @@ Builder.load_string('''
                 size_hint_x: None
                 width: '32dp'
                 on_state:
+                    root.state='open'
                     if self.state=='down': root.height=root.max_norm_height
                     else: root.height=root.norm_height
             IconLabelButton:
                 icon: 'fa-close'
                 size_hint_x: None
                 width: '32dp'
+                on_release: root.state='close'
     ScreenManager:
         id: manager
 
