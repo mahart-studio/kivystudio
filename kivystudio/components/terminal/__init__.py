@@ -5,7 +5,7 @@ from kivy.uix.screenmanager import Screen
 from kivy import properties as prop
 
 from kivy.lang import Builder
-from kivy.garden.resizablebehavior import ResizableBehavior
+from kivystudio.libs.resizablebehavior import ResizableBehavior
 
 from .logger_space import ErrorLogger
 
