@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from kivy.lang import Builder
 
-MAX_LOG_LINES = 300
+MAX_LOG_LINES = 260
 
 class ErrorLogger(BoxLayout):
     
@@ -13,6 +13,7 @@ class ErrorLogger(BoxLayout):
         if len(lines) > MAX_LOG_LINES:    # clean previous logs
             self.text = '\n'.join(lines[int(MAX_LOG_LINES/2):])
         self.text += msg+'\n'
+        self.ids.scroll.scroll_y = 0
 
     def clear_logs(self):
         self.text = ''
@@ -24,7 +25,9 @@ class InternalErrorLogger(BoxLayout):
 Builder.load_string('''
 <ErrorLogger>:
     ScrollView:
-		bar_width: '8dp'
+        id: scroll
+		bar_width: '10dp'
+        scroll_type: ['bars', 'content']
         Label:
             text: root.text
             text_size: self.width, None
