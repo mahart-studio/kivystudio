@@ -5,10 +5,11 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
 from kivy.lang import Builder
+from kivy.garden.resizablebehavior import ResizableBehavior
 
 from .logger_space import ErrorLogger
 
-class TerminalSpace(BoxLayout):
+class TerminalSpace(ResizableBehavior, BoxLayout):
 
     manager = ObjectProperty(None)
     ''' Instance of screen manager used '''
@@ -50,11 +51,17 @@ class TerminalTab(ToggleButtonBehavior, Label):
 
 Builder.load_string('''
 <TerminalSpace>:
+    resizable_up: True
     tab_container: tab_container
     manager: manager
     orientation: 'vertical'
     pos_hint: {'y': 0, 'center_x': .5}
-    size_hint_y: .4
+    size_hint_y: None
+    max_norm_height: dp(380)
+    norm_height: dp(200)
+    height: self.norm_height
+    on_height:
+        if self.height > self.max_norm_height: height_tog.state='down'
     canvas.before:
         Color:
             rgba: .12,.12,.12,1
@@ -75,11 +82,21 @@ Builder.load_string('''
         BoxLayout:
             size_hint_x: None
             width: self.minimum_width
+            IconToggleLabel:
+                id: height_tog
+                icon_normal: 'fa-angle-up'
+                icon_down: 'fa-angle-down'
+                icon: self.icon_normal
+                icon_size: 30
+                size_hint_x: None
+                width: '32dp'
+                on_state:
+                    if self.state=='down': root.height=root.max_norm_height
+                    else: root.height=root.norm_height
             IconLabelButton:
                 icon: 'fa-close'
                 size_hint_x: None
-                width: '12dp'
-
+                width: '32dp'
     ScreenManager:
         id: manager
 
