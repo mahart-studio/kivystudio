@@ -4,7 +4,7 @@ Config.set('graphics', 'height', '730')
 Config.set('kivy', 'exit_on_escape', '0')
 Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
-__version__ = '0.1.0.dev0'
+__version__ = '0.2.0.dev'
 
 
 def get_kivystudio_app():

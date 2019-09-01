@@ -54,7 +54,7 @@
         _line_lenght: len(self._lines)
         on__line_lenght: root.number_me(self, scroll)
         selection_color: .8,.8,.8,.4
-        font_size: '13dp'
+        font_size: sp(14) * settings.dpi_scale
         line_highlight_color: 1,1,.8,.1
         on_selection_text:
             if self.selection_text: self.line_highlight_color = 0,0,0,0
