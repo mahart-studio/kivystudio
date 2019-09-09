@@ -10,7 +10,7 @@ from kivy.clock import Clock
 
 from kivystudio.behaviors import HoverBehavior
 from kivystudio.components import screens
-from kivystudio.widgets.iconlabel import IconButtonLabel
+from kivystudio.widgets.iconlabel import IconLabelButton
 
 from .screen_drop import ScreenDrop
 
@@ -95,7 +95,7 @@ class ScreenDisplay(HoverBehavior, FloatLayout):
 
 
 instance=[]
-def emulator_area():
+def get_emulator_area():
     if instance:
         return instance[0]
     else:

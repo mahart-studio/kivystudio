@@ -34,7 +34,6 @@ class TopMenu(GridLayout):
 
     def drop_menu(self, menu_name, index):
         if not hasattr(self, menu_name):
-            print(menu_name)
             setattr(self, menu_name, getattr(dropmenu, menu_name)())
         
         menu = getattr(self, menu_name)

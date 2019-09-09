@@ -9,11 +9,11 @@ from kivy.properties import (StringProperty,
                             BooleanProperty)
 from kivystudio.behaviors import HoverInfoBehavior
 from kivystudio.behaviors import HighlightBehavior
-from kivystudio.widgets.iconlabel import IconButtonLabel
+from kivystudio.widgets.iconlabel import IconLabelButton
 from kivystudio.widgets.rightclick_drop import RightClickDrop
 from kivystudio.tools import set_auto_mouse_position
 from kivystudio.tools.iconfonts import icon
-from kivystudio.components.emulator_area import emulator_area
+from kivystudio.components.emulator_area import get_emulator_area
 
 rightclick_dropdown = [None]
 
@@ -65,7 +65,8 @@ class TabToggleButton(HoverInfoBehavior, ToggleButtonBehavior, BoxLayout):
             return super(TabToggleButton, self).on_touch_down(touch)
 
     def close_tab(self):
-        self.parent.parent.parent.parent.remove_code_tab(self)
+        from kivystudio.assembler import code_place
+        code_place.remove_code_tab(self)
 
 
     def __str__(self):
@@ -89,16 +90,16 @@ class CodeTabDropDown(RightClickDrop):
 
     def set_for_emulation(self, remove=False):
         if not remove:
-            emulator_area().emulation_file=self.tab.filename
+            get_emulator_area().emulation_file=self.tab.filename
         else:
-            emulator_area().emulation_file=''
+            get_emulator_area().emulation_file=''
 
     def close_tab(self):
         self.dismiss()
         self.tab.close_tab()
 
 
-class TabPannelIndicator(IconButtonLabel):
+class TabPannelIndicator(IconLabelButton):
         
     def on_hover(self, *a):
         if self.hover:

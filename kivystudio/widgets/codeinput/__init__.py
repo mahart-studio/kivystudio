@@ -77,44 +77,49 @@ class InnerCodeInput(HoverBehavior, CodeExtraBehavior, CodeInput):
             self.check_settings()
 
     def check_settings(self):
-        # import kivystudio app to not confuse it with current emulating app
-        from kivystudio import get_kivystudio_app
-        app =  get_kivystudio_app()
-        auto_save = app.user_settings.get('file-settings')['auto_save']
-        auto_emulate = app.user_settings.get('emulator-settings')['auto_emulate']
+        from kivystudio.settings import settings_obj
+        auto_save = settings_obj.auto_save
+        auto_emulate = settings_obj.auto_emulate
         if auto_save:
             self.parent.parent.save_file(auto_save=True)
         if auto_emulate:
             from kivystudio.parser import emulate_file
-            from kivystudio.components.emulator_area import emulator_area
-            if emulator_area().emulation_file == self.parent.filename:
+            from kivystudio.components.emulator_area import get_emulator_area
+            if get_emulator_area().emulation_file == self.parent.filename:
                 emulate_file(self.parent.filename)
+
+    def keyboard_on_textinput(self, window, text):
+        'overiding the default textinput keyboard listener '
+        if (text == '=' or text == '-') and 'ctrl' in Window.modifiers:
+            return True
+        super(InnerCodeInput,self).keyboard_on_textinput(window, text)
 
     def keyboard_on_key_down(self, keyboard, keycode, text, modifiers):
         'overiding the default keyboard listener '
-        # print(keycode)
+        # print(keycode, modifiers)
 
-        if keycode[1] == 'tab' and modifiers == ['shift']:  # unindentation [Shit-tab]
+        if keycode[1] == 'tab' and 'shift' in modifiers:  # unindentation [Shit-tab]
             self._do_reverse_indentation()
 
         elif keycode[1] == 'tab' and self.selection_text:  # multiple indentation [Tab]
             self.do_multiline_indent()
 
-        elif keycode[1] == 'backspace' and modifiers == ['ctrl']:   # delete word left  [Ctrl-bsc]
+        elif keycode[1] == 'backspace' and 'ctrl' in modifiers:   # delete word left  [Ctrl-bsc]
             self.delete_word_left()
 
-        elif keycode[1] == '/' and modifiers == ['ctrl']:     # a comment ctrl /
+        elif keycode[1] == '/' and 'ctrl' in modifiers:     # a comment ctrl /
             self.do_comment()
 
         elif keycode[1] == 'enter':
             Clock.schedule_once(lambda dt: self.do_auto_indent())
             return super(CodeInput, self).keyboard_on_key_down(keyboard, keycode, text, modifiers)
 
-        elif keycode[1] == 'f' and modifiers == ['ctrl']:     # ctrl f to open a search
+        elif keycode[1] == 'f' and 'ctrl' in modifiers:     # ctrl f to open a search
             self.open_code_finder()
 
         elif keycode[0] == 27:     # on escape, do nothing
             return True
+
         else:
             # then return super for others
             return super(CodeInput, self).keyboard_on_key_down(keyboard, keycode, text, modifiers)

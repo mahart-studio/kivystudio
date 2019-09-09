@@ -46,6 +46,7 @@ setup(
                   'kivystudio': [
                         'resources/*',
                         'widgets/filemanager/images/*',
+                        'libs/resizablebehavior/*',
                         'components/screens/images/*']+get_all_kv_files()
                 },
 

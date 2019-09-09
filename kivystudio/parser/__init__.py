@@ -4,21 +4,33 @@ from threading import Thread
 from functools import partial
 try:
     from importlib import reload
-except:
+except:      # for py 2 compatibility
     pass
 
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.clock import mainthread
 from kivy.uix.widget import Widget
 from kivy.resources import resource_add_path, resource_remove_path
 
-from kivystudio.components.emulator_area import emulator_area
+from kivystudio.components.emulator_area import get_emulator_area
+from kivystudio.tools.logger import Logger
 
 def emulate_file(filename, threaded=False):
-    Logger.info("KivyStudio: Emulation Started {}".format(filename))
+    if not filename:
+        Logger.error("KivyStudio: No file selected press Ctrl-E to select file for emulation")
+        return
+
+    Logger.info("Emulator: Starting Emulation on file '{}'".format(filename))
     root=None
     if not os.path.exists(filename):
+        Logger.error("KivyStudio: file {} not found".format(filename))
+        return
+
+    with open(filename) as fn:
+        file_content =  fn.read()
+
+    if app_not_run_properly(file_content):
+        Logger.error("Emulator: App not run properly 'try running under if __name__ == '__main__':")
         return
 
     dirname=os.path.dirname(filename)
@@ -26,42 +38,45 @@ def emulate_file(filename, threaded=False):
     os.chdir(dirname)
     resource_add_path(dirname)
 
-    emulator_area().screen_display.screen.clear_widgets()
+    get_emulator_area().screen_display.screen.clear_widgets()
     if threaded:
-        Thread(target=partial(start_emulation, filename, threaded=threaded)).start()
+        Thread(target=partial(start_emulation, filename,
+                            file_content, threaded=threaded)).start()
     else:
-        start_emulation(filename, threaded=threaded)
+        start_emulation(filename, file_content, threaded=threaded)
 
-def start_emulation(filename, threaded=False):
+def start_emulation(filename, file_content, threaded=False):
     root = None
+    has_error = False
     if os.path.splitext(filename)[1] =='.kv':    # load the kivy file directly
         try:    # cacthing error with kivy files
             Builder.unload_file(filename)
             root = Builder.load_file(filename)
         except:
-            traceback.print_exc()
-            Logger.error("KivyStudio: You kivy file has a problem")
+            has_error = True
+            trace = traceback.format_exc()
+            Logger.error("Emulator: {}".format(trace))
 
     elif os.path.splitext(filename)[1] =='.py':
-        load_defualt_kv(filename)
+        load_defualt_kv(filename, file_content)
         try:    # cahching error with python files
-            root = load_py_file(filename)
+            root = load_py_file(filename, file_content)
         except:
-            traceback.print_exc()
-            Logger.error("KivyStudio: You python file has a problem")
+            has_error = True
+            trace = traceback.format_exc()
+            Logger.error("Emulator: {}".format(trace))
     else:
-        Logger.error("KivyStudio: can't emulate file type {}".format(filename))
+        Logger.warning("KivyStudio: can't emulate file type {}".format(filename))
 
-    if not root:
-        Logger.error('KivyStudio: no root widget found for file {}'.format(filename))
-    if not isinstance(root,Widget):
-        Logger.error('KivyStudio: root instance found {} \
-             for file is not a widget'.format(root))
-    else:
+    if not root and not has_error:
+        Logger.error('Emulator: No root widget found.')
+    elif not isinstance(root,Widget) and not has_error:
+        Logger.error("KivyStudio: root instance found = '{}' and is not a widget".format(root))
+    elif root:
         if threaded:
             emulation_done(root, filename)
         else:
-            emulator_area().screen_display.screen.add_widget(root)
+            get_emulator_area().screen_display.screen.add_widget(root)
 
     dirname=os.path.dirname(filename)
     sys.path.pop()
@@ -71,15 +86,15 @@ def start_emulation(filename, threaded=False):
 def emulation_done(root, filename):
     ' add root on the main thread '
     if root:
-        emulator_area().screen_display.screen.add_widget(root)
+        get_emulator_area().screen_display.screen.add_widget(root)
 
 
-def load_defualt_kv(filename):
+def load_defualt_kv(filename, file_content):
     ''' load the default kivy file
         associated the the python file,
         usaully lowercase of the app class
     '''
-    app_cls_name = get_app_cls_name(filename)
+    app_cls_name = get_app_cls_name(file_content)
     if app_cls_name is None:
         return
 
@@ -96,15 +111,14 @@ def load_defualt_kv(filename):
                 Builder.unload_file(kv_filename)
                 root = Builder.load_file(kv_filename)
             except:
-                traceback.print_exc()
+                trace = traceback.format_exc()
                 Logger.error("KivyStudio: You kivy file has a problem")
+                Logger.error("KivyStudio: {}".format(trace))
 
 
-def get_app_cls_name(filename):
-    with open(filename) as fn:
-        text =  fn.read()
+def get_app_cls_name(file_content):
 
-    lines = text.splitlines()
+    lines = file_content.splitlines()
     app_cls = get_import_as('from kivy.app import App', lines)
 
     def check_app_cls(line):
@@ -140,9 +154,9 @@ def get_root_from_runTouch(filename):
         return root
 
 
-def load_py_file(filename):
+def load_py_file(filename, file_content):
 
-    app_cls_name = get_app_cls_name(filename)
+    app_cls_name = get_app_cls_name(file_content)
     if app_cls_name:
 
         root_file = import_from_dir(filename)
@@ -167,17 +181,31 @@ def import_from_dir(filename):
     return imported
 
 
-
 def get_import_as(start, lines):
     ''' get the variable used by user when importing as.
-        Ex: from kivy import platform as plt
-            it will return plt
         Ex: from kivy import platform
             it will return plaform
+        Ex: from kivy import platform as plt
+            it will return plt
     '''
-    
     line = list(filter(lambda line: line.strip().startswith(start), lines))
     if line:
         words = line[0].split(' ')
         import_word = words[len(words)-1]
         return import_word
+
+def app_not_run_properly(file_content):
+    
+    lines = file_content.splitlines()
+    run_touch = get_import_as('from kivy.base import runTouchApp', lines)
+
+    def check_run_touch(line):
+        return line.startswith('%s(' % run_touch)
+    found1 = list(filter(check_run_touch, lines))
+
+    def check_run_app(line):
+        app_name = get_app_cls_name(file_content)
+        return line.endswith('run()') and line.startswith(app_name)
+    found2 = list(filter(check_run_app, lines))
+
+    return found1 or found2

@@ -63,15 +63,15 @@ if __name__ == '__main__':
 
 * Finally, enter [Ctrl-S].
 * Right click on file tab
-* clcik set for emulation
-* then, enter [Ctrl-R]. to see the output, or you can set auto-emulation
+* clcik set for emulation, or press [Ctrl] + E to select file for emulation
+* then, enter [Ctrl-R]. to see the output, or you also can set auto-emulation
 * To switch screen use the [Ctrl] + [Tab] to do so
+* To Open and close terminal panel use the [Ctrl] + ` to do so
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(4).png">
 </p>
 
-##
 ### Contributions
 To contribute to this project
 * you just fork the repository
