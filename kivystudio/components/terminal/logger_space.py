@@ -1,12 +1,24 @@
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty
+from kivy import properties as prop
 from kivy.lang import Builder
+from kivy.factory import Factory
 
 MAX_LOG_LINES = 260
 
+
 class ErrorLogger(BoxLayout):
     
-    text = StringProperty()
+    text = prop.StringProperty()
+    ''' property where the logs are stored '''
+
+    top_pannel_items = prop.ListProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        clearbtn = Factory.TopPanelButton(icon='fa-trash-o')
+        clearbtn.bind(on_release=self.clear_logs)
+        self.top_pannel_items.append(clearbtn)
+
 
     def log(self, msg):
         lines = self.text.splitlines()
@@ -15,12 +27,13 @@ class ErrorLogger(BoxLayout):
         self.text += msg+'\n'
         self.ids.scroll.scroll_y = 0
 
-    def clear_logs(self):
+    def clear_logs(self, *args):
         self.text = ''
+
 
 class InternalErrorLogger(BoxLayout):
     
-    text = StringProperty('Hello '*39)
+    text = prop.StringProperty('Hello '*39)
 
 Builder.load_string('''
 <ErrorLogger>:
@@ -38,4 +51,6 @@ Builder.load_string('''
             color: .8,.8,.8,1
             markup: True
             font_size: '14sp'
+
+
 ''')

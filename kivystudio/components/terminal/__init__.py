@@ -3,6 +3,7 @@ from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy import properties as prop
+from kivy.clock import Clock
 
 from kivy.lang import Builder
 from kivystudio.libs.resizablebehavior import ResizableBehavior
@@ -31,6 +32,7 @@ class TerminalSpace(ResizableBehavior, BoxLayout):
             tab.name=title
             tab.bind(state=self.tab_state)
             self.tab_container.add_widget(tab)
+            Clock.schedule_once(lambda dt: setattr(tab, 'state', 'down'))
             screen = Screen(name=title)
             screen.add_widget(widget)
             self.manager.add_widget(screen)
@@ -38,9 +40,17 @@ class TerminalSpace(ResizableBehavior, BoxLayout):
             super(TerminalSpace, self).add_widget(widget)
 
     def tab_state(self, tab, state):
+        panel = self.manager.get_screen(tab.name).children[0]
         if state=='down':
             self.manager.current = tab.name
-    
+            for item in panel.top_pannel_items:
+                self.top_pannel.add_widget(item, 2)
+        else:
+            for item in panel.top_pannel_items:
+                if item in self.top_pannel.children:
+                    self.top_pannel.remove_widget(item)
+
+ 
     def on_state(self, *args):
         if self.state=='open':
             self.height = self.norm_height
@@ -63,10 +73,12 @@ class TerminalTab(ToggleButtonBehavior, Label):
             self.text = self.text.replace('[u]','').replace('[/u]','')
             self.color = (.5,.5,.5,1)
 
+
 Builder.load_string('''
 <TerminalSpace>:
     resizable_up: True
     tab_container: tab_container
+    top_pannel: top_pannel
     manager: manager
     orientation: 'vertical'
     pos_hint: {'y': 0, 'center_x': .5}
@@ -94,6 +106,7 @@ Builder.load_string('''
             id: tab_container
             rows: 1
         BoxLayout:
+            id: top_pannel
             size_hint_x: None
             width: self.minimum_width
             IconToggleLabel:
@@ -117,9 +130,15 @@ Builder.load_string('''
         id: manager
 
 <TerminalTab>:
-    allow_no_selection: False
+    allow_no_selection: True
+    group: '__terminal_tab__'
     size_hint_x: None
     width: '94dp'
     markup: True
+
+<TopPanelButton@IconLabelButton>:
+    icon: 'fa-close'
+    size_hint_x: None
+    width: '32dp'
 
 ''')
