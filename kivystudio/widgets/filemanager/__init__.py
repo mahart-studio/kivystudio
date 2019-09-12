@@ -62,9 +62,9 @@ class FileManager(ModalView):
         # self.mode = 'save_file'
 
     def get_defualt_user_dir(self):
-        username = os.getlogin()
         default_dir = None
         if platform == 'linux':
+            username = os.getlogin()
             if username != 'root':
                 default_dir = r'/home/%s'%username
             else:

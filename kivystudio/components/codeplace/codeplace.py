@@ -28,10 +28,10 @@ import os
 
 def get_tab_from_group(filename):
     all_tabs = ToggleButtonBehavior.get_widgets('__tabed_btn__')
-    if all_tabs:
-        for tab in all_tabs:
-            if tab.filename == filename:
-                return tab
+    if not all_tabs: return
+    for tab in all_tabs:
+        if tab.filename == filename:
+            return tab
 
 
 def get_lexer_for_file(filename):
@@ -153,6 +153,8 @@ class CodeScreen(Screen):
             if os.path.exists(self.name):
                 get_emulator_area().emulation_file=self.name
                 Logger.info("Emulator: File '{}' selected".format(self.name))
+            else:
+                Logger.info("Emulator: invalid file selected".format(self.name))
 
 
 class CodePlace(BoxLayout):
