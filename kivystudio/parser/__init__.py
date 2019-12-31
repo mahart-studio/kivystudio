@@ -120,8 +120,6 @@ def get_app_cls_name(file_content):
 
     lines = file_content.splitlines()
     app_cls = get_import_as('from kivy.app import App', lines)
-    # corrige o erroo
-    ## TypeError: startswith first arg must be str or a tuple of str, not NoneType
     if not app_cls:
     	app_cls = get_import_as('from kivymd.app import MDApp', lines)
 
