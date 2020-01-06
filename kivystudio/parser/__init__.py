@@ -120,6 +120,8 @@ def get_app_cls_name(file_content):
 
     lines = file_content.splitlines()
     app_cls = get_import_as('from kivy.app import App', lines)
+    if not app_cls:
+    	app_cls = get_import_as('from kivymd.app import MDApp', lines)
 
     def check_app_cls(line):
         line = line.strip()
