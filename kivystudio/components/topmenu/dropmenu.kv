@@ -69,14 +69,14 @@
     valign: 'middle'
     padding: '20dp', 0
     type: 'text'
-    color: (self.parent.text_colors[0] if self.type=='text' else self.parent.text_colors[1]) if self.parent else (0,0,0,1)
+    color: ((0/255,0/255,0/255,.9) if self.type=='text' else (160/255,160/255,160/255,.9)) if self.parent else (236/255,243.255,1,.5)
 
 
 <MenuButton>:
     size_hint_y: None
     height: '30dp'
     canvas_color: 1,1,1,1
-    text_colors: ((.1,.1,.1,1), (.5,.5,.5,1))
+    text_colors: ((.1,.1,.1,1), (.5,.5,.5,1))   
     on_hover:
         if self.hover: self.canvas_color = .2,.5,1,1; self.text_colors=((1,1,1,1),(1,1,1,1))
         else: self.canvas_color = 1,1,1,1; self.text_colors=((0,0,0,1), (.5,.5,.5,1))
