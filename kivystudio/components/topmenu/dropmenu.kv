@@ -2,12 +2,13 @@
 
 <FileTopMenu>:
     auto_width: False
-    width: '260dp'
+    width: '300dp'
     MenuButton:
         on_release: root.new_file()
         MenuLabel:
             text: 'New File'
         MenuLabel:
+            halign:'right'
             text: 'Ctrl+N'
             type: 'shortcut'
     MenuButton:
@@ -15,6 +16,7 @@
         MenuLabel:
             text: 'Open File'
         MenuLabel:
+            halign:'right'
             text: 'Ctrl+O'
             type: 'shortcut'
     MenuButton:
@@ -22,6 +24,7 @@
         MenuLabel:
             text: 'Open Folder'
         MenuLabel:
+            halign:'right'
             text: '[Ctrl+K Ctrl+O]'
             type: 'shortcut'
     MenuButton:
@@ -29,6 +32,7 @@
         MenuLabel:
             text: 'Save'
         MenuLabel:
+            halign:'right'
             text: 'Ctrl+S'
             type: 'shortcut'
     ToggleMenuButton:
@@ -48,6 +52,7 @@
         MenuLabel:
             text: 'Save as'
         MenuLabel:
+            halign:'right'
             text: 'Ctrl+Shift+S'
             type: 'shortcut'
     MenuButton:
@@ -59,9 +64,53 @@
         MenuLabel:
             text: 'Exit'
         MenuLabel:
+            halign:'right'
             text: 'Ctrl+Q'
             type: 'shortcut'
 
+<EditTopMenu>:
+    auto_width: False
+    width: '300dp'
+    MenuButton:
+        on_release: 
+        MenuLabel:
+            text: 'Edit File'
+        MenuLabel:
+            halign:'right'
+            text: ''
+            type: 'shortcut'
+
+<ViewTopMenu>:
+    auto_width: False
+    width: '300dp'
+    MenuButton:
+        on_release: 
+        MenuLabel:
+            text: 'View File'
+        MenuLabel:
+            halign:'right'
+            text: ''
+            type: 'shortcut'
+
+<SelectionTopMenu>:
+    auto_width: False
+    width: '300dp'
+    MenuButton:
+        on_release: 
+        MenuLabel:
+            text: 'Selection File'
+        MenuLabel:
+            halign:'right'
+            text: ''
+            type: 'shortcut'
+
+<HelpTopMenu>:
+    auto_width: False
+    width: '300dp'
+    MenuButton:
+        on_release: print('help was clicked!')
+        MenuLabel:
+            text: 'Help'
 
 <MenuLabel@Label>:
     text_size: self.size
@@ -69,17 +118,13 @@
     valign: 'middle'
     padding: '20dp', 0
     type: 'text'
-    color: (self.parent.text_colors[0] if self.type=='text' else self.parent.text_colors[1]) if self.parent else (0,0,0,1)
-
+    color: (.1,.1,.1,1) if self.type =='text' else (.5,.5,.5,1)
 
 <MenuButton>:
     size_hint_y: None
     height: '30dp'
     canvas_color: 1,1,1,1
-    text_colors: ((.1,.1,.1,1), (.5,.5,.5,1))
-    on_hover:
-        if self.hover: self.canvas_color = .2,.5,1,1; self.text_colors=((1,1,1,1),(1,1,1,1))
-        else: self.canvas_color = 1,1,1,1; self.text_colors=((0,0,0,1), (.5,.5,.5,1))
+    text_colors: (.1,.1,.1,1)
     canvas.before:
         Color:
             rgba: self.canvas_color
@@ -91,11 +136,11 @@
     size_hint_y: None
     height: '30dp'
     canvas_color: 1,1,1,1
-    text_colors: ((.1,.1,.1,1), (.5,.5,.5,1))
+    text_colors: (.1,.1,.1,1)
     text: ''
-    on_hover:
-        if self.hover: self.canvas_color = .2,.5,1,1; self.text_colors=((1,1,1,1),(1,1,1,1))
-        else: self.canvas_color = 1,1,1,1; self.text_colors=((0,0,0,1), (.5,.5,.5,1))
+    on_hover: 
+        if self.hover: self.canvas_color = .2,.5,1,1;self.state;
+        else: self.canvas_color = (1,1,1,1)
     on_state: tick.state=self.state
     canvas.before:
         Color:
@@ -112,6 +157,6 @@
         id: tick
         color: .2,.2,.2,1
         on_state:
-            if self.state=='normal': self.text=''
+            if self.state=='normal': self.text='';print(self.state)
             else: self.text = icon('fa-check', 16)
-        # on_parent: self.state='down'
+        on_parent: self.state='down'

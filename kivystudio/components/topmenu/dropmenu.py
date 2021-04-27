@@ -10,7 +10,17 @@ tools.load_kv(__file__,'dropmenu.kv')
 
 
 class MenuButton(HoverBehavior, ButtonBehavior, BoxLayout):
-    pass
+    def on_hover(self, widget, hover):
+        if hover: 
+            self.canvas_color = .2,.5,1,1
+            if len(self.children) > 1:
+                    self.children[0].color = (1,1,1,1)
+        else: 
+            self.canvas_color = (1,1,1,1)
+            if len(self.children) > 1: 
+                    self.children[0].color = (.5,.5,.5,1); 
+        
+        
 
 class ToggleMenuButton(HoverBehavior, ToggleButtonBehavior, BoxLayout):
     pass
@@ -43,16 +53,21 @@ class FileTopMenu(DropDownBase):
 
     def exit_window(self):
         tools.quicktools.exit_window()
-
-
+        
+    
 class EditTopMenu(DropDownBase):
     def __init__(self, **k):
-        super(FileTopMenu, self).__init__(**k)
+        super(EditTopMenu, self).__init__(**k)
 
 class ViewTopMenu(DropDownBase):
     def __init__(self, **k):
-        super(FileTopMenu, self).__init__(**k)
+        super(ViewTopMenu, self).__init__(**k)
+
+class SelectionTopMenu(DropDownBase):
+    def __init__(self, **k):
+        super(SelectionTopMenu, self).__init__(**k)
 
 class HelpTopMenu(DropDownBase):
     def __init__(self, **k):
-        super(FileTopMenu, self).__init__(**k)
+        super(HelpTopMenu, self).__init__(**k)
+        
