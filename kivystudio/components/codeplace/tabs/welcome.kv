@@ -9,16 +9,19 @@
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
-            BoxLayout:
-                size_hint_x: None
-                width: '200dp'
-                orientation: 'vertical'
-                Label:
-                    text: 'Kivy Studio' 
-                    bold: True
-                    font_size: '20dp'
+            size_hint_y: None
+            height:'80dp'
+            orientation: 'vertical'
+            Label:
+                haling:'center'
+                text: 'Kivy Studio' 
+                bold: True
+                font_size: '40dp'
+        BoxLayout:
+            size_hint_y: None
+            height:'150dp'
             GridLayout:
-                cols: 3
+                cols: 4
                 IconLabel:
                     text: '%s'%(icon('fa-android'))
                     color: .2,1,.2
@@ -34,6 +37,7 @@
                     text: '%s'%(icon('fa-windows'))
                     font_size: '64dp'
         BoxLayout:
+            padding: '30dp'
             GridLayout:
                 cols: 1
                 Label:
