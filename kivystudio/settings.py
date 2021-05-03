@@ -3,7 +3,9 @@ from kivy.event import EventDispatcher
 from kivy.config import ConfigParser
 from kivy.properties import ConfigParserProperty
 from kivystudio.tools import get_user_data_dir
+from kivy.core.window  import Window
 
+Window.maximize()
 
 config = ConfigParser('kivystudio')
 config.adddefaultsection('application')
