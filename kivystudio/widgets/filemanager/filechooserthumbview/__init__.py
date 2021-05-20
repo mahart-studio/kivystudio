@@ -444,7 +444,7 @@ class ThreadedThumbnailGenerator(object):
         self.thumbnail_queue.append([widget, ctx, func])
 
     def run(self):
-        if self.thread is None or not self.thread.isAlive():
+        if self.thread is None or not self.thread.is_alive():
             self.thread = Thread(target=self._loop)
             self.thread.start()
 
