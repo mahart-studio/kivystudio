@@ -8,14 +8,14 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/add8cd9bd9600d898b79/maintainability)](https://codeclimate.com/github/MichaelStott/KivMob/maintainability)
 
 A kivy software development environment targeted towards fast testing and interactive development.
-
+* #### Features
   - Emulation can be done in real time
   - Supports multiple screen views for mobile devices
   - Supports orientation changes for mobile devices
-  - Also supports outer window emulation for destop intended emulation and for full test for mobile devices
+  - Supports outer window emulation for desktop intended emulation and for full test on mobile devices
 
-* Status: under development...
-* Release: 0
+* **Status**: under development...
+* **Release**: 0
 
 
 ### Installation
@@ -30,25 +30,25 @@ Package file for various platform will be available on first release
 
 ### Quickstart
 
-* Create an new folder
-* open kivystudio.
-* on the top menu bar. go to [file]
-* then click [open-folder],
+* Create a new folder
+* Open **kivystudio**.
+* On the top menu bar. go to **File** option
+* Click **Open Folder**,
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(2).png">
 </p>
 
-* pick your folder
+* Choose your folder
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(3).png">
 </p>
 
-* Then enter [Ctrl-N] a new file will be opened for your
+* Press <kbd>Ctrl</kbd> + <kbd>N</kbd> : a new file will open-up
 
 
-Copy the following into the file tab.
+Copy the following code into the editor provided.
 ```python
 from kivy.app import App
 from kivy.uix.button import Button
@@ -61,12 +61,12 @@ if __name__ == '__main__':
 	MyApp().run()
 ```
 
-* Finally, enter [Ctrl-S].
-* Right click on file tab
-* clcik set for emulation, or press [Ctrl] + E to select file for emulation
-* then, enter [Ctrl-R]. to see the output, or you also can set auto-emulation
-* To switch screen use the [Ctrl] + [Tab] to do so
-* To Open and close terminal panel use the [Ctrl] + ` to do so
+* To save the code, press <kbd>Ctrl</kbd> + <kbd>S</kbd>.
+* Right click on **File** tab
+* Choose **Set for Emulation**, or press <kbd>Ctrl</kbd> + <kbd>E</kbd> to select the file for emulation
+* Then, press <kbd>Ctrl</kbd> + <kbd>R</kbd> to see the output, *OR* you can also set auto-emulation from **File** tab
+* To switch screens, use the <kbd>Ctrl</kbd> + <kbd>Tab</kbd> combination
+* To open and close terminal panel, press <kbd>Ctrl</kbd> + <kbd>`</kbd>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mahart-studio/kivystudio/master/showcase/Screenshot(4).png">
@@ -74,9 +74,9 @@ if __name__ == '__main__':
 
 ### Contributions
 To contribute to this project
-* you just fork the repository
+* Fork the repository
 * Clone it
 ``` git clone https://github.com/mahart-studio/kivystudio.git``` 
-* Then start, by solving an issue or fixing a known bug
-* Then you send a pull request
-* Then we review and merge
+* Start by solving an issue or fixing a known bug
+* Create a **Pull Request**
+* PR would be merged after review.
