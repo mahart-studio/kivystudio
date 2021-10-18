@@ -32,7 +32,7 @@ Package file for various platform will be available on first release
 
 * Create a new folder
 * Open **kivystudio**.
-* On the top menu bar. go to **File** option
+* On the top menu bar go to **File** option
 * Click **Open Folder**,
 
 <p align="center">
